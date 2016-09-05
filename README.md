@@ -6,7 +6,7 @@ iPoliTO is a simple iOS app for the students of Politecnico di Torino. It is cur
 
 ## Setup
 
-In order to build the project, you must download and install the third-party libraries required by iPoliTO (see *Third-party Libraries*).
+In order to build the project, you must download and install the third-party libraries required by iPoliTO (see [below](#third-party-libraries)).
 
 Also, it is necessary to add a new file with the following lines of code:
 ```swift
