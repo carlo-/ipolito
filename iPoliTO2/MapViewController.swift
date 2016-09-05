@@ -58,12 +58,14 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
     }
     
+    /// Reloads free rooms if lastest data is nil or not from today
     func reloadFreeRoomsIfNeeded() {
         
-        // TODO: Reload if freeRoomsLoadedDate is not today
-        if freeRoomsLoadedDate == nil /* || freeRoomsLoadedDate is not today */ {
-            downloadFreeRooms()
+        if freeRoomsLoadedDate != nil && Calendar.current.isDateInToday(freeRoomsLoadedDate!) {
+            return
         }
+        
+        downloadFreeRooms()
     }
     
     private var firstTime = true
