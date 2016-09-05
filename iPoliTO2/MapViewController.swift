@@ -28,12 +28,18 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
             return []
         }
     }()
+    
     private var filteredRooms: [PTRoom] = []
+    
     private var freeRoomsLoadedDate: Date? = nil
     private var freeRooms: [PTFreeRoom] = []
     private var freeRoomsAnnotations: [MKAnnotation] = []
     
+    private var roomsToShow: [PTRoom] = []
+    
     private var roomToFocus: PTRoom?
+    
+    
     
     // MARK: View Lifecycle
     
@@ -55,11 +61,33 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         navigationItem.leftBarButtonItem = presentTimePickerButton()
         
         
+        showAllRooms()
+        zoomToMainCampus(animated: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        reloadFreeRoomsIfNeeded()
+        
+        focusOnRoom(roomToFocus, animated: true)
+        roomToFocus = nil
+    }
+    
+    deinit {
+        searchController.view.removeFromSuperview()
+    }
+    
+    
+    
+    // MARK: Room Managing Methods
+    
+    func shouldFocus(onRoom room: PTRoom?) {
+        roomToFocus = room
     }
     
     /// Reloads free rooms if lastest data is nil or not from today
-    func reloadFreeRoomsIfNeeded() {
+    private func reloadFreeRoomsIfNeeded() {
         
         if freeRoomsLoadedDate != nil && Calendar.current.isDateInToday(freeRoomsLoadedDate!) {
             return
@@ -67,38 +95,6 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         downloadFreeRooms()
     }
-    
-    private var firstTime = true
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if firstTime {
-            focusOnRoom(nil, animated: false)
-        }
-        
-        if roomToFocus != nil {
-            
-            focusOnRoom(roomToFocus!)
-            roomToFocus = nil
-            
-        } else {
-            
-            reloadFreeRoomsIfNeeded()
-            focusOnRoom(nil, animated: !firstTime)
-        }
-        
-        firstTime = false
-    }
-    
-    deinit {
-        searchController.view.removeFromSuperview()
-    }
-    
-    func shouldFocus(onRoom room: PTRoom?) {
-        roomToFocus = room
-    }
-    
-    // MARK: Room Managing Methods
     
     private func downloadFreeRooms(forDate date: Date? = nil) {
         
@@ -118,7 +114,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
                 
                 self.freeRoomsLoadedDate = date ?? Date()
                 self.freeRooms = freeRooms ?? []
-                self.showAllRooms()
+                self.reloadRoomAnnotations()
                 self.navigationItem.titleView = PTDualTitleView(withTitle: ~"Map", subtitle: subtitle)
             })
         })
@@ -140,14 +136,13 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         return false
     }
     
-    private func showAllRooms() {
+    private func reloadRoomAnnotations() {
         
         removeAllAnnotations()
-        freeRoomsAnnotations.removeAll()
         
         var annotations: [MKPointAnnotation] = []
         
-        for room in allRooms {
+        for room in roomsToShow {
             
             let isRoomFree = self.isRoomFree(room)
             
@@ -161,6 +156,12 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         }
         
         mapView.addAnnotations(annotations)
+    }
+    
+    private func showAllRooms() {
+        
+        roomsToShow = allRooms
+        reloadRoomAnnotations()
     }
     
     
@@ -345,6 +346,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     }
     
     private func removeAllAnnotations() {
+        freeRoomsAnnotations.removeAll()
         mapView.removeAnnotations(mapView.annotations)
     }
     
@@ -359,26 +361,20 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
             return
         }
         
-        let coords = CLLocationCoordinate2D(fromRoom: room)
-        guard CLLocationCoordinate2DIsValid(coords) else { return }
         
         searchBar.text = room.localizedName
         
-        removeAllAnnotations()
-        freeRoomsAnnotations.removeAll()
+        roomsToShow = [room]
+        reloadRoomAnnotations()
+        
+        let coords = CLLocationCoordinate2D(fromRoom: room)
+        guard CLLocationCoordinate2DIsValid(coords) else { return }
         
         zoomToCoordinates(coords, withDelta: 0.00125, animated: animated)
         
-        let isRoomFree = self.isRoomFree(room)
-        
-        let annotation = MKPointAnnotation(fromRoom: room, free: isRoomFree)
-        
-        if isRoomFree {
-            freeRoomsAnnotations.append(annotation)
+        if let annotation = mapView.annotations.first {
+            mapView.selectAnnotation(annotation, animated: true)
         }
-        
-        mapView.addAnnotation(annotation)
-        mapView.selectAnnotation(annotation, animated: true)
     }
     
     private func zoomToMainCampus(animated: Bool = true) {
