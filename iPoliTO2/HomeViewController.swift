@@ -99,13 +99,12 @@ class HomeViewController: UITableViewController {
         }
         
         let formatter = DateFormatter()
-        formatter.timeZone = TimeZone.Turin
+        // formatter.timeZone = TimeZone.Turin
         formatter.timeStyle = .none
         formatter.dateStyle = .full
+        formatter.doesRelativeDateFormatting = true
         
-        // TODO: Add more user-friendly labels (i.e. Today, Yesterday, Tomorrow, ...)
         let title = formatter.string(from: today)
-        
         
         
         let bottomSpacing: CGFloat = 5
@@ -120,7 +119,11 @@ class HomeViewController: UITableViewController {
         label.text = title
         label.font = UIFont.systemFont(ofSize: 17, weight: UIFontWeightSemibold)
         label.backgroundColor = UIColor.clear
-        label.textColor = UIColor.black
+        
+        let cal = Calendar.current
+        // cal.timeZone = TimeZone.Turin
+        
+        label.textColor = cal.isDateInToday(today) ? UIColor.black : UIColor.gray
         
         let labelBackgroundView = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: labelHeight))
         labelBackgroundView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)

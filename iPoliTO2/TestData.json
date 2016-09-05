@@ -3,8 +3,8 @@
         "data": {
           "orari": [
                     {
-                    "ORA_INIZIO": "10/08/2016 10.00.00",
-                    "ORA_FINE": "10/08/2016 12.00.00",
+                    "ORA_INIZIO": "05/09/2016 10.00.00",
+                    "ORA_FINE": "05/09/2016 12.00.00",
                     "NOMINATIVO_AULA": "BAUDO Pippo",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -15,8 +15,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "11/08/2016 17.00.00",
-                    "ORA_FINE": "11/08/2016 18.30.00",
+                    "ORA_INIZIO": "06/09/2016 17.00.00",
+                    "ORA_FINE": "06/09/2016 18.30.00",
                     "NOMINATIVO_AULA": "MENTANA Enrico",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -27,8 +27,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "11/08/2016 13.00.00",
-                    "ORA_FINE": "11/08/2016 14.30.00",
+                    "ORA_INIZIO": "06/09/2016 13.00.00",
+                    "ORA_FINE": "06/09/2016 14.30.00",
                     "NOMINATIVO_AULA": "PAUSINI Laura",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -39,8 +39,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "12/08/2016 08.30.00",
-                    "ORA_FINE": "12/08/2016 11.30.00",
+                    "ORA_INIZIO": "07/09/2016 08.30.00",
+                    "ORA_FINE": "07/09/2016 11.30.00",
                     "NOMINATIVO_AULA": "FRASSICA Nino",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -51,8 +51,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "12/08/2016 11.30.00",
-                    "ORA_FINE": "12/08/2016 13.00.00",
+                    "ORA_INIZIO": "07/09/2016 11.30.00",
+                    "ORA_FINE": "07/09/2016 13.00.00",
                     "NOMINATIVO_AULA": "BOSCHI Elena",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -63,8 +63,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "12/08/2016 17.30.00",
-                    "ORA_FINE": "12/08/2016 19.00.00",
+                    "ORA_INIZIO": "07/09/2016 17.30.00",
+                    "ORA_FINE": "07/09/2016 19.00.00",
                     "NOMINATIVO_AULA": "SALVINI Matteo",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -75,9 +75,9 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "08/08/2016 10.00.00",
-                    "ORA_FINE": "08/08/2016 12.00.00",
-                    "NOMINATIVO_AULA": "BAUDO Pippo 2",
+                    "ORA_INIZIO": "08/09/2016 10.00.00",
+                    "ORA_FINE": "08/09/2016 12.00.00",
+                    "NOMINATIVO_AULA": "VESPA Bruno",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
                     "TITOLO_MATERIA": "Signal analysis and processing",
@@ -87,8 +87,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "09/08/2016 17.00.00",
-                    "ORA_FINE": "09/08/2016 18.30.00",
+                    "ORA_INIZIO": "09/09/2016 17.00.00",
+                    "ORA_FINE": "09/09/2016 18.30.00",
                     "NOMINATIVO_AULA": "MENTANA Enrico 2",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -99,8 +99,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "09/08/2016 13.00.00",
-                    "ORA_FINE": "09/08/2016 14.30.00",
+                    "ORA_INIZIO": "09/09/2016 13.00.00",
+                    "ORA_FINE": "09/09/2016 14.30.00",
                     "NOMINATIVO_AULA": "PAUSINI Laura 2",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -111,8 +111,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "08/08/2016 08.30.00",
-                    "ORA_FINE": "08/08/2016 11.30.00",
+                    "ORA_INIZIO": "08/09/2016 08.30.00",
+                    "ORA_FINE": "08/09/2016 11.30.00",
                     "NOMINATIVO_AULA": "FRASSICA Nino 2",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
@@ -123,8 +123,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "11/08/2016 11.30.00",
-                    "ORA_FINE": "11/08/2016 13.00.00",
+                    "ORA_INIZIO": "06/09/2016 11.30.00",
+                    "ORA_FINE": "06/09/2016 13.00.00",
                     "NOMINATIVO_AULA": "BOSCHI Elena 2",
                     "TITOLO_MATERIA": "Ethics",
                     "AULA": "4",
@@ -133,8 +133,8 @@
                     "ID_EVENTO": "AZ123"
                     },
                     {
-                    "ORA_INIZIO": "09/08/2016 17.30.00",
-                    "ORA_FINE": "09/08/2016 19.00.00",
+                    "ORA_INIZIO": "09/09/2016 17.30.00",
+                    "ORA_FINE": "09/09/2016 19.00.00",
                     "NOMINATIVO_AULA": "SALVINI Matteo 2",
                     "ALFA_INI": "AA",
                     "ALFA_FIN": "ZZ",
