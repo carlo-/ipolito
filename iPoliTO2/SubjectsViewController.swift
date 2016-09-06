@@ -29,6 +29,17 @@ class SubjectsViewController: UITableViewController {
     var subject: PTSubject? = nil
 
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let dlManager = PTDownloadManager.shared
+        
+        let cannotShowDownloads = dlManager.queue.isEmpty && dlManager.downloadedFiles.isEmpty
+        
+        navigationItem.rightBarButtonItem?.isEnabled = !cannotShowDownloads
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
