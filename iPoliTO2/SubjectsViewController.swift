@@ -9,7 +9,6 @@
 import UIKit
 
 // TODO: Rename this class (and VC) to something more appropriate!
-// TODO: Show something when the table is empty
 
 class SubjectsViewController: UITableViewController {
     
@@ -33,6 +32,8 @@ class SubjectsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Removes annoying row separators after the last cell
+        tableView.tableFooterView = UIView()
         
         if rootTable == nil {
             
@@ -194,6 +195,13 @@ class SubjectsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if self == rootTable && content.isEmpty {
+            tableView.backgroundView = EmptyCourseLoadBackgroundView(frame: tableView.bounds)
+        } else {
+            tableView.backgroundView = nil
+        }
+        
         return content.count
     }
     
@@ -303,5 +311,38 @@ class SubjectsViewController: UITableViewController {
         
     }
 
+}
+
+
+fileprivate class EmptyCourseLoadBackgroundView: UIView {
+    
+    private let label: UILabel
+    
+    override init(frame: CGRect) {
+        
+        label = UILabel()
+        
+        super.init(frame: frame)
+        
+        backgroundColor = UIColor.clear
+        
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.textColor = UIColor.lightGray
+        label.text = ~"No subjects on your course load!"
+        label.sizeToFit()
+        
+        addSubview(label)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        label.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
+    }
+    
 }
 

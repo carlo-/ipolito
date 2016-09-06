@@ -8,7 +8,6 @@
 
 import UIKit
 
-// TODO: Show something when there are no registered exams
 
 class CareerViewController: UITableViewController {
 
@@ -27,6 +26,8 @@ class CareerViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Removes annoying row separators after the last cell
+        tableView.tableFooterView = UIView()
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -98,6 +99,12 @@ class CareerViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if temporaryGrades.isEmpty && passedExams.isEmpty {
+            tableView.backgroundView = EmptyCareerBackgroundView(frame: tableView.bounds)
+        } else {
+            tableView.backgroundView = nil
+        }
         
         switch section {
         case 0:
@@ -366,4 +373,37 @@ class PTGraphCell: UITableViewCell {
         return graphView
     }
     */
+}
+
+
+fileprivate class EmptyCareerBackgroundView: UIView {
+    
+    private let label: UILabel
+    
+    override init(frame: CGRect) {
+        
+        label = UILabel()
+        
+        super.init(frame: frame)
+        
+        backgroundColor = UIColor.clear
+        
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.textColor = UIColor.lightGray
+        label.text = ~"No exams on your career!"
+        label.sizeToFit()
+        
+        addSubview(label)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        label.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
+    }
+    
 }

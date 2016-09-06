@@ -28,7 +28,8 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         
         synchronizeDownloadedFiles()
         
-        
+        // Removes annoying row separators after the last cell
+        tableView.tableFooterView = UIView()
     }
     
     func synchronizeDownloadedFiles() {
@@ -73,6 +74,12 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if downloadQueue.isEmpty && downloadedFiles.isEmpty {
+            tableView.backgroundView = NoDownloadsBackgroundView(frame: tableView.bounds)
+        } else {
+            tableView.backgroundView = nil
+        }
         
         switch section {
         case 0:
@@ -313,16 +320,35 @@ class PTArchivedFileCell: UITableViewCell {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+fileprivate class NoDownloadsBackgroundView: UIView {
+    
+    private let label: UILabel
+    
+    override init(frame: CGRect) {
+        
+        label = UILabel()
+        
+        super.init(frame: frame)
+        
+        backgroundColor = UIColor.clear
+        
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.textColor = UIColor.lightGray
+        label.text = ~"Nothing to see here!"
+        label.sizeToFit()
+        
+        addSubview(label)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        label.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
+    }
+    
+}
 

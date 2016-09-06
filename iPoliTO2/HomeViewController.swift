@@ -9,7 +9,6 @@
 import UIKit
 import MapKit
 
-// TODO: Show something when the schedule is empty
 
 class HomeViewController: UITableViewController {
 
@@ -148,6 +147,12 @@ class HomeViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if schedule.isEmpty {
+            tableView.backgroundView = EmptyScheduleBackgroundView(frame: tableView.bounds)
+        } else {
+            tableView.backgroundView = nil
+        }
         
         let todaysSchedule = scheduleByWeekday[section] ?? []
         return todaysSchedule.count
@@ -392,5 +397,35 @@ class HomeViewController: UITableViewController {
     }
 }
 
-
+fileprivate class EmptyScheduleBackgroundView: UIView {
+    
+    private let label: UILabel
+    
+    override init(frame: CGRect) {
+        
+        label = UILabel()
+        
+        super.init(frame: frame)
+        
+        backgroundColor = UIColor.clear
+        
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.textColor = UIColor.lightGray
+        label.text = ~"No lectures this week!"
+        label.sizeToFit()
+        
+        addSubview(label)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        label.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
+    }
+    
+}
 
