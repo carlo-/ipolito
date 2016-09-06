@@ -88,7 +88,12 @@ public struct PTMessage: PTFetchedItem {
     }
     
     var cleanBody: String {
-        return plainBody.trimmingWhitespaceAndNewlines()
+        let clean = plainBody.trimmingWhitespaceAndNewlines()
+        
+        // Solves a bug that broke text views when trying to display a special char
+        // TODO: Look into this and find a better solution
+        let char: Character = "\u{0C}"
+        return clean.replacingOccurrences(of: char.description, with: "")
     }
 }
 
