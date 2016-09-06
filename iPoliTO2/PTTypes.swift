@@ -86,6 +86,10 @@ public struct PTMessage: PTFetchedItem {
     var attributedBody: NSAttributedString? {
         return rawHtml.htmlToAttributedString
     }
+    
+    var cleanBody: String {
+        return plainBody.trimmingWhitespaceAndNewlines()
+    }
 }
 
 public struct PTLecturer {

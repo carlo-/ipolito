@@ -119,10 +119,10 @@ class PTMessageCell: UITableViewCell {
     
     class func estimatedHeight(message: PTMessage, rowWidth: CGFloat) -> CGFloat {
         
-        let minimumHeight: CGFloat = 42.0
+        let minimumHeight: CGFloat = 27.0
         let textViewWidth = rowWidth-16.0
         
-        let bodyText = message.plainBody
+        let bodyText = message.cleanBody
         
         let textView = UITextView()
         textView.text = bodyText
@@ -143,7 +143,23 @@ class PTMessageCell: UITableViewCell {
         formatter.timeZone = TimeZone.Turin
         
         dateLabel.text = formatter.string(from: message.date)
-        bodyTextView.text = message.plainBody
+        bodyTextView.text = message.cleanBody
+        
+        repositionSubviews()
+    }
+    private func repositionSubviews() {
+        
+        let rowWidth = frame.width
+        
+        let textViewWidth = rowWidth-16.0
+        
+        dateLabel.sizeToFit()
+        dateLabel.frame.origin = CGPoint(x: 13.0, y: 8.0)
+        
+        let textViewSize = bodyTextView.sizeThatFits(CGSize(width: textViewWidth, height: CGFloat.greatestFiniteMagnitude))
+        
+        bodyTextView.frame.size = textViewSize
+        bodyTextView.frame.origin = CGPoint(x: 8.0, y: 27)
     }
     
     override func awakeFromNib() {

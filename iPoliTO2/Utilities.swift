@@ -13,6 +13,12 @@ public prefix func ~ (key: String) -> String {
 }
 
 extension String {
+    func trimmingWhitespaceAndNewlines() -> String {
+        return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+    }
+    mutating func trimWhitespaceAndNewlines() {
+        self = self.trimmingWhitespaceAndNewlines()
+    }
     var htmlToAttributedString: NSAttributedString? {
         guard let data = data(using: String.Encoding.utf8) else { return nil }
         do {
