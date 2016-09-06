@@ -14,7 +14,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
     var downloadManager: PTDownloadManager {
         return PTDownloadManager.shared
     }
-    var downloadQueue: [PTFileDownload] {
+    var transfersQueue: [PTFileTransfer] {
         return downloadManager.queue
     }
     var downloadedFiles: [PTDownloadedFile] = []
@@ -49,16 +49,16 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         }
     }
     
-    func fileDownloadDidChangeStatus(_ download: PTFileDownload) {
+    func fileTransferDidChangeStatus(_ transfer: PTFileTransfer) {
         
-        if download.status == .Completed {
+        if transfer.status == .Completed {
             
             synchronizeDownloadedFiles()
             tableView.reloadData()
             return
         }
         
-        if let index = downloadQueue.index(of: download) {
+        if let index = transfersQueue.index(of: transfer) {
             
             let indexPath = IndexPath(row: index, section: 0)
             
@@ -66,8 +66,8 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
                 
                 if visibleIndexPaths.contains(indexPath) {
                     
-                    let cell = tableView.cellForRow(at: indexPath) as? PTDownloadCell
-                    cell?.setFileDownload(download, animated: true)
+                    let cell = tableView.cellForRow(at: indexPath) as? PTFileTransferCell
+                    cell?.setFileTransfer(transfer, animated: true)
                 }
             }
         }
@@ -75,7 +75,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if downloadQueue.isEmpty && downloadedFiles.isEmpty {
+        if transfersQueue.isEmpty && downloadedFiles.isEmpty {
             tableView.backgroundView = NoDownloadsBackgroundView(frame: tableView.bounds)
         } else {
             tableView.backgroundView = nil
@@ -83,7 +83,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         
         switch section {
         case 0:
-            return downloadQueue.count
+            return transfersQueue.count
         case 1:
             return downloadedFiles.count
         default:
@@ -99,7 +99,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         
         switch section {
         case 0:
-            return (downloadQueue.isEmpty ? nil : ~"Transfers")
+            return (transfersQueue.isEmpty ? nil : ~"Transfers")
         case 1:
             return (downloadedFiles.isEmpty ? nil : ~"Completed")
         default:
@@ -111,14 +111,14 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         
         if indexPath.section == 0 {
             
-            let dwld = downloadQueue[indexPath.row]
+            let transfer = transfersQueue[indexPath.row]
             
             
             let retryAction = UITableViewRowAction(style: .normal, title: ~"Retry", handler: {
                 (action, indexPath) in
                 
                 self.setEditing(false, animated: true)
-                self.downloadManager.retryFileDownload(dwld)
+                self.downloadManager.retry(fileTransfer: transfer)
             })
             retryAction.backgroundColor = #colorLiteral(red: 0.4028071761, green: 0.7315050364, blue: 0.2071235478, alpha: 1)
             
@@ -126,7 +126,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
                 (action, indexPath) in
                 
                 self.setEditing(false, animated: true)
-                self.downloadManager.resumeFileDownload(dwld)
+                self.downloadManager.resume(fileTransfer: transfer)
             })
             resumeAction.backgroundColor = #colorLiteral(red: 0.4028071761, green: 0.7315050364, blue: 0.2071235478, alpha: 1)
             
@@ -134,7 +134,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
                 (action, indexPath) in
                 
                 self.setEditing(false, animated: true)
-                self.downloadManager.pauseFileDownload(dwld)
+                self.downloadManager.pause(fileTransfer: transfer)
             })
             
             let cancelAction = UITableViewRowAction(style: .destructive, title: ~"Cancel", handler: {
@@ -142,13 +142,13 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
                 
                 tableView.beginUpdates()
                 
-                self.downloadManager.cancelFileDownload(dwld)
+                self.downloadManager.cancel(fileTransfer: transfer)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 
                 tableView.endUpdates()
             })
             
-            switch dwld.status {
+            switch transfer.status {
             case .Downloading, .Ready, .WaitingForURL:
                 return [cancelAction, pauseAction]
             case .Paused:
@@ -178,41 +178,23 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             return [deleteAction]
         }
     }
-    /*
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        if (editingStyle == .delete) {
-            // handle delete (by removing the data from your array and updating the tableview)
-            
-            print("commit editingStyle")
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return UITableViewCellEditingStyle.delete
-    }
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-     */
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return PTDownloadCell.height
+            return PTFileTransferCell.height
         } else {
-            return PTArchivedFileCell.height
+            return PTDownloadedFileCell.height
         }
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if let cell = cell as? PTDownloadCell {
+        if let cell = cell as? PTFileTransferCell {
             
-            let dwld = downloadQueue[indexPath.row]
-            cell.setFileDownload(dwld, animated: false)
+            let transfer = transfersQueue[indexPath.row]
+            cell.setFileTransfer(transfer, animated: false)
             
-        } else if let cell = cell as? PTArchivedFileCell {
+        } else if let cell = cell as? PTDownloadedFileCell {
             
             let file = downloadedFiles[indexPath.row]
             cell.setDownloadedFile(file)
@@ -224,9 +206,9 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         let identifier: String
         
         if indexPath.section == 0 {
-            identifier = PTDownloadCell.identifier
+            identifier = PTFileTransferCell.identifier
         } else {
-            identifier = PTArchivedFileCell.identifier
+            identifier = PTDownloadedFileCell.identifier
         }
         
         return tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
@@ -262,10 +244,9 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
     
 }
 
-
-class PTDownloadCell: UITableViewCell {
+class PTFileTransferCell: UITableViewCell {
     
-    static let identifier = "PTDownloadCell_id"
+    static let identifier = "PTFileTransferCell_id"
     static let height = 113 as CGFloat
     
     @IBOutlet var fileNameLabel: UILabel!
@@ -274,14 +255,14 @@ class PTDownloadCell: UITableViewCell {
     @IBOutlet var statusLabel: UILabel!
     @IBOutlet var progressBar: UIProgressView!
     
-    func setFileDownload(_ download: PTFileDownload, animated: Bool) {
+    func setFileTransfer(_ transfer: PTFileTransfer, animated: Bool) {
         
-        fileNameLabel.text = download.file.description
-        subjectNameLabel.text = download.subject.name
+        fileNameLabel.text = transfer.file.description
+        subjectNameLabel.text = transfer.subject.name
         
-        setProgress(download.progress, animated: animated, finalSizeKB: download.file.size)
+        setProgress(transfer.progress, animated: animated, finalSizeKB: transfer.file.size)
         
-        statusLabel.text = download.status.localizedDescription()
+        statusLabel.text = transfer.status.localizedDescription()
     }
     
     private func setProgress(_ progress: Float, animated: Bool, finalSizeKB: Int?) {
@@ -297,9 +278,9 @@ class PTDownloadCell: UITableViewCell {
     }
 }
 
-class PTArchivedFileCell: UITableViewCell {
+class PTDownloadedFileCell: UITableViewCell {
     
-    static let identifier = "PTArchivedFileCell_id"
+    static let identifier = "PTDownloadedFileCell_id"
     static let height = 90 as CGFloat
     
     @IBOutlet var fileNameLabel: UILabel!
@@ -318,7 +299,6 @@ class PTArchivedFileCell: UITableViewCell {
         detailsLabel.text = ~"Downloaded on "+formatter.string(from: file.downloadDate)
     }
 }
-
 
 fileprivate class NoDownloadsBackgroundView: UIView {
     

@@ -62,7 +62,7 @@ class SubjectsViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: alertConfirm, style: .destructive, handler: {
                 action in
                 
-                PTDownloadManager.shared.enqueueFileDownload(file: file, subject: subject)
+                PTDownloadManager.shared.enqueueForDownload(file: file, ofSubject: subject)
                 self.performSegue(withIdentifier: "ShowDownloads_segue", sender: self)
             }))
             
@@ -70,7 +70,7 @@ class SubjectsViewController: UITableViewController {
             
         } else {
             
-            PTDownloadManager.shared.enqueueFileDownload(file: file, subject: subject)
+            PTDownloadManager.shared.enqueueForDownload(file: file, ofSubject: subject)
             performSegue(withIdentifier: "ShowDownloads_segue", sender: self)
         }
     }

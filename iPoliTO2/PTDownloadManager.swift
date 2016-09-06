@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum PTDownloadStatus {
+enum PTFileTransferStatus {
     case Downloading
     case Cancelled
     case Failed
@@ -70,13 +70,13 @@ class PTDownloadedFile: NSObject, NSCoding {
     }
 }
 
-class PTFileDownload: NSObject {
+class PTFileTransfer: NSObject {
     
     let file: PTMFile
     let subject: PTSubject
     var url: URL?
     var progress: Float = 0.0
-    var status: PTDownloadStatus = .Added
+    var status: PTFileTransferStatus = .Added
     var task: URLSessionDownloadTask?
     
     init(file: PTMFile, url: URL? = nil, subject: PTSubject) {
@@ -91,11 +91,11 @@ class PTFileDownload: NSObject {
 }
 
 protocol PTDownloadManagerDelegate {
-    func fileDownloadDidChangeStatus(_ download: PTFileDownload)
+    func fileTransferDidChangeStatus(_ transfer: PTFileTransfer)
 }
 
 extension PTDownloadManagerDelegate {
-    func fileDownloadDidChangeStatus(_ download: PTFileDownload) {}
+    func fileTransferDidChangeStatus(_ transfer: PTFileTransfer) {}
 }
 
 class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
@@ -106,13 +106,13 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         super.init()
     }
     
-    var queue: [PTFileDownload] = [] {
+    var queue: [PTFileTransfer] = [] {
         didSet {
             checkQueue()
         }
     }
     
-    var ongoingTasks: [URLSessionDownloadTask: PTFileDownload] = [:]
+    var ongoingTasks: [URLSessionDownloadTask: PTFileTransfer] = [:]
     
     var delegate: PTDownloadManagerDelegate? = nil
     
@@ -142,7 +142,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         let progress = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
         download.progress = Float(progress)
         
-        delegate?.fileDownloadDidChangeStatus(download)
+        delegate?.fileTransferDidChangeStatus(download)
     }
     
     
@@ -178,7 +178,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
             session.finishTasksAndInvalidate()
             
             download.status = .Failed
-            delegate?.fileDownloadDidChangeStatus(download)
+            delegate?.fileTransferDidChangeStatus(download)
             
             return
         }
@@ -211,7 +211,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         
         session.finishTasksAndInvalidate()
         
-        delegate?.fileDownloadDidChangeStatus(download)
+        delegate?.fileTransferDidChangeStatus(download)
     }
     
     
@@ -237,7 +237,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         
         session.finishTasksAndInvalidate()
         
-        delegate?.fileDownloadDidChangeStatus(download)
+        delegate?.fileTransferDidChangeStatus(download)
     }
     
     
@@ -286,7 +286,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         UserDefaults().setValue(NSKeyedArchiver.archivedData(withRootObject: downloadedFiles), forKey: "downloadedFiles")
     }
     
-    func enqueueFileDownload(file: PTMFile, subject: PTSubject) {
+    func enqueueForDownload(file: PTMFile, ofSubject subject: PTSubject) {
         
         for dwld in queue {
             if dwld.file.identifier == file.identifier {
@@ -294,44 +294,44 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
             }
         }
         
-        let dwld = PTFileDownload(file: file, subject: subject)
+        let dwld = PTFileTransfer(file: file, subject: subject)
         self.queue.append(dwld)
         
-        delegate?.fileDownloadDidChangeStatus(dwld)
+        delegate?.fileTransferDidChangeStatus(dwld)
     }
     
-    func resumeFileDownload(_ download: PTFileDownload) {
+    func resume(fileTransfer transfer: PTFileTransfer) {
         
-        download.task?.resume()
-        download.status = .Downloading
+        transfer.task?.resume()
+        transfer.status = .Downloading
         
-        delegate?.fileDownloadDidChangeStatus(download)
+        delegate?.fileTransferDidChangeStatus(transfer)
     }
     
-    func pauseFileDownload(_ download: PTFileDownload) {
+    func pause(fileTransfer transfer: PTFileTransfer) {
         
-        download.task?.suspend()
-        download.status = .Paused
+        transfer.task?.suspend()
+        transfer.status = .Paused
         
-        delegate?.fileDownloadDidChangeStatus(download)
+        delegate?.fileTransferDidChangeStatus(transfer)
         
         checkQueue()
     }
     
-    func retryFileDownload(_ download: PTFileDownload) {
+    func retry(fileTransfer transfer: PTFileTransfer) {
         
-        download.status = .Added
+        transfer.status = .Added
         checkQueue()
     }
     
-    func cancelFileDownload(_ download: PTFileDownload) {
+    func cancel(fileTransfer transfer: PTFileTransfer) {
         
-        if let task = download.task {
+        if let task = transfer.task {
             task.cancel()
             ongoingTasks.removeValue(forKey: task)
         }
         
-        if let index = queue.index(of: download) {
+        if let index = queue.index(of: transfer) {
             queue.remove(at: index)
         }
     }
@@ -340,65 +340,65 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     
     
     
-    private func requestURL(forDownload download: PTFileDownload) {
+    private func requestURL(forFileTransfer transfer: PTFileTransfer) {
         
-        download.status = .WaitingForURL
-        self.delegate?.fileDownloadDidChangeStatus(download)
+        transfer.status = .WaitingForURL
+        self.delegate?.fileTransferDidChangeStatus(transfer)
         
-        PTSession.shared.requestDownloadURL(forFile: download.file, completion: {
+        PTSession.shared.requestDownloadURL(forFile: transfer.file, completion: {
             url in
             
             OperationQueue.main.addOperation({
                 
-                download.url = url
-                download.status = (url == nil ? .Failed : .Ready)
+                transfer.url = url
+                transfer.status = (url == nil ? .Failed : .Ready)
                 
-                self.delegate?.fileDownloadDidChangeStatus(download)
+                self.delegate?.fileTransferDidChangeStatus(transfer)
                 
                 self.checkQueue()
             })
         })
     }
     
-    private func beginDownload(_ download: PTFileDownload) {
+    private func beginDownload(_ transfer: PTFileTransfer) {
         
-        guard let url = download.url else {
-            download.status = .Failed
-            delegate?.fileDownloadDidChangeStatus(download)
+        guard let url = transfer.url else {
+            transfer.status = .Failed
+            delegate?.fileTransferDidChangeStatus(transfer)
             return
         }
         
-        download.status = .Downloading
-        delegate?.fileDownloadDidChangeStatus(download)
+        transfer.status = .Downloading
+        delegate?.fileTransferDidChangeStatus(transfer)
         
-        let sessionConfig = URLSessionConfiguration.background(withIdentifier: "com.crapisarda.iPoliTO.\(download.file.identifier)")
+        let sessionConfig = URLSessionConfiguration.background(withIdentifier: "com.crapisarda.iPoliTO.\(transfer.file.identifier)")
         let session = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: OperationQueue.main)
         
         let downloadTask = session.downloadTask(with: url)
         
-        ongoingTasks[downloadTask] = download
-        download.task = downloadTask
+        ongoingTasks[downloadTask] = transfer
+        transfer.task = downloadTask
         
         downloadTask.resume()
     }
     
     private func checkQueue() {
         
-        for download in queue {
+        for transfer in queue {
             
             
             
-            if download.status == .Downloading {
+            if transfer.status == .Downloading {
                 break
             }
             
-            if download.status == .Ready {
-                beginDownload(download)
+            if transfer.status == .Ready {
+                beginDownload(transfer)
                 break
             }
             
-            if download.status == .Added {
-                requestURL(forDownload: download)
+            if transfer.status == .Added {
+                requestURL(forFileTransfer: transfer)
             }
         }
     }

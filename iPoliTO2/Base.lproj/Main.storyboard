@@ -214,7 +214,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PTDownloadCell_id" rowHeight="113" id="vCb-Ln-c6D" customClass="PTDownloadCell" customModule="iPoliTO2" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PTFileTransferCell_id" rowHeight="113" id="vCb-Ln-c6D" customClass="PTDownloadCell" customModule="iPoliTO2" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="375" height="113"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vCb-Ln-c6D" id="0JM-Ym-AIm">
@@ -285,7 +285,7 @@
                                     <outlet property="subjectNameLabel" destination="Str-Sh-fUJ" id="8Jb-dU-FUT"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PTArchivedFileCell_id" rowHeight="90" id="YSp-LP-IsR" customClass="PTArchivedFileCell" customModule="iPoliTO2" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PTDownloadedFileCell_id" rowHeight="90" id="YSp-LP-IsR" customClass="PTArchivedFileCell" customModule="iPoliTO2" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="205" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YSp-LP-IsR" id="bmt-rB-yfg">
@@ -754,18 +754,18 @@
                                         <rect key="frame" x="0.0" y="92" width="1000" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mau-HV-sJc" id="Oji-F4-ds2">
-                                            <frame key="frameInset" width="375" height="43"/>
+                                            <frame key="frameInset" width="1000" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MAY-At-tqF">
-                                                    <frame key="frameInset" minX="15" minY="4" width="34" height="21"/>
+                                                    <frame key="frameInset" minX="164" minY="5" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fdl-9d-a62">
-                                                    <frame key="frameInset" minX="15" minY="25" width="44" height="15"/>
+                                                    <frame key="frameInset" minX="164" minY="25.5" width="44" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
