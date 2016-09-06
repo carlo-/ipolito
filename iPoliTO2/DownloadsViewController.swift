@@ -17,7 +17,9 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
     var transfersQueue: [PTFileTransfer] {
         return downloadManager.queue
     }
-    var downloadedFiles: [PTDownloadedFile] = []
+    var downloadedFiles: [PTDownloadedFile] {
+        return downloadManager.downloadedFiles
+    }
     var documentInteractionController: UIDocumentInteractionController?
     
     
@@ -26,34 +28,14 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         
         downloadManager.delegate = self
         
-        synchronizeDownloadedFiles()
-        
         // Removes annoying row separators after the last cell
         tableView.tableFooterView = UIView()
-    }
-    
-    func synchronizeDownloadedFiles() {
-        
-        UserDefaults().synchronize()
-        
-        if let data = UserDefaults().value(forKey: "downloadedFiles") as? Data {
-            
-            let downloadedFiles = NSKeyedUnarchiver.unarchiveObject(with: data) as! [PTDownloadedFile]
-            
-            self.downloadedFiles = downloadedFiles.sorted(by: {
-                (fileA, fileB) in
-                return fileA.downloadDate.compare(fileB.downloadDate) == .orderedDescending
-            })
-        } else {
-            self.downloadedFiles = []
-        }
     }
     
     func fileTransferDidChangeStatus(_ transfer: PTFileTransfer) {
         
         if transfer.status == .Completed {
             
-            synchronizeDownloadedFiles()
             tableView.reloadData()
             return
         }
@@ -168,8 +150,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
                 
                 tableView.beginUpdates()
                 
-                self.downloadManager.removeDownloadedFile(atPath: file.path)
-                self.synchronizeDownloadedFiles()
+                self.downloadManager.delete(downloadedFile: file)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 
                 tableView.endUpdates()
