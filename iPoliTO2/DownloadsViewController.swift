@@ -207,7 +207,9 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             }
             
         } else {
-            
+            // FIXME: use relative path instead of absolute!
+            // Otherwise files downloaded in a previous session will result in a different path
+            // and therefore will be considered invalid by the documentInteractionController!
             let downloadedFile = downloadedFiles[indexPath.row]
             
             documentInteractionController = UIDocumentInteractionController()
