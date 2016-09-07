@@ -8,6 +8,13 @@
 
 import UIKit
 
+enum ControllerIndex: Int {
+    case home = 0
+    case subjects = 1
+    case career = 2
+    case map = 3
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
 
@@ -17,35 +24,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     }
     
     var homeVC: HomeViewController? {
-        
-        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
-        let navCtrl = tabbarCtrl?.viewControllers?[0] as? UINavigationController
-        
-        return navCtrl?.viewControllers.first as? HomeViewController
+        return getController(.home)     as? HomeViewController
     }
-    
     var subjectsRootVC: SubjectsViewController? {
-        
-        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
-        let navCtrl = tabbarCtrl?.viewControllers?[1] as? UINavigationController
-        
-        return navCtrl?.viewControllers.first as? SubjectsViewController
+        return getController(.subjects) as? SubjectsViewController
     }
-    
     var careerVC: CareerViewController? {
-        
-        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
-        let navCtrl = tabbarCtrl?.viewControllers?[2] as? UINavigationController
-        
-        return navCtrl?.viewControllers.first as? CareerViewController
+        return getController(.career)   as? CareerViewController
     }
-    
     var mapVC: MapViewController? {
-        
-        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
-        let navCtrl = tabbarCtrl?.viewControllers?[3] as? UINavigationController
-        
-        return navCtrl?.viewControllers.first as? MapViewController
+        return getController(.map)      as? MapViewController
     }
     
 
@@ -75,11 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     func showMapViewController(withHighlightedRoom room: PTRoom? = nil) {
         
         mapVC?.shouldFocus(onRoom: room)
-        
-        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
-        
-        // TODO: Write this in a cleaner way!
-        tabbarCtrl?.selectedIndex = 3
+        selectController(.map)
     }
 
     func sessionDidFinishOpening() {
@@ -169,10 +153,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     func performLogout() {
         
         // Move to HomeVC
-        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
-        tabbarCtrl?.selectedIndex = 0
+        selectController(.home)
         
         session?.close()
+    }
+    
+    func selectController(_ index: ControllerIndex) {
+        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
+        tabbarCtrl?.selectedIndex = index.rawValue
+    }
+    
+    func getController(_ index: ControllerIndex) -> UIViewController? {
+        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
+        let navCtrl = tabbarCtrl?.viewControllers?[index.rawValue] as? UINavigationController
+        
+        return navCtrl?.viewControllers.first
     }
 
     func sessionDidFinishClosing() {
