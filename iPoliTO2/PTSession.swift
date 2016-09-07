@@ -100,9 +100,9 @@ class PTSession: NSObject {
         
         OperationQueue().addOperation({
             
-            if let cachedToken = self.cachedToken() {
+            if let storedToken = self.storedToken() {
                 
-                self.sessionStep2(token: cachedToken)
+                self.sessionStep2(token: storedToken)
                 
             } else {
                 
@@ -331,8 +331,9 @@ class PTSession: NSObject {
                     self.token = token
                     self.status = .Authenticated
                     
-                    // Confirm token and account, and update cache
-                    // [...]
+                    // Confirm token and account
+                    PTKeychain.storeAccount(self.account!)
+                    PTKeychain.storeValue(token, ofType: .token)
                     
                     self.delegate?.sessionDidFinishOpening()
                 })
@@ -340,12 +341,9 @@ class PTSession: NSObject {
         })
     }
     
-    private func cachedToken() -> String? {
+    private func storedToken() -> String? {
         
-        // Must also check if it's compatible with this account
-        
-        // [...]
-        return nil
+        return PTKeychain.retrieveValue(ofType: .token)
     }
     
     private func forgetToken() {

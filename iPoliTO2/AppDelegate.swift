@@ -178,7 +178,6 @@ private func storedAccount() -> PTAccount? {
         return kDebugForcingCredentials
     }
     
-    // TODO: Must use the user's account!
-    return nil
+    return PTKeychain.retrieveAccount()
 }
 

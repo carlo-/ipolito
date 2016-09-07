@@ -10,6 +10,8 @@
 		232D44211D6BB69800BFA8A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232D44201D6BB69800BFA8A6 /* Constants.swift */; };
 		232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8311D4CD7340001C99C /* AppDelegate.swift */; };
 		232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */; };
+		2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */; };
+		2372F1DB1D7F8F1D00DBC708 /* PTKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2372F1DA1D7F8F1D00DBC708 /* PTKeychain.swift */; };
 		2399D8361D4CD7340001C99C /* SubjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8351D4CD7340001C99C /* SubjectsViewController.swift */; };
 		2399D8391D4CD7340001C99C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2399D8371D4CD7340001C99C /* Main.storyboard */; };
 		2399D83B1D4CD7340001C99C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2399D83A1D4CD7340001C99C /* Assets.xcassets */; };
@@ -40,6 +42,10 @@
 /* Begin PBXFileReference section */
 		232D44201D6BB69800BFA8A6 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		2372F1D71D7F8CD200DBC708 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
+		2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
+		2372F1DA1D7F8F1D00DBC708 /* PTKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTKeychain.swift; sourceTree = "<group>"; };
+		2372F1DC1D7F968100DBC708 /* iPoliTO2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iPoliTO2-Bridging-Header.h"; sourceTree = "<group>"; };
 		2399D82E1D4CD7340001C99C /* iPoliTO2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPoliTO2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2399D8311D4CD7340001C99C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2399D8351D4CD7340001C99C /* SubjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectsViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +161,7 @@
 				2399D8471D4CDA990001C99C /* PTRequest.swift */,
 				2399D8481D4CDA990001C99C /* PTTypes.swift */,
 				23B67D511D534AD5009CB44B /* PTDownloadManager.swift */,
+				2372F1DA1D7F8F1D00DBC708 /* PTKeychain.swift */,
 				2399D84D1D4CDC8A0001C99C /* Utilities.swift */,
 			);
 			name = Modules;
@@ -163,6 +170,7 @@
 		23FD09771D77405900ABD65E /* Additional Files */ = {
 			isa = PBXGroup;
 			children = (
+				2372F1DC1D7F968100DBC708 /* iPoliTO2-Bridging-Header.h */,
 				2399D83A1D4CD7340001C99C /* Assets.xcassets */,
 				2399D83C1D4CD7340001C99C /* LaunchScreen.storyboard */,
 				2399D83F1D4CD7340001C99C /* Info.plist */,
@@ -185,6 +193,8 @@
 		23FD09791D7749AC00ABD65E /* Third-Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				2372F1D71D7F8CD200DBC708 /* KeychainWrapper.h */,
+				2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */,
 				23FD097A1D7749AC00ABD65E /* ScrollableGraphView.swift */,
 			);
 			path = "Third-Party Libraries";
@@ -298,6 +308,7 @@
 				2399D86F1D4D00C10001C99C /* MyCredentials.swift in Sources */,
 				232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */,
 				239CCE221D6F926200BDF6E7 /* PTLectureView.swift in Sources */,
+				2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */,
 				2399D8541D4CEDDB0001C99C /* SettingsViewController.swift in Sources */,
 				232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */,
 				2399D84C1D4CDA990001C99C /* PTTypes.swift in Sources */,
@@ -305,6 +316,7 @@
 				23FD096F1D773BF400ABD65E /* PTSubjectsCells.swift in Sources */,
 				2399D8521D4CEDC40001C99C /* MapViewController.swift in Sources */,
 				2399D84B1D4CDA990001C99C /* PTRequest.swift in Sources */,
+				2372F1DB1D7F8F1D00DBC708 /* PTKeychain.swift in Sources */,
 				2399D8491D4CDA990001C99C /* PTParser.swift in Sources */,
 				239CCE201D6F906200BDF6E7 /* CRRoundedCell.swift in Sources */,
 				2399D84E1D4CDC8A0001C99C /* Utilities.swift in Sources */,
@@ -428,10 +440,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = iPoliTO2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.crapisarda.iPoliTO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iPoliTO2/iPoliTO2-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -440,10 +455,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = iPoliTO2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.crapisarda.iPoliTO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iPoliTO2/iPoliTO2-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
