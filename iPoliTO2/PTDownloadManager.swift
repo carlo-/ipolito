@@ -302,6 +302,21 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         }
     }
     
+    class func clearDownloadsFolder() {
+        
+        let fileManager = FileManager.default
+        let docsFolderPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        do {
+            let filePaths = try fileManager.contentsOfDirectory(atPath: docsFolderPath)
+            for filePath in filePaths {
+                let fullPath = (docsFolderPath as NSString).appendingPathComponent(filePath)
+                try fileManager.removeItem(atPath: fullPath)
+            }
+        } catch {
+            print("Could not clear temp folder: \(error)")
+        }
+    }
+    
     
     
     // MARK: Other methods

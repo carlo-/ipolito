@@ -164,7 +164,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
             subjectsRootVC?.navigationItem.titleView = nil
         }
     }
+    
+    
+    func performLogout() {
+        
+        // Move to HomeVC
+        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
+        tabbarCtrl?.selectedIndex = 0
+        
+        session?.close()
+    }
 
+    func sessionDidFinishClosing() {
+        presentSignInViewController()
+    }
+    
+    func sessionDidFailClosingWithError(error: PTRequestError) {
+        let alert = UIAlertController(title: ~"Oops!", message: ~"Could not logout at this time!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: ~"Dismiss", style: .cancel, handler: nil))
+        window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
 }
 
 

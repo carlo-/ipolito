@@ -131,5 +131,8 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     
     func performLogout() {
         
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.performLogout()
+        }
     }
 }

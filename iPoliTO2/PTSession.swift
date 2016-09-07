@@ -85,7 +85,23 @@ class PTSession: NSObject {
         }
     }()
     
-    static let shared = PTSession()
+    // static let shared = PTSession()
+    
+    private static var privateShared: PTSession?
+    
+    static var shared: PTSession {
+        
+        if let sharedInstance = privateShared {
+            return sharedInstance
+        } else {
+            privateShared = PTSession()
+            return privateShared!
+        }
+    }
+    
+    class func reset() {
+        privateShared = nil
+    }
     
     private override init() {
         super.init()
@@ -130,7 +146,7 @@ class PTSession: NSObject {
                         self.delegate?.sessionDidFailClosingWithError(error: error!)
                     } else {
                         
-                        self.forgetToken()
+                        self.forgetSessionData()
                         self.delegate?.sessionDidFinishClosing()
                     }
                     
@@ -346,7 +362,15 @@ class PTSession: NSObject {
         return PTKeychain.retrieveValue(ofType: .token)
     }
     
-    private func forgetToken() {
-        // [...]
+    private func forgetSessionData() {
+        
+        PTKeychain.removeAllValues()
+        PTDownloadManager.clearDownloadsFolder()
+        
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            UserDefaults().removePersistentDomain(forName: bundleIdentifier)
+        }
+        
+        PTSession.reset()
     }
 }
