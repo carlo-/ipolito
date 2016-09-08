@@ -501,9 +501,8 @@ public struct PTAccount {
             
             if digits.contains(char) {
                 
-                // FIXME: Append char instead of its description
-                // (not possible with the latest Swift version for some reason)
-                clean.append(char.description)
+                // append(c: Character) not available anymore for some reason
+                clean += String(char)
             }
         }
         

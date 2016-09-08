@@ -50,9 +50,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
                     
                     if digits.contains(char) {
                         
-                        // FIXME: Append char instead of its description
-                        // (not possible with the latest Swift version for some reason)
-                        newText.append(char.description)
+                        // append(c: Character) not available anymore for some reason
+                        newText += String(char)
                     }
                 }
             }

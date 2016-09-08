@@ -67,7 +67,10 @@ class PTSession: NSObject {
     lazy var registeredID: String = {
         
         guard let uuid = UIDevice.current.identifierForVendor?.uuidString else {
-            // FIXME: What to do in this case?
+            // FIX/ME: What to do in this case?
+            // This should never happen to us, but just in case, returning an empty string
+            // should result in a 'bad request' response from the server, and the
+            // app will present an 'unknown error' alert to the user.
             return ""
         }
         
