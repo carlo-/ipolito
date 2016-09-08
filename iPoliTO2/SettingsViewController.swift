@@ -131,6 +131,8 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     
     func performLogout() {
         
+        performSegue(withIdentifier: "unwindFromSettings_id", sender: self)
+        
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             appDelegate.performLogout()
         }

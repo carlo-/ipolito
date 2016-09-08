@@ -996,9 +996,11 @@ Version: 2.0β (1999)</string>
                     <connections>
                         <outlet property="nameLabel" destination="2ts-Pc-Ffz" id="bwJ-hE-HWi"/>
                         <outlet property="usernameLabel" destination="Wrt-k6-M7r" id="HKo-ls-Pdv"/>
+                        <segue destination="lFI-7P-NJU" kind="unwind" identifier="unwindFromSettings_id" unwindAction="unwindFromSettings:" id="FKQ-zP-a1F"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RPJ-VP-hZ6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="lFI-7P-NJU" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2196" y="-348"/>
         </scene>

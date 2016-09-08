@@ -73,6 +73,9 @@ class HomeViewController: UITableViewController {
         
     }
     
+    // Required to unwind from settings programmatically
+    @IBAction func unwindFromSettings(_ segue: UIStoryboardSegue) {}
+    
     
     
     // MARK: TableView Methods

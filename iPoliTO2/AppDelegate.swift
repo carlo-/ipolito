@@ -151,10 +151,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     
     
     func performLogout() {
-        
-        // Move to HomeVC
-        selectController(.home)
-        
         session?.close()
     }
     
