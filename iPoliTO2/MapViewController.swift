@@ -185,10 +185,13 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         guard timePicker == nil else { return }
         
+        searchBar.isUserInteractionEnabled = false
+        // searchController.isActive = false
+        
         navigationItem.rightBarButtonItem = confirmTimePickerButton()
         navigationItem.leftBarButtonItem = dismissTimePickerButton()
         
-        let pickerFrame = CGRect(x: 0, y: searchResultsTable.frame.origin.y+64, width: view.frame.width, height: 50+60)
+        let pickerFrame = CGRect(x: 0, y: searchResultsTable.frame.origin.y+64, width: view.frame.width, height: 50+44)
         
         timePicker = CRTimePicker(frame: pickerFrame.offsetBy(dx: view.frame.width, dy: 0), date: freeRoomsLoadedDate)
         guard let timePicker = timePicker else { return }
@@ -200,6 +203,8 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         UIView.animate(withDuration: 0.25, animations: {
             timePicker.frame = pickerFrame
+            }, completion: { complete in
+            self.searchController.isActive = false
         })
     }
     
@@ -218,6 +223,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
                 
                 timePicker.removeFromSuperview()
                 self.timePicker = nil
+                self.searchBar.isUserInteractionEnabled = true
         })
     }
     

@@ -104,7 +104,7 @@ class CRTimePicker: UIView, UIScrollViewDelegate {
         
         // Subtitle
         
-        subtitleLabel = UILabel(frame: CGRect(x: 0, y: scrollViewFrame.origin.y+scrollViewFrame.height+5, width: rect.width, height: 20))
+        subtitleLabel = UILabel(frame: CGRect(x: 0, y: scrollViewFrame.origin.y+scrollViewFrame.height, width: rect.width, height: 20))
         guard let subtitleLabel = subtitleLabel else { return }
         
         subtitleLabel.textColor = tintColor // UIColor.white()
@@ -155,8 +155,10 @@ class CRTimePicker: UIView, UIScrollViewDelegate {
     private func updateSubtitleLabel() {
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
         formatter.timeZone = TimeZone.Turin
+        formatter.locale = Locale(identifier: "it-IT")
         
         let selection = currentSelection()
         subtitleLabel?.text = ~"Looking up free rooms at"+" "+formatter.string(from: selection)
@@ -290,17 +292,30 @@ private class CRTimePickerContentView: UIView {
             
             let xpos = intervalWidth * (0.5 + CGFloat(i))
             
-            
             let hour = i/2
-            let hourStr = hour > 9 ? "\(hour)" : "0\(hour)"
+            let minute = i%2 == 0 ? 0 : 30
+            let timeLabelWidth = intervalWidth-16
             
-            let minuteStr = i%2 == 0 ? "00" : "30"
+            
+            var cal = Calendar(identifier: .gregorian)
+            cal.timeZone = TimeZone.Turin
+            
+            let date = cal.date(bySettingHour: hour, minute: minute, second: 0, of: Date())!
             
             
-            let timeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
-            timeLabel.text = hourStr+":"+minuteStr
-            timeLabel.textColor = tintColor // UIColor.white()
-            timeLabel.sizeToFit()
+            let formatter = DateFormatter()
+            formatter.timeZone = TimeZone.Turin
+            formatter.dateStyle = .none
+            formatter.timeStyle = .short
+            formatter.locale = Locale(identifier: "it-IT")
+            
+            let timeStr = formatter.string(from: date)
+            
+            
+            let timeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: timeLabelWidth, height: 20))
+            timeLabel.text = timeStr
+            timeLabel.textColor = tintColor
+            timeLabel.adjustsFontSizeToFitWidth = true
             timeLabel.center = CGPoint(x: xpos, y: rect.height/2)
             
             addSubview(timeLabel)
@@ -311,7 +326,7 @@ private class CRTimePickerContentView: UIView {
             separator.addLine(to: CGPoint(x: xpos, y: (rect.height-timeLabel.frame.height)/2 - 5))
             separator.lineWidth = 1
             
-            /*UIColor.white()*/ tintColor.setStroke()
+            tintColor.setStroke()
             separator.stroke()
         }
     }
