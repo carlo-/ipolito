@@ -2,7 +2,7 @@
 ##### v2.0-beta
 ![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg) ![Swift Version](https://img.shields.io/badge/swift-3.0-orange.svg) ![License](https://img.shields.io/badge/license-GPL-blue.svg)
 
-iPoliTO is a simple iOS app for the students of Politecnico di Torino. It is currently available on the App Store [here](https://itunes.apple.com/app/id1069740093).
+iPoliTO is an [unofficial](#disclaimer) iOS app for the students of Politecnico di Torino. It is currently available on the App Store [here](https://itunes.apple.com/app/id1069740093).
 
 ## Setup
 
@@ -34,3 +34,9 @@ iPoliTO is released under the GPL license. See `LICENSE.txt` for more informatio
 The following dependencies are bundled with iPoliTO, but are under terms of a separate license:
 * [Scrollable-GraphView](https://github.com/philackm/Scrollable-GraphView) by [philackm](https://github.com/philackm)
 * [KeychainWrapper](http://www.raywenderlich.com/wp-content/uploads/2014/12/KeychainWrapper.zip) modified version by Tim Mitra, originally from [Apple](https://developer.apple.com/library/ios/samplecode/GenericKeychain/Listings/Classes_KeychainItemWrapper_m.html#//apple_ref/doc/uid/DTS40007797-Classes_KeychainItemWrapper_m-DontLinkElementID_10)
+
+## Disclaimer
+
+iPoliTO is an **independent** project. The app was first published on Jan. 6th 2016 to address the lack of an iOS app for the students of Politecnico di Torino; however, since April 7th 2016, the official app has been available and can be downloaded from the [App Store](https://itunes.apple.com/app/id1087287751).
+
+As the developer of iPoliTO, I'm not affiliated with Politecnico di Torino nor with those who manage the content of the students' personal pages. While care has been taken to ensure accuracy, **no guarantee** is given that the material displayed by the app is free from error or omission.
