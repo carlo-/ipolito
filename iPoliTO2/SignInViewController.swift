@@ -64,13 +64,31 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
             }
         }
         
+        signinButton.isEnabled = fieldsAreValid()
+    }
+    
+    func fieldsAreValid() -> Bool {
+        
         guard let matricola = matricolaField.text, let password = passwordField.text else {
-            signinButton.isEnabled = false
-            return
+            return false
         }
         
-        signinButton.isEnabled = !(matricola.isEmpty) && !(password.isEmpty)
+        return !(matricola.isEmpty) && !(password.isEmpty)
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if fieldsAreValid() {
+            adjustUIforLoading()
+            signIn()
+        } else {
+            matricolaField.becomeFirstResponder()
+        }
+        
+        return false
+    }
+    
+    
     
     func adjustUIforLoading(isLoading loading: Bool = true) {
         

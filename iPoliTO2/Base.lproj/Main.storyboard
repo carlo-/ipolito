@@ -412,7 +412,7 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mhw-aM-i4i">
                                                     <constraints>
-                                                        <constraint firstAttribute="height" priority="750" constant="40" id="404-jX-WVq"/>
+                                                        <constraint firstAttribute="height" priority="751" constant="40" id="404-jX-WVq"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="ArZ-jT-arm">
@@ -425,7 +425,7 @@
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y4A-6f-L8P">
                                                     <constraints>
-                                                        <constraint firstAttribute="height" priority="750" constant="15" id="M26-Yd-yUZ"/>
+                                                        <constraint firstAttribute="height" priority="751" constant="15" id="M26-Yd-yUZ"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXP-N4-gE4">
@@ -433,7 +433,7 @@
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Matricola" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4HK-ot-uHA">
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" enablesReturnKeyAutomatically="YES"/>
+                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                             <connections>
                                                                 <outlet property="delegate" destination="Oc4-oP-QDZ" id="EVW-M9-e5e"/>
                                                             </connections>
@@ -497,12 +497,12 @@
                                                     <constraints>
                                                         <constraint firstItem="ura-m8-WVP" firstAttribute="centerY" secondItem="meG-Hh-D5E" secondAttribute="centerY" id="1vD-Lp-u3R"/>
                                                         <constraint firstItem="ura-m8-WVP" firstAttribute="centerX" secondItem="meG-Hh-D5E" secondAttribute="centerX" id="Vno-y2-0Kp"/>
-                                                        <constraint firstAttribute="height" priority="750" constant="40" id="jd3-Cf-wE9"/>
+                                                        <constraint firstAttribute="height" priority="751" constant="40" id="jd3-Cf-wE9"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing in I accept the terms and conditions" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSJ-jW-M41">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="iPoliTO does not collect any data about you or this device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSJ-jW-M41">
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="18" id="Ty7-vk-CtM"/>
+                                                        <constraint firstAttribute="height" priority="750" constant="18" id="Ty7-vk-CtM"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -529,6 +529,7 @@
                             <constraint firstItem="VGB-DJ-Fpe" firstAttribute="height" secondItem="wGG-go-SUw" secondAttribute="height" id="u8F-Mj-WHP"/>
                         </constraints>
                     </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="activityIndicatorView" destination="meG-Hh-D5E" id="RkT-TS-pmH"/>
                         <outlet property="matricolaField" destination="4HK-ot-uHA" id="f0h-Gq-qhc"/>
@@ -754,18 +755,18 @@
                                         <rect key="frame" x="0.0" y="92" width="1000" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mau-HV-sJc" id="Oji-F4-ds2">
-                                            <frame key="frameInset" width="1000" height="43.5"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MAY-At-tqF">
-                                                    <frame key="frameInset" minX="164" minY="5" width="33.5" height="20.5"/>
+                                                    <frame key="frameInset" minX="15" minY="4" width="34" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fdl-9d-a62">
-                                                    <frame key="frameInset" minX="164" minY="25.5" width="44" height="14.5"/>
+                                                    <frame key="frameInset" minX="15" minY="25" width="44" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
