@@ -43,21 +43,21 @@ enum PTFileTransferStatus {
 
 class PTDownloadedFile: NSObject, NSCoding {
     
-    let path: String
+    let fileName: String
     let fileDescription: String
     let subjectName: String
     let downloadDate: Date
     
-    init(path: String, description: String, subjectName: String, downloadDate: Date) {
+    init(fileName: String, description: String, subjectName: String, downloadDate: Date) {
         
-        self.path = path
+        self.fileName = fileName
         self.fileDescription = description
         self.subjectName = subjectName
         self.downloadDate = downloadDate
     }
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(path, forKey: "path")
+        aCoder.encode(fileName, forKey: "fileName")
         aCoder.encode(fileDescription, forKey: "fileDescription")
         aCoder.encode(subjectName, forKey: "subjectName")
         aCoder.encode(downloadDate, forKey: "downloadDate")
@@ -65,7 +65,7 @@ class PTDownloadedFile: NSObject, NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
         
-        self.path = aDecoder.decodeObject(forKey: "path") as! String
+        self.fileName = aDecoder.decodeObject(forKey: "fileName") as! String
         self.fileDescription = aDecoder.decodeObject(forKey: "fileDescription") as! String
         self.subjectName = aDecoder.decodeObject(forKey: "subjectName") as! String
         self.downloadDate = aDecoder.decodeObject(forKey: "downloadDate") as! Date
@@ -111,6 +111,14 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         didSet {
             checkQueue()
         }
+    }
+    
+    var documentsFolderPath: String {
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+    }
+    
+    var downloadsFolderPath: String {
+        return (documentsFolderPath as NSString).appendingPathComponent("Downloads")
     }
     
     private override init() {
@@ -239,21 +247,19 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     
     // MARK: Downloaded files managing methods
     
-    func delete(downloadedFileAtPath path: String) {
+    func delete(downloadedFileNamed fileName: String) {
         
         synchronizeDownloadedFiles()
         
-        let fileManager = FileManager()
-        
-        if fileManager.fileExists(atPath: path) {
+        if let path = absolutePath(forDownloadedFileNamed: fileName, checkValidity: true) {
             
             do {
-                try fileManager.removeItem(atPath: path)
+                try FileManager().removeItem(atPath: path)
             } catch _ {}
         }
         
         let filesToRemove = downloadedFiles.filter({ file in
-            return file.path == path
+            return file.fileName == fileName
         })
         
         for file in filesToRemove {
@@ -271,8 +277,8 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     
     func delete(downloadedFile: PTDownloadedFile) {
         
-        let path = downloadedFile.path
-        delete(downloadedFileAtPath: path)
+        let fileName = downloadedFile.fileName
+        delete(downloadedFileNamed: fileName)
     }
     
     private func add(downloadedFile: PTDownloadedFile) {
@@ -302,34 +308,55 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         }
     }
     
+    private func createDownloadsFolderIfNecessary() {
+        
+        let fileManager = FileManager()
+        let path = downloadsFolderPath
+        
+        var isDir: ObjCBool = false
+        if fileManager.fileExists(atPath: path, isDirectory: &isDir) {
+            if isDir.boolValue { return }
+        }
+        
+        do {
+            try fileManager.createDirectory(atPath: path, withIntermediateDirectories: false, attributes: nil)
+        } catch _ {}
+    }
+    
     class func clearDownloadsFolder() {
         
-        let fileManager = FileManager.default
-        let docsFolderPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        let path = PTDownloadManager().downloadsFolderPath
+        
         do {
-            let filePaths = try fileManager.contentsOfDirectory(atPath: docsFolderPath)
-            for filePath in filePaths {
-                let fullPath = (docsFolderPath as NSString).appendingPathComponent(filePath)
-                try fileManager.removeItem(atPath: fullPath)
-            }
-        } catch {
-            print("Could not clear temp folder: \(error)")
-        }
+            try FileManager().removeItem(atPath: path)
+        } catch _ {}
+        
+        UserDefaults().setValue(nil, forKey: downloadedFilesArchiveKey)
     }
     
     
     
     // MARK: Other methods
     
+    /// Checks whether or not a file with the same name is already in the downloads folder
     func needsToOverwrite(byDownloadingFile file: PTMFile) -> Bool {
         
-        guard let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-            else { return false }
-        
         let fileName = file.name.replacingOccurrences(of: " ", with: "-")
-        let filePath = documentsPath+"/"+fileName
+        return absolutePath(forDownloadedFileNamed: fileName, checkValidity: true) != nil
+    }
+    
+    /// Returns the absolute path for the specified fileName in the downloads folder.
+    func absolutePath(forDownloadedFileNamed fileName: String, checkValidity: Bool) -> String? {
         
-        return FileManager().fileExists(atPath: filePath)
+        let path = (downloadsFolderPath as NSString).appendingPathComponent(fileName)
+        
+        var isValid = true
+        
+        if checkValidity {
+            isValid = FileManager().fileExists(atPath: path)
+        }
+        
+        return isValid ? path : nil
     }
     
     
@@ -350,48 +377,59 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
-        guard let transfer = ongoingTasks[downloadTask],
-            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-            else { return }
+        // Gets the current transfer
+        guard let transfer = ongoingTasks[downloadTask] else { return }
         
-        let tempPath = location.path
-        
+        // Updates its status
         transfer.status = .Completed
         
+        // Removes its task from the list of ongoing tasks
         ongoingTasks.removeValue(forKey: downloadTask)
         
-        
+        // Removes whitespace from the filename
         let fileName = transfer.file.name.replacingOccurrences(of: " ", with: "-")
         
-        let filePath = documentsPath+"/"+fileName
+        // Deletes any file with the same name
+        delete(downloadedFileNamed: fileName)
         
-        let fileManager = FileManager()
+        // Makes sure there's a download folder ready
+        createDownloadsFolderIfNecessary()
         
-        delete(downloadedFileAtPath: filePath)
+        let tempPath = location.path
+        let finalPath = absolutePath(forDownloadedFileNamed: fileName, checkValidity: false)!
         
+        // Tries to move the new file to its final destination
         do {
-            try fileManager.moveItem(atPath: tempPath, toPath: filePath)
+            try FileManager().moveItem(atPath: tempPath, toPath: finalPath)
         } catch _ {
             
+            // In case moving the file fails (should never happen)
+            
+            // Invalidates the task and marks the transfer as failed
             session.finishTasksAndInvalidate()
             transfer.status = .Failed
             delegate?.fileTransferDidChangeStatus(transfer)
             return
         }
         
-        let downloadedFile = PTDownloadedFile(path: filePath,
+        // Creates a new PTDownloadedFile object
+        let downloadedFile = PTDownloadedFile(fileName: fileName,
                                               description: transfer.file.description,
                                               subjectName: transfer.subject.name,
                                               downloadDate: Date())
         
+        // Archives the PTDownloadedFile object and stores it in UD
         add(downloadedFile: downloadedFile)
         
+        // Removes the transfer from the download queue
         if let index = queue.index(of: transfer) {
             queue.remove(at: index)
         }
         
+        // Marks the task as completed
         session.finishTasksAndInvalidate()
         
+        // Notifies the delegate: transfer is completed
         delegate?.fileTransferDidChangeStatus(transfer)
     }
     

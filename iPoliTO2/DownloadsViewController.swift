@@ -207,16 +207,37 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             }
             
         } else {
-            // FIXME: use relative path instead of absolute!
-            // Otherwise files downloaded in a previous session will result in a different path
-            // and therefore will be considered invalid by the documentInteractionController!
+            
             let downloadedFile = downloadedFiles[indexPath.row]
+            let fileName = downloadedFile.fileName
             
-            documentInteractionController = UIDocumentInteractionController()
-            documentInteractionController?.url = URL(fileURLWithPath: downloadedFile.path)
-            documentInteractionController?.uti = "public.filename-extension"
-            
-            documentInteractionController?.presentOpenInMenu(from: view.bounds, in: view, animated: true)
+            if let path = downloadManager.absolutePath(forDownloadedFileNamed: fileName, checkValidity: true) {
+                
+                documentInteractionController = UIDocumentInteractionController()
+                documentInteractionController?.url = URL(fileURLWithPath: path)
+                documentInteractionController?.uti = "public.filename-extension"
+                
+                documentInteractionController?.presentOpenInMenu(from: view.bounds, in: view, animated: true)
+                
+            } else {
+                
+                // File does not exist!
+                
+                let alert = UIAlertController(title: ~"Oops!", message: ~"This file appears to be damaged! Try to download it again.", preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: ~"Dismiss", style: .default, handler: {
+                    action in
+                    
+                    tableView.beginUpdates()
+                    
+                    self.downloadManager.delete(downloadedFileNamed: fileName)
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                    
+                    tableView.endUpdates()
+                }))
+                
+                present(alert, animated: true, completion: nil)
+            }
         }
     }
     
