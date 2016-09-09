@@ -14,43 +14,11 @@ class PTSubjectCell: UITableViewCell {
     
     static let identifier = "PTSubjectCell_id"
     static let height = 70 as CGFloat
-    static let expandedHeight = 120 as CGFloat
     
     @IBOutlet var mainLabel: UILabel!
     @IBOutlet var creditsLabel: UILabel!
-    @IBOutlet var messagesButton: UIButton!
-    @IBOutlet var documentsButton: UIButton!
-    
-    private func setMessagesBadge(badge: String) {
-        
-        let title = ~"Messages"+" (\(badge))"
-        
-        messagesButton.setTitle(title, for: UIControlState())
-    }
-    
-    private func setDocumentsBadge(badge: String) {
-        
-        let title = ~"Documents"+" (\(badge))"
-        
-        documentsButton.setTitle(title, for: UIControlState())
-    }
     
     func setSubject(_ subject: PTSubject, andData data: PTSubjectData?) {
-        
-        var nmessages: Int = 0
-        var ndocuments: Int = 0
-        
-        if let data = data {
-            
-            nmessages = data.messages.count
-            ndocuments = data.numberOfFiles
-        }
-        
-        setMessagesBadge(badge: "\(nmessages)")
-        setDocumentsBadge(badge: "\(ndocuments)")
-        
-        messagesButton.isEnabled = nmessages > 0
-        documentsButton.isEnabled = ndocuments > 0
         
         mainLabel.text = subject.name
         creditsLabel.text = "\(subject.credits)"

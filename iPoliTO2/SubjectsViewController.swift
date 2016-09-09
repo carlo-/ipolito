@@ -24,8 +24,6 @@ class SubjectsViewController: UITableViewController {
     }
     var rootTable: SubjectsViewController?
     
-    var expandedIndexPath: IndexPath?
-    
     var subject: PTSubject? = nil
 
     
@@ -156,26 +154,53 @@ class SubjectsViewController: UITableViewController {
         self.navigationController?.pushViewController(childController, animated: true)
     }
     
-    func messagesButtonPressed(sender: UIButton)  {
-        let touchPoint: CGPoint = sender.convert(CGPoint.zero, to: self.tableView)
-        let indexPath = self.tableView.indexPathForRow(at: touchPoint)!
+    func presentOptions(forSubject subject: PTSubject, withData data: PTSubjectData?) {
         
-        if let subject = content[indexPath.row] as? PTSubject {
-            
-            showMessages(forSubject: subject)
-        }
-    }
-    
-    func documentsButtonPressed(sender: UIButton)  {
-        let touchPoint: CGPoint = sender.convert(CGPoint.zero, to: self.tableView)
-        let indexPath = self.tableView.indexPathForRow(at: touchPoint)!
+        let alertController: UIAlertController
         
-        if let subject = content[indexPath.row] as? PTSubject {
+        if let data = data {
             
-            showDocuments(forSubject: subject)
+            let nmessages = data.messages.count
+            let ndocuments = data.numberOfFiles
+            
+            if nmessages > 0 || ndocuments > 0 {
+                
+                alertController = UIAlertController(title: subject.name, message: nil, preferredStyle: .actionSheet)
+                
+                if nmessages > 0 {
+                    let messagesTitle = ~"Messages"+" (\(nmessages))"
+                    alertController.addAction(UIAlertAction(title: messagesTitle, style: .default, handler: {
+                        action in
+                        self.showMessages(forSubject: subject)
+                    }))
+                }
+                
+                if ndocuments > 0 {
+                    
+                    let documentsTitle = ~"Documents"+" (\(ndocuments))"
+                    alertController.addAction(UIAlertAction(title: documentsTitle, style: .default, handler: {
+                        action in
+                        self.showDocuments(forSubject: subject)
+                    }))
+                }
+                
+                alertController.addAction(UIAlertAction(title: ~"Cancel", style: .cancel, handler: nil))
+                
+            } else {
+                
+                alertController = UIAlertController(title: ~"Oops!",
+                                                    message: ~"This course doesn't have any messages or files",
+                                                    preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: ~"Dismiss", style: .default, handler: nil))
+            }
+            
+        } else {
+            // data is nil, which means it's still loading
+            return
         }
+        
+        present(alertController, animated: true, completion: nil)
     }
-    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
@@ -184,11 +209,7 @@ class SubjectsViewController: UITableViewController {
         
         if this is PTSubject {
             
-            if indexPath == expandedIndexPath {
-                return PTSubjectCell.expandedHeight
-            } else {
-                return PTSubjectCell.height
-            }
+            return PTSubjectCell.height
             
         } else if this is PTMessage {
             
@@ -250,9 +271,6 @@ class SubjectsViewController: UITableViewController {
             
             theCell.setSubject(subject, andData: dataOfSubjects[subject])
             
-            theCell.messagesButton.addTarget(self, action: #selector(self.messagesButtonPressed), for: .touchUpInside)
-            theCell.documentsButton.addTarget(self, action: #selector(self.documentsButtonPressed), for: .touchUpInside)
-            
         } else if let theCell = cell as? PTMessageCell, let message = this as? PTMessage {
             
             theCell.setMessage(message: message)
@@ -283,17 +301,9 @@ class SubjectsViewController: UITableViewController {
         
         let this = content[indexPath.row]
         
-        if this is PTSubject {
+        if let subject = this as? PTSubject {
             
-            tableView.beginUpdates()
-            
-            if expandedIndexPath != indexPath {
-                expandedIndexPath = indexPath
-            } else {
-                expandedIndexPath = nil
-            }
-            
-            tableView.endUpdates()
+            presentOptions(forSubject: subject, withData: dataOfSubjects[subject])
             
         } else if let folder = this as? PTMFolder {
             
