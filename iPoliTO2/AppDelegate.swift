@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     var homeVC: HomeViewController? {
         return getController(.home)     as? HomeViewController
     }
-    var subjectsRootVC: SubjectsViewController? {
+    var subjectsVC: SubjectsViewController? {
         return getController(.subjects) as? SubjectsViewController
     }
     var careerVC: CareerViewController? {
@@ -86,8 +86,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         if let subjects = self.session?.subjects {
             
             
-            subjectsRootVC?.navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading subjects data...")
-            subjectsRootVC?.content = subjects.map({ $0 as Any })
+            subjectsVC?.navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading subjects data...")
+            subjectsVC?.content = subjects
             session.requestDataForSubjects(subjects: subjects)
             
         } else {
@@ -141,11 +141,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     func managerDidRetrieveSubjectData(data: PTSubjectData?, subject: PTSubject) {
         
         if let data = data {
-            subjectsRootVC?.dataOfSubjects[subject] = data
+            subjectsVC?.dataOfSubjects[subject] = data
         }
         
         if session?.dataOfSubjects.count == session?.subjects?.count {
-            subjectsRootVC?.navigationItem.titleView = nil
+            subjectsVC?.navigationItem.titleView = nil
         }
     }
     

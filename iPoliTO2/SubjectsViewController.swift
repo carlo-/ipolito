@@ -8,11 +8,9 @@
 
 import UIKit
 
-// TODO: Rename this class (and VC) to something more appropriate!
-
 class SubjectsViewController: UITableViewController {
     
-    var content: [Any] = [] {
+    var content: [PTSubject] = [] {
         didSet {
             self.tableView.reloadData()
         }
@@ -22,11 +20,13 @@ class SubjectsViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
-    var rootTable: SubjectsViewController?
     
-    var subject: PTSubject? = nil
-
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Removes annoying row separators after the last cell
+        tableView.tableFooterView = UIView()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -38,120 +38,31 @@ class SubjectsViewController: UITableViewController {
         navigationItem.rightBarButtonItem?.isEnabled = !cannotShowDownloads
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Removes annoying row separators after the last cell
-        tableView.tableFooterView = UIView()
-        
-        if rootTable == nil {
-            
-            self.tableView.delaysContentTouches = false
-            rootTable = self
-            
-        } else if content.first is PTMessage {
-            
-            self.navigationItem.setRightBarButton(nil, animated: false)
-        }
-    }
-    
-    func downloadFile(_ file: PTMFile, subject: PTSubject) {
-        
-        if PTDownloadManager.shared.needsToOverwrite(byDownloadingFile: file) {
-            
-            let alertTitle = ~"File already downloaded!"
-            let alertMessage = ~"A file with that name already exists. Do you want to overwrite it?"
-            
-            let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-            
-            let alertCancel = ~"Cancel"
-            let alertConfirm = ~"Confirm"
-            
-            alert.addAction(UIAlertAction(title: alertCancel, style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: alertConfirm, style: .destructive, handler: {
-                action in
-                
-                PTDownloadManager.shared.enqueueForDownload(file: file, ofSubject: subject)
-                self.performSegue(withIdentifier: "ShowDownloads_segue", sender: self)
-            }))
-            
-            present(alert, animated: true, completion: nil)
-            
-        } else {
-            
-            PTDownloadManager.shared.enqueueForDownload(file: file, ofSubject: subject)
-            performSegue(withIdentifier: "ShowDownloads_segue", sender: self)
-        }
-    }
-    
-    func moveToFolder(_ folder: PTMFolder) {
-        
-        guard let childController = storyboard?.instantiateViewController(withIdentifier: "SubjectsViewController_id") as? SubjectsViewController else {
-            
-            return
-        }
-        
-        if folder.isEmpty {
-            return
-        }
-        
-        let children = folder.children
-        
-        childController.rootTable = self.rootTable
-        childController.content = children.map({ $0 as Any })
-        childController.title = folder.description
-        childController.subject = self.subject
-        
-        self.navigationController?.pushViewController(childController, animated: true)
-    }
     
     func showMessages(forSubject subject: PTSubject) {
         
-        // Assuming self is the root controller
+        let id = MessagesViewController.identifier
         
-        guard let childController = storyboard?.instantiateViewController(withIdentifier: "SubjectsViewController_id") as? SubjectsViewController else {
+        if let childController = storyboard?.instantiateViewController(withIdentifier: id) as? MessagesViewController,
+           let messages = dataOfSubjects[subject]?.messages {
             
-            return
-        }
-        
-        let subjectData = self.dataOfSubjects[subject]
-        
-        guard let messages = subjectData?.messages else {
+            childController.configure(forSubject: subject, withMessages: messages)
             
-            return
+            navigationController?.pushViewController(childController, animated: true)
         }
-        
-        childController.rootTable = self
-        childController.content = messages.map({ $0 as Any })
-        childController.title = subject.name
-        childController.subject = subject
-        
-        self.navigationController?.pushViewController(childController, animated: true)
     }
     
     func showDocuments(forSubject subject: PTSubject) {
         
-        // Assuming self is the root controller
+        let id = DocumentsViewController.identifier
         
-        
-        guard let childController = storyboard?.instantiateViewController(withIdentifier: "SubjectsViewController_id") as? SubjectsViewController else {
+        if let childController = storyboard?.instantiateViewController(withIdentifier: id) as? DocumentsViewController,
+           let documents = dataOfSubjects[subject]?.documents {
             
-            return
-        }
-        
-        let subjectData = self.dataOfSubjects[subject]
-        
-        guard let documents = subjectData?.documents else {
+            childController.configure(forSubject: subject, withDocuments: documents)
             
-            return
+            navigationController?.pushViewController(childController, animated: true)
         }
-        
-        childController.rootTable = self
-        childController.content = documents.map({ $0 as Any })
-        childController.title = subject.name
-        childController.subject = subject
-        
-        self.navigationController?.pushViewController(childController, animated: true)
     }
     
     func presentOptions(forSubject subject: PTSubject, withData data: PTSubjectData?) {
@@ -202,33 +113,17 @@ class SubjectsViewController: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    
+    
+    // MARK: TableView delegate methods
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        
-        let this = content[indexPath.row]
-        
-        if this is PTSubject {
-            
-            return PTSubjectCell.height
-            
-        } else if this is PTMessage {
-            
-            let message = this as! PTMessage
-            return PTMessageCell.estimatedHeight(message: message, rowWidth: tableView.frame.width)
-            
-        } else if this is PTMFolder {
-            return PTFolderCell.height
-            
-        } else if this is PTMFile {
-            return PTFileCell.height
-        }
-        
-        return 0
+        return PTSubjectCell.height
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if self == rootTable && content.isEmpty {
+        if content.isEmpty {
             tableView.backgroundView = EmptyCourseLoadBackgroundView(frame: tableView.bounds)
         } else {
             tableView.backgroundView = nil
@@ -243,95 +138,42 @@ class SubjectsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var identifier = ""
-        
-        let this = content[indexPath.row]
-        
-        if this is PTSubject {
-            identifier = PTSubjectCell.identifier
-            
-        } else if this is PTMessage {
-            identifier = PTMessageCell.identifier
-            
-        } else if this is PTMFolder {
-            identifier = PTFolderCell.identifier
-            
-        } else if this is PTMFile {
-            identifier = PTFileCell.identifier
-        }
-        
-        return tableView.dequeueReusableCell(withIdentifier: identifier)!
+        return tableView.dequeueReusableCell(withIdentifier: PTSubjectCell.identifier)!
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let this = content[indexPath.row]
+        guard let cell = cell as? PTSubjectCell else { return }
         
-        if let theCell = cell as? PTSubjectCell, let subject = this as? PTSubject {
-            
-            theCell.setSubject(subject, andData: dataOfSubjects[subject])
-            
-        } else if let theCell = cell as? PTMessageCell, let message = this as? PTMessage {
-            
-            theCell.setMessage(message: message)
-            
-        } else if let theCell = cell as? PTFolderCell, let folder = this as? PTMFolder {
-            
-            theCell.setFolder(folder: folder)
-            
-        } else if let theCell = cell as? PTFileCell, let file = this as? PTMFile {
-            
-            theCell.setFile(file: file)
-        }
+        let subject = content[indexPath.row]
+        
+        cell.configure(forSubject: subject)
     }
-    
-    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if tableView.cellForRow(at: indexPath)?.selectionStyle == .none {
-            return nil
-        } else {
-            return indexPath
-        }
-    }
-    
-    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let this = content[indexPath.row]
+        let subject = content[indexPath.row]
         
-        if let subject = this as? PTSubject {
-            
-            presentOptions(forSubject: subject, withData: dataOfSubjects[subject])
-            
-        } else if let folder = this as? PTMFolder {
-            
-            moveToFolder(folder)
-            
-        } else if let file = this as? PTMFile {
-            
-            let alertTitle = ~"Do you want to proceed?"
-            let alertMessage = ~"You chose \""+file.description+"\"."
-            
-            let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-            
-            let alertCancel = ~"Cancel"
-            let alertConfirm = ~"Confirm"
-            
-            alert.addAction(UIAlertAction(title: alertCancel, style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: alertConfirm, style: .default, handler: {
-                action in
-                
-                self.downloadFile(file, subject: self.subject!)
-            }))
-            
-            present(alert, animated: true, completion: nil)
-        }
-        
-        
+        presentOptions(forSubject: subject, withData: dataOfSubjects[subject])
     }
+}
 
+
+class PTSubjectCell: UITableViewCell {
+    
+    static let identifier = "PTSubjectCell_id"
+    static let height = 70 as CGFloat
+    
+    @IBOutlet var mainLabel: UILabel!
+    @IBOutlet var creditsLabel: UILabel!
+    
+    func configure(forSubject subject: PTSubject) {
+        
+        mainLabel.text = subject.name
+        creditsLabel.text = "\(subject.credits)"
+    }
 }
 
 
@@ -366,4 +208,3 @@ fileprivate class EmptyCourseLoadBackgroundView: UIView {
     }
     
 }
-

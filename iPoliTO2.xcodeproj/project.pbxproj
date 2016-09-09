@@ -10,6 +10,8 @@
 		232D44211D6BB69800BFA8A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232D44201D6BB69800BFA8A6 /* Constants.swift */; };
 		232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8311D4CD7340001C99C /* AppDelegate.swift */; };
 		232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */; };
+		236690FC1D8345C4000BC822 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236690FB1D8345C4000BC822 /* MessagesViewController.swift */; };
+		236690FE1D834643000BC822 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236690FD1D834643000BC822 /* DocumentsViewController.swift */; };
 		2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */; };
 		2372F1DB1D7F8F1D00DBC708 /* PTKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2372F1DA1D7F8F1D00DBC708 /* PTKeychain.swift */; };
 		2399D8361D4CD7340001C99C /* SubjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8351D4CD7340001C99C /* SubjectsViewController.swift */; };
@@ -35,13 +37,14 @@
 		23CC5D0E1D55FF4600EDF589 /* Rooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23CC5D0D1D55FF4600EDF589 /* Rooms.plist */; };
 		23CC5D101D57294900EDF589 /* CRTimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC5D0F1D57294900EDF589 /* CRTimePicker.swift */; };
 		23D042361D6B5DB100F932DD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D042351D6B5DB100F932DD /* SignInViewController.swift */; };
-		23FD096F1D773BF400ABD65E /* PTSubjectsCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8701D4D0CE60001C99C /* PTSubjectsCells.swift */; };
 		23FD097B1D7749AC00ABD65E /* ScrollableGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FD097A1D7749AC00ABD65E /* ScrollableGraphView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		232D44201D6BB69800BFA8A6 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		236690FB1D8345C4000BC822 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		236690FD1D834643000BC822 /* DocumentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		2372F1D71D7F8CD200DBC708 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
 		2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
 		2372F1DA1D7F8F1D00DBC708 /* PTKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTKeychain.swift; sourceTree = "<group>"; };
@@ -63,7 +66,6 @@
 		2399D8531D4CEDDB0001C99C /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		2399D8571D4CF5520001C99C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		2399D8591D4CF79C0001C99C /* MyCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyCredentials.swift; path = iPoliTO2/MyCredentials.swift; sourceTree = "<group>"; };
-		2399D8701D4D0CE60001C99C /* PTSubjectsCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTSubjectsCells.swift; sourceTree = "<group>"; };
 		239CCE1D1D6DF2DE00BDF6E7 /* TestData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TestData.json; sourceTree = "<group>"; };
 		239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRRoundedCell.swift; sourceTree = "<group>"; };
 		239CCE211D6F926200BDF6E7 /* PTLectureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTLectureView.swift; sourceTree = "<group>"; };
@@ -112,6 +114,8 @@
 				2399D8311D4CD7340001C99C /* AppDelegate.swift */,
 				232D44201D6BB69800BFA8A6 /* Constants.swift */,
 				2399D8371D4CD7340001C99C /* Main.storyboard */,
+				236690FB1D8345C4000BC822 /* MessagesViewController.swift */,
+				236690FD1D834643000BC822 /* DocumentsViewController.swift */,
 				2399D8551D4CEE190001C99C /* View Controllers */,
 				23FD09781D77409C00ABD65E /* Custom Views */,
 				23FD09761D77404300ABD65E /* Modules */,
@@ -183,7 +187,6 @@
 			children = (
 				239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */,
 				23CC5D0F1D57294900EDF589 /* CRTimePicker.swift */,
-				2399D8701D4D0CE60001C99C /* PTSubjectsCells.swift */,
 				239CCE211D6F926200BDF6E7 /* PTLectureView.swift */,
 				239CCE231D6F928300BDF6E7 /* PTLectureView.xib */,
 			);
@@ -307,15 +310,16 @@
 				23B67D501D5338A5009CB44B /* DownloadsViewController.swift in Sources */,
 				2399D86F1D4D00C10001C99C /* MyCredentials.swift in Sources */,
 				232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */,
+				236690FC1D8345C4000BC822 /* MessagesViewController.swift in Sources */,
 				239CCE221D6F926200BDF6E7 /* PTLectureView.swift in Sources */,
 				2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */,
 				2399D8541D4CEDDB0001C99C /* SettingsViewController.swift in Sources */,
 				232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */,
 				2399D84C1D4CDA990001C99C /* PTTypes.swift in Sources */,
 				23FD097B1D7749AC00ABD65E /* ScrollableGraphView.swift in Sources */,
-				23FD096F1D773BF400ABD65E /* PTSubjectsCells.swift in Sources */,
 				2399D8521D4CEDC40001C99C /* MapViewController.swift in Sources */,
 				2399D84B1D4CDA990001C99C /* PTRequest.swift in Sources */,
+				236690FE1D834643000BC822 /* DocumentsViewController.swift in Sources */,
 				2372F1DB1D7F8F1D00DBC708 /* PTKeychain.swift in Sources */,
 				2399D8491D4CDA990001C99C /* PTParser.swift in Sources */,
 				239CCE201D6F906200BDF6E7 /* CRRoundedCell.swift in Sources */,
