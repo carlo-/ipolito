@@ -12,6 +12,12 @@ public prefix func ~ (key: String) -> String {
     return NSLocalizedString(key, comment: "No Comment")
 }
 
+extension UIColor {
+    static var niceGray: UIColor {
+        return UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+    }
+}
+
 extension String {
     func trimmingWhitespaceAndNewlines() -> String {
         return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)

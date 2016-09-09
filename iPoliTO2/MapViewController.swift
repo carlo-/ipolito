@@ -60,6 +60,8 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         navigationItem.leftBarButtonItem = presentTimePickerButton()
         
+        let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.niceGray]
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: .normal)
         
         showAllRooms()
         zoomToMainCampus(animated: false)
