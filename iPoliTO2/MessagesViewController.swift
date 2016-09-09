@@ -12,14 +12,14 @@ class MessagesViewController: UITableViewController {
     
     static let identifier = "MessagesViewController_id"
     
-    private var content: [PTMessage] = []
+    private var content: [PTMessageCell.PrecomputedPTMessage] = []
     private var subject: PTSubject!
     
     func configure(forSubject subject: PTSubject, withMessages messages: [PTMessage]) {
         
         self.title = subject.name
         self.subject = subject
-        self.content = messages
+        precomputeMessages(messages)
     }
     
     override func viewDidLoad() {
@@ -29,18 +29,42 @@ class MessagesViewController: UITableViewController {
         tableView.tableFooterView = UIView()
     }
     
+    func precomputeMessages(_ messages: [PTMessage]) {
+        
+        OperationQueue().addOperation({
+            
+            for message in messages {
+                
+                let precompMessage = PTMessageCell.PrecomputedPTMessage(message: message)
+                self.content.append(precompMessage)
+            }
+            
+            OperationQueue.main.addOperation {
+                
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
     
     
     // MARK: TableView delegate methods
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let message = content[indexPath.row]
+        let precompMessage = content[indexPath.row]
         
-        return PTMessageCell.estimatedHeight(message: message, rowWidth: tableView.frame.width)
+        return PTMessageCell.estimatedHeight(messageBody: precompMessage.body, rowWidth: tableView.frame.width)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if content.isEmpty {
+            tableView.backgroundView = LoadingTableBackgroundView(frame: tableView.bounds)
+        } else {
+            tableView.backgroundView = nil
+        }
+            
         return content.count
     }
     
@@ -57,13 +81,67 @@ class MessagesViewController: UITableViewController {
         
         guard let cell = cell as? PTMessageCell else { return }
         
-        let message = content[indexPath.row]
+        let precompMessage = content[indexPath.row]
         
-        cell.configure(forMessage: message)
+        cell.configure(forPrecomputedMessage: precompMessage)
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return nil
+    }
+}
+
+class LoadingTableBackgroundView: UIView {
+    
+    private let stack: UIStackView
+    
+    override init(frame: CGRect) {
+        
+        stack = UIStackView()
+        
+        super.init(frame: frame)
+        
+        
+        backgroundColor = UIColor.clear
+        
+        
+        let stackSpacing: CGFloat = 10
+        
+        stack.axis = .horizontal
+        stack.spacing = stackSpacing
+        
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 20))
+        
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        label.textColor = UIColor.lightGray
+        label.text = ~"Loading..."
+        label.sizeToFit()
+        
+        
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        indicator.color = UIColor.lightGray
+        indicator.startAnimating()
+        
+        
+        let stackWidth = label.frame.width + indicator.frame.width + stackSpacing
+        
+        stack.frame = CGRect(x: 0, y: 0, width: stackWidth, height: 20)
+        
+        stack.addArrangedSubview(indicator)
+        stack.addArrangedSubview(label)
+        
+        addSubview(stack)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        stack.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
     }
 }
 
@@ -72,15 +150,31 @@ class PTMessageCell: UITableViewCell {
     
     static let identifier = "PTMessageCell_id"
     
-    class func estimatedHeight(message: PTMessage, rowWidth: CGFloat) -> CGFloat {
+    struct PrecomputedPTMessage {
+        
+        let originalMessage: PTMessage
+        let body: String
+        let dateString: String
+        
+        init(message: PTMessage) {
+            
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeZone = TimeZone.Turin
+            
+            self.originalMessage = message
+            self.body = message.cleanBody
+            self.dateString = formatter.string(from: message.date)
+        }
+    }
+    
+    class func estimatedHeight(messageBody: String, rowWidth: CGFloat) -> CGFloat {
         
         let minimumHeight: CGFloat = 27.0
         let textViewWidth = rowWidth-16.0
         
-        let bodyText = message.cleanBody
-        
         let textView = UITextView()
-        textView.text = bodyText
+        textView.text = messageBody
         textView.font = UIFont.systemFont(ofSize: 13)
         
         let textViewSize = textView.sizeThatFits(CGSize(width: textViewWidth, height: CGFloat.greatestFiniteMagnitude))
@@ -93,12 +187,14 @@ class PTMessageCell: UITableViewCell {
     
     func configure(forMessage message: PTMessage) {
         
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeZone = TimeZone.Turin
+        let precomp = PrecomputedPTMessage(message: message)
+        configure(forPrecomputedMessage: precomp)
+    }
+    
+    func configure(forPrecomputedMessage precompMessage: PrecomputedPTMessage) {
         
-        dateLabel.text = formatter.string(from: message.date)
-        bodyTextView.text = message.cleanBody
+        dateLabel.text = precompMessage.dateString
+        bodyTextView.text = precompMessage.body
         
         repositionSubviews()
     }
