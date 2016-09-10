@@ -237,7 +237,7 @@ class PTFileCell: UITableViewCell {
         if let ext = file.extension {
             arr.append(ext)
             
-            iconView.image = PTIcon(forFileWithExtension: ext)
+            iconView.image = UIImage.iPoliTO.icon(forFileWithExtension: ext)
         }
         
         if let size = file.size {

@@ -13,8 +13,9 @@ public prefix func ~ (key: String) -> String {
 }
 
 extension UIColor {
-    static var niceGray: UIColor {
-        return UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+    struct iPoliTO {
+        static let darkGray = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        private init() {}
     }
 }
 
@@ -40,37 +41,40 @@ extension String {
 }
 
 extension TimeZone {
-    static var Turin: TimeZone {
-        return TimeZone(identifier: "Europe/Rome")!
-    }
+    static let Turin = TimeZone(identifier: "Europe/Rome")!
 }
 
-func PTIcon(forFileWithExtension ext: String?) -> UIImage {
-    
-    guard let ext = ext else {
-        return UIImage(named: "docType_generic")!
-    }
-    
-    let len = ext.characters.count
-    if len == 0 || len > 4 {
-        return UIImage(named: "docType_generic")!
-    }
-    
-    let knownExts = ["7z","aac","ai","avi",
-                     "cvs","dmg","doc","epub",
-                     "exe","flv","gif","html",
-                     "jpg","mov","pdf","png",
-                     "ppt","psd","rar","tif",
-                     "txt","wav","zip"]
-    
-    if knownExts.contains(ext) {
-        return UIImage(named: "docType_\(ext)")!
-    } else if ext == "jpeg" {
-        return UIImage(named: "docType_jpg")!
-    } else if ext == "tiff" {
-        return UIImage(named: "docType_tif")!
-    } else {
-        return UIImage(named: "docType_generic")!
+extension UIImage {
+    struct iPoliTO {
+        static func icon(forFileWithExtension ext: String?) -> UIImage {
+            
+            guard let ext = ext else {
+                return UIImage(named: "docType_generic")!
+            }
+            
+            let len = ext.characters.count
+            if len == 0 || len > 4 {
+                return UIImage(named: "docType_generic")!
+            }
+            
+            let knownExts = ["7z","aac","ai","avi",
+                             "cvs","dmg","doc","epub",
+                             "exe","flv","gif","html",
+                             "jpg","mov","pdf","png",
+                             "ppt","psd","rar","tif",
+                             "txt","wav","zip"]
+            
+            if knownExts.contains(ext) {
+                return UIImage(named: "docType_\(ext)")!
+            } else if ext == "jpeg" {
+                return UIImage(named: "docType_jpg")!
+            } else if ext == "tiff" {
+                return UIImage(named: "docType_tif")!
+            } else {
+                return UIImage(named: "docType_generic")!
+            }
+        }
+        private init() {}
     }
 }
 
