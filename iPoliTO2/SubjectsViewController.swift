@@ -167,12 +167,11 @@ class PTSubjectCell: UITableViewCell {
     static let height = 70 as CGFloat
     
     @IBOutlet var mainLabel: UILabel!
-    @IBOutlet var creditsLabel: UILabel!
+    @IBOutlet var subtitleLabel: UILabel!
     
     func configure(forSubject subject: PTSubject) {
-        
         mainLabel.text = subject.name
-        creditsLabel.text = "\(subject.credits)"
+        subtitleLabel.text = subject.inserimento+" - \(subject.credits) "+(~"ECTS")
     }
 }
 

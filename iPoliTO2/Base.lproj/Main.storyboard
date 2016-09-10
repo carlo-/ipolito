@@ -92,38 +92,38 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ltc-cI-bRy" id="amu-dQ-smT">
-                                    <frame key="frameInset" width="375" height="70"/>
+                                    <frame key="frameInset" width="375" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subject Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kqK-eN-7iS">
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="53" id="mYf-C7-DJy"/>
+                                                <constraint firstAttribute="height" constant="29" id="mYf-C7-DJy"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-B8-rUa">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ECTS: 00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YdT-9h-I0V">
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="53" id="703-31-6n6"/>
-                                                <constraint firstAttribute="width" constant="40" id="J6a-bI-zf8"/>
+                                                <constraint firstAttribute="height" constant="23" id="RIn-UR-Qm9"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="cYH-B8-rUa" firstAttribute="top" secondItem="amu-dQ-smT" secondAttribute="topMargin" id="GJi-su-ssC"/>
                                         <constraint firstItem="kqK-eN-7iS" firstAttribute="leading" secondItem="amu-dQ-smT" secondAttribute="leadingMargin" constant="8" id="UUQ-Mo-Cze"/>
-                                        <constraint firstItem="cYH-B8-rUa" firstAttribute="leading" secondItem="kqK-eN-7iS" secondAttribute="trailing" constant="8" id="ZjN-bK-VlW"/>
+                                        <constraint firstItem="YdT-9h-I0V" firstAttribute="leading" secondItem="amu-dQ-smT" secondAttribute="leadingMargin" constant="8" id="WBe-gY-L7E"/>
                                         <constraint firstItem="kqK-eN-7iS" firstAttribute="top" secondItem="amu-dQ-smT" secondAttribute="topMargin" id="d6c-0q-OBU"/>
-                                        <constraint firstItem="cYH-B8-rUa" firstAttribute="trailing" secondItem="amu-dQ-smT" secondAttribute="trailingMargin" id="ebp-PV-gHf"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="YdT-9h-I0V" secondAttribute="trailing" constant="8" id="d71-o0-3Fy"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="kqK-eN-7iS" secondAttribute="trailing" constant="8" id="pgS-ph-W3v"/>
+                                        <constraint firstItem="YdT-9h-I0V" firstAttribute="top" secondItem="kqK-eN-7iS" secondAttribute="bottom" constant="1" id="rDc-9w-3kH"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="creditsLabel" destination="cYH-B8-rUa" id="S2F-Ku-tSB"/>
                                     <outlet property="mainLabel" destination="kqK-eN-7iS" id="M8Q-nA-lmv"/>
+                                    <outlet property="subtitleLabel" destination="YdT-9h-I0V" id="U7q-xT-Tyo"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -142,7 +142,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hht-3U-syY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1123" y="-399"/>
+            <point key="canvasLocation" x="1122.4000000000001" y="-399.85007496251876"/>
         </scene>
         <!--Documents-->
         <scene sceneID="Hgh-Xa-yEH">

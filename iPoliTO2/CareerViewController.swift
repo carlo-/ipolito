@@ -154,7 +154,7 @@ class PTGradeCell: UITableViewCell {
         formatter.dateStyle = DateFormatter.Style.medium
         
         let dateStr = formatter.string(from: exam.date)
-        subtitleLabel.text = dateStr+" - \(~"Credits"): \(exam.credits)"
+        subtitleLabel.text = dateStr+" - \(exam.credits) "+(~"ECTS")
     }
     
     override func awakeFromNib() {
