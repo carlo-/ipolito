@@ -21,17 +21,17 @@ class PTKeychain: NSObject {
     /// Stores a PTAccount in the keychain
     class func storeAccount(_ account: PTAccount) {
         
-        storeValue(account.matricola, ofType: .username)
+        storeValue(account.studentID, ofType: .username)
         storeValue(account.password, ofType: .password)
     }
     
     /// Returns the stored account if available
     class func retrieveAccount() -> PTAccount? {
         
-        if let matricola = retrieveValue(ofType: .username),
+        if let studentID = retrieveValue(ofType: .username),
            let password = retrieveValue(ofType: .password) {
             
-            return PTAccount(matricola: matricola, password: password)
+            return PTAccount(rawStudentID: studentID, password: password)
         }
         
         return nil

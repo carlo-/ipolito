@@ -25,7 +25,7 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
         let session = PTSession.shared
         
         nameLabel.text = session.studentInfo?.fullName ?? "???"
-        usernameLabel.text = session.account?.cleanMatricola() ?? "??"
+        usernameLabel.text = session.account?.studentID ?? "??"
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

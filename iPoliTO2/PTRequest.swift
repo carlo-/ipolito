@@ -251,7 +251,7 @@ class PTRequest: NSObject {
     class func performLogin(account: PTAccount!, regID: String!, loadTestData: Bool = false, completion: @escaping (_ token: String?, _ studentInfo: PTStudentInfo?, _ error: PTRequestError?) -> Void) {
         
         let params: [PTRequestParameter: String] = [.RegisteredID: regID,
-                                                    .Matricola: account.matricola,
+                                                    .Matricola: account.studentID,
                                                     .Password: account.password]
         performRequest(withRawParams: params, api: .Login, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in

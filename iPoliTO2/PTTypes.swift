@@ -488,30 +488,52 @@ public struct PTStudentInfo: PTFetchedItem {
 }
 
 public struct PTAccount {
-    let matricola, password: String
     
-    /// Returns the numerical digits of the matricola
-    func cleanMatricola() -> String {
+    /// Student identifier (matricola), including the initial 's'
+    private(set) var studentID: String!
+    
+    /// Password of the student's account
+    private(set) var password: String!
+    
+    /// Numerical digits of the studentID, excluding the initial 's'
+    private(set) var numericalID: String!
+    
+    
+    /// Default init for PTAccount
+    ///
+    /// - parameter rawStudentID: student identifier (matricola), dirty strings also acceptable
+    /// - parameter password:     password of the student's account
+    init(rawStudentID: String, password: String) {
+        
+        let numericalID = computeNumericalID(rawStudentID)
+        
+        self.numericalID = numericalID
+        self.studentID = "s"+numericalID
+        self.password = password
+    }
+    
+    
+    /// Returns the numerical digits of the studentID
+    private func computeNumericalID(_ dirtyID: String) -> String {
         
         let digits = NSCharacterSet.decimalDigits
         
-        var clean = ""
+        var numID = ""
         
-        for char in matricola.unicodeScalars {
+        for char in dirtyID.unicodeScalars {
             
             if digits.contains(char) {
                 
                 // append(c: Character) not available anymore for some reason
-                clean += String(char)
+                numID += String(char)
             }
         }
         
-        return clean
+        return numID
     }
 }
 
 public func ==(lhs: PTAccount, rhs: PTAccount) -> Bool {
-    return lhs.cleanMatricola() == rhs.cleanMatricola() &&
+    return lhs.numericalID == rhs.numericalID &&
            lhs.password == rhs.password
 }
-

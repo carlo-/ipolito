@@ -6,9 +6,9 @@
 //  Copyright © 2016 crapisarda. All rights reserved.
 //
 
-public let kDemoUsername = "s000000"
+public let kDemoStudentID = "s000000"
 public let kDemoPassword = "iPoliTO_demo"
-public let kDemoAccount = PTAccount(matricola: kDemoUsername, password: kDemoPassword)
+public let kDemoAccount = PTAccount(rawStudentID: kDemoStudentID, password: kDemoPassword)
 
 public let kAppStoreReviewLink = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1069740093&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8"
 

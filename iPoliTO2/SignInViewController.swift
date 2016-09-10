@@ -13,8 +13,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
     @IBOutlet var spacerView1: UIView!
     @IBOutlet var signinLabel: UILabel!
     @IBOutlet var spacerView2: UIView!
-    @IBOutlet var matricolaField: UITextField!
-    @IBOutlet var matricolaFieldContainer: UIView!
+    @IBOutlet var studentIdField: UITextField!
+    @IBOutlet var studentIdFieldContainer: UIView!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var passwordFieldContainer: UIView!
     @IBOutlet var signinButton: UIButton!
@@ -27,18 +27,18 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
         // view.backgroundColor = UIColor.clear()
         modalPresentationStyle = .overCurrentContext
         
-        matricolaFieldContainer.layer.cornerRadius = 5
+        studentIdFieldContainer.layer.cornerRadius = 5
         passwordFieldContainer.layer.cornerRadius = 5
         signinButton.layer.cornerRadius = 5
         activityIndicatorView.layer.cornerRadius = 5
         
-        matricolaField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        studentIdField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         passwordField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
     }
     
     func textFieldDidChange(_ textField: UITextField) {
         
-        if textField == matricolaField {
+        if textField == studentIdField {
             
             let digits = NSCharacterSet.decimalDigits
             
@@ -68,7 +68,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
     
     func fieldsAreValid() -> Bool {
         
-        guard let matricola = matricolaField.text, let password = passwordField.text else {
+        guard let matricola = studentIdField.text, let password = passwordField.text else {
             return false
         }
         
@@ -81,7 +81,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
             adjustUIforLoading()
             signIn()
         } else {
-            matricolaField.becomeFirstResponder()
+            studentIdField.becomeFirstResponder()
         }
         
         return false
@@ -92,11 +92,11 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
     func adjustUIforLoading(isLoading loading: Bool = true) {
         
         if loading {
-            matricolaField.resignFirstResponder()
+            studentIdField.resignFirstResponder()
             passwordField.resignFirstResponder()
         }
         
-        matricolaField.isEnabled = !loading
+        studentIdField.isEnabled = !loading
         passwordField.isEnabled = !loading
         
         signinButton.isHidden = loading
@@ -125,7 +125,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
         
         alert.addAction(UIAlertAction(title: ~"Edit", style: .cancel, handler: {
             action in
-            self.matricolaField.becomeFirstResponder()
+            self.studentIdField.becomeFirstResponder()
         }))
         alert.addAction(UIAlertAction(title: ~"Retry", style: .default, handler: {
             action in
@@ -164,7 +164,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
     
     func signIn() {
         
-        guard let matricola = matricolaField.text,
+        guard let studentID = studentIdField.text,
             let password = passwordField.text else {
             return
         }
@@ -174,7 +174,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
             if kDebugShouldForceCredentials {
                 return kDebugForcingCredentials
             } else {
-                return PTAccount(matricola: matricola, password: password)
+                return PTAccount(rawStudentID: studentID, password: password)
             }
         }()
         
