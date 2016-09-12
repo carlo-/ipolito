@@ -62,6 +62,9 @@ class PTSession: NSObject {
     var dataOfSubjects: [PTSubject: PTSubjectData] = [:]
     var shouldLoadTestData: Bool = false
     
+    private(set) var isOpening: Bool = false
+    private(set) var isClosing: Bool = false
+    
     var token: String?
     
     lazy var registeredID: String = {
@@ -117,6 +120,8 @@ class PTSession: NSObject {
     
     func open() {
         
+        isOpening = true
+        
         OperationQueue().addOperation({
             
             if let storedToken = self.storedToken() {
@@ -133,7 +138,10 @@ class PTSession: NSObject {
     
     func close() {
         
+        isClosing = true
+        
         guard let token = self.token else {
+            isClosing = false
             self.delegate?.sessionDidFailClosingWithError(error: .InvalidToken)
             return
         }
@@ -146,13 +154,16 @@ class PTSession: NSObject {
                 OperationQueue.main.addOperation({
                 
                     if error != nil {
+                        
+                        self.isClosing = false
                         self.delegate?.sessionDidFailClosingWithError(error: error!)
                     } else {
                         
                         self.forgetSessionData()
+                        
+                        self.isClosing = false
                         self.delegate?.sessionDidFinishClosing()
                     }
-                    
                 })
             })
         })
@@ -313,12 +324,14 @@ class PTSession: NSObject {
                 if error != nil {
                     
                     OperationQueue.main.addOperation({
+                        self.isOpening = false
                         self.delegate?.sessionDidFailOpeningWithError(error: error!)
                     })
                     
                 } else if token == nil {
                     
                     OperationQueue.main.addOperation({
+                        self.isOpening = false
                         self.delegate?.sessionDidFailOpeningWithError(error: .UnknownError)
                     })
                     
@@ -354,6 +367,7 @@ class PTSession: NSObject {
                     PTKeychain.storeAccount(self.account!)
                     PTKeychain.storeValue(token, ofType: .token)
                     
+                    self.isOpening = false
                     self.delegate?.sessionDidFinishOpening()
                 })
             }
