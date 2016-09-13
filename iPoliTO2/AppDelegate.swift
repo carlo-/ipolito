@@ -41,10 +41,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         
         window?.makeKeyAndVisible()
         
-        homeVC?.navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+        login()
+    }
+    
+    func login() {
+        
+        homeVC?.status = .logginIn
+        subjectsVC?.status = .logginIn
+        careerVC?.status = .logginIn
+        mapVC?.status = .logginIn
         
         if let account = storedAccount() {
-
+            
             session?.account = account
             session?.delegate = self
             
@@ -65,41 +73,76 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         mapVC?.shouldFocus(onRoom: room)
         selectController(.map)
     }
+    
+    func showLoginErrorAlert(error: PTRequestError) {
+        
+        let alert = UIAlertController(title: ~"Oops...", message: nil, preferredStyle: .alert)
+        
+        alert.message = {
+            switch (error) {
+            case .NotConnectedToInternet:
+                return ~"You're not connected to the internet!"
+            case .ServerUnreachable:
+                return ~"Servers unreachable or under maintenance!"
+            case .TimedOut:
+                return ~"Request took too long! Try again."
+            default:
+                return ~"An unknown error has occurred!"
+            }
+        }()
+        
+        alert.addAction(UIAlertAction(title: ~"Retry", style: .default, handler: {
+            action in
+            self.login()
+        }))
+        
+        window?.rootViewController?.present(alert, animated: true)
+    }
 
     func sessionDidFinishOpening() {
         
         print("sessionDidFinishOpening")
         guard let session = session else { return }
         
-        homeVC?.navigationItem.titleView = nil
+        mapVC?.status = .ready
         
         if let passedExams = session.passedExams {
             
             careerVC?.passedExams = passedExams
         }
         
-        careerVC?.navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading temporary grades...")
+        careerVC?.status = .fetching
         session.requestTemporaryGrades()
         
+        homeVC?.status = .fetching
         session.requestSchedule()
         
         if let subjects = self.session?.subjects {
             
-            
-            subjectsVC?.navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading subjects data...")
-            subjectsVC?.content = subjects
+            subjectsVC?.subjects = subjects
+            subjectsVC?.status = .fetching
             session.requestDataForSubjects(subjects: subjects)
             
         } else {
             
             // No subjects!
-            // [...]
+            subjectsVC?.status = .ready
         }
     }
     
     func managerDidRetrieveSchedule(schedule: [PTLecture]?) {
         
+        print("managerDidRetrieveSchedule")
+        
         homeVC?.schedule = schedule ?? []
+        homeVC?.status = .ready
+    }
+    
+    func managerDidFailRetrievingScheduleWithError(error: PTRequestError) {
+        
+        print("managerDidFailRetrievingScheduleWithError: \(error)")
+        
+        homeVC?.status = .error
     }
     
     func presentSignInViewController() {
@@ -118,13 +161,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         
         print("sessionDidFailOpeningWithError: \(error)")
         
-        homeVC?.navigationItem.titleView = nil
+        homeVC?.status = .error
+        subjectsVC?.status = .error
+        careerVC?.status = .error
+        mapVC?.status = .error
         
         switch error {
         case .InvalidCredentials:
-            // Display login window
+            // Presents login window
             presentSignInViewController()
         default:
+            showLoginErrorAlert(error: error)
             break
         }
     }
@@ -135,7 +182,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
             careerVC?.temporaryGrades = temporaryGrades
         }
         
-        careerVC?.navigationItem.titleView = nil
+        careerVC?.status = .ready
+    }
+    
+    func managerDidFailRetrievingTemporaryGradesWithError(error: PTRequestError) {
+        careerVC?.status = .error
     }
     
     func managerDidRetrieveSubjectData(data: PTSubjectData?, subject: PTSubject) {
@@ -145,8 +196,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         }
         
         if session?.dataOfSubjects.count == session?.subjects?.count {
-            subjectsVC?.navigationItem.titleView = nil
+            subjectsVC?.status = .ready
         }
+    }
+    
+    func managerDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject) {
+        subjectsVC?.status = .error
     }
     
     

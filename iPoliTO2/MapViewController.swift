@@ -18,6 +18,12 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     private var searchBar: UISearchBar { return searchController.searchBar }
     private var timePicker: CRTimePicker?
     
+    var status: PTViewControllerStatus = .unknown {
+        didSet {
+            statusDidChange()
+        }
+    }
+    
     private lazy var allRooms: [PTRoom] = {
         
         if let plistPath = Bundle.main.path(forResource: "Rooms", ofType: "plist"),
@@ -80,7 +86,19 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         searchController.view.removeFromSuperview()
     }
     
-    
+    func statusDidChange() {
+        
+        switch status {
+        case .logginIn:
+            navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+        case .ready:
+            if isViewLoaded {
+                reloadFreeRoomsIfNeeded()
+            }
+        default:
+            navigationItem.titleView = PTDualTitleView(withTitle: ~"Map", subtitle: ~"Offline")
+        }
+    }
     
     // MARK: Room Managing Methods
     
@@ -91,6 +109,10 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     /// Reloads free rooms if lastest data is nil or not from today
     private func reloadFreeRoomsIfNeeded() {
         
+        if status != .ready {
+            return
+        }
+        
         if freeRoomsLoadedDate != nil && Calendar.current.isDateInToday(freeRoomsLoadedDate!) {
             return
         }
@@ -98,7 +120,14 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         downloadFreeRooms()
     }
     
+    private(set) var isDownloadingFreeRooms: Bool = false
     private func downloadFreeRooms(forDate date: Date? = nil) {
+        
+        if isDownloadingFreeRooms {
+            return
+        }
+        
+        isDownloadingFreeRooms = true
         
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone.Turin
@@ -118,6 +147,8 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
                 self.freeRooms = freeRooms ?? []
                 self.reloadRoomAnnotations()
                 self.navigationItem.titleView = PTDualTitleView(withTitle: ~"Map", subtitle: subtitle)
+                
+                self.isDownloadingFreeRooms = false
             })
         })
     }

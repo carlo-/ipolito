@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		230323621D877AC1003881E9 /* PTAccessoryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230323611D877AC1003881E9 /* PTAccessoryViews.swift */; };
 		232D44211D6BB69800BFA8A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232D44201D6BB69800BFA8A6 /* Constants.swift */; };
 		232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8311D4CD7340001C99C /* AppDelegate.swift */; };
 		232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		230323611D877AC1003881E9 /* PTAccessoryViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTAccessoryViews.swift; sourceTree = "<group>"; };
 		232D44201D6BB69800BFA8A6 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		236690FB1D8345C4000BC822 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -114,8 +116,6 @@
 				2399D8311D4CD7340001C99C /* AppDelegate.swift */,
 				232D44201D6BB69800BFA8A6 /* Constants.swift */,
 				2399D8371D4CD7340001C99C /* Main.storyboard */,
-				236690FB1D8345C4000BC822 /* MessagesViewController.swift */,
-				236690FD1D834643000BC822 /* DocumentsViewController.swift */,
 				2399D8551D4CEE190001C99C /* View Controllers */,
 				23FD09781D77409C00ABD65E /* Custom Views */,
 				23FD09761D77404300ABD65E /* Modules */,
@@ -133,9 +133,11 @@
 				2399D8351D4CD7340001C99C /* SubjectsViewController.swift */,
 				2399D84F1D4CEDAA0001C99C /* CareerViewController.swift */,
 				2399D8511D4CEDC40001C99C /* MapViewController.swift */,
-				2399D8531D4CEDDB0001C99C /* SettingsViewController.swift */,
-				23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */,
 				23D042351D6B5DB100F932DD /* SignInViewController.swift */,
+				2399D8531D4CEDDB0001C99C /* SettingsViewController.swift */,
+				236690FB1D8345C4000BC822 /* MessagesViewController.swift */,
+				236690FD1D834643000BC822 /* DocumentsViewController.swift */,
+				23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -185,6 +187,7 @@
 		23FD09781D77409C00ABD65E /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				230323611D877AC1003881E9 /* PTAccessoryViews.swift */,
 				239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */,
 				23CC5D0F1D57294900EDF589 /* CRTimePicker.swift */,
 				239CCE211D6F926200BDF6E7 /* PTLectureView.swift */,
@@ -313,6 +316,7 @@
 				236690FC1D8345C4000BC822 /* MessagesViewController.swift in Sources */,
 				239CCE221D6F926200BDF6E7 /* PTLectureView.swift in Sources */,
 				2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */,
+				230323621D877AC1003881E9 /* PTAccessoryViews.swift in Sources */,
 				2399D8541D4CEDDB0001C99C /* SettingsViewController.swift in Sources */,
 				232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */,
 				2399D84C1D4CDA990001C99C /* PTTypes.swift in Sources */,

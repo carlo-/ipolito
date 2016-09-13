@@ -10,7 +10,7 @@ import UIKit
 
 class SubjectsViewController: UITableViewController {
     
-    var content: [PTSubject] = [] {
+    var subjects: [PTSubject] = [] {
         didSet {
             self.tableView.reloadData()
         }
@@ -18,6 +18,11 @@ class SubjectsViewController: UITableViewController {
     var dataOfSubjects: [PTSubject: PTSubjectData] = [:] {
         didSet {
             self.tableView.reloadData()
+        }
+    }
+    var status: PTViewControllerStatus = .unknown {
+        didSet {
+            statusDidChange()
         }
     }
     
@@ -38,6 +43,44 @@ class SubjectsViewController: UITableViewController {
         navigationItem.rightBarButtonItem?.isEnabled = !cannotShowDownloads
     }
     
+    
+    func statusDidChange() {
+        
+        let isTableEmpty = subjects.isEmpty
+        
+        if isTableEmpty {
+            
+            navigationItem.titleView = nil
+            
+            switch status {
+            case .logginIn:
+                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"Logging in...")
+            case .offline:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Offline")
+            case .error:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Could not retrieve the data!")
+            case .ready:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"No subjects on your course load!")
+            default:
+                tableView.backgroundView = nil
+            }
+            
+        } else {
+            
+            tableView.backgroundView = nil
+            
+            switch status {
+            case .logginIn:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+            case .fetching:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading data of subjects...")
+            case .offline:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Offline")
+            default:
+                navigationItem.titleView = nil
+            }
+        }
+    }
     
     func showMessages(forSubject subject: PTSubject) {
         
@@ -122,14 +165,7 @@ class SubjectsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if content.isEmpty {
-            tableView.backgroundView = EmptyCourseLoadBackgroundView(frame: tableView.bounds)
-        } else {
-            tableView.backgroundView = nil
-        }
-        
-        return content.count
+        return subjects.count
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -145,7 +181,7 @@ class SubjectsViewController: UITableViewController {
         
         guard let cell = cell as? PTSubjectCell else { return }
         
-        let subject = content[indexPath.row]
+        let subject = subjects[indexPath.row]
         
         cell.configure(forSubject: subject)
     }
@@ -154,7 +190,7 @@ class SubjectsViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let subject = content[indexPath.row]
+        let subject = subjects[indexPath.row]
         
         presentOptions(forSubject: subject, withData: dataOfSubjects[subject])
     }
@@ -173,37 +209,4 @@ class PTSubjectCell: UITableViewCell {
         mainLabel.text = subject.name
         subtitleLabel.text = subject.inserimento+" - \(subject.credits) "+(~"ECTS")
     }
-}
-
-
-fileprivate class EmptyCourseLoadBackgroundView: UIView {
-    
-    private let label: UILabel
-    
-    override init(frame: CGRect) {
-        
-        label = UILabel()
-        
-        super.init(frame: frame)
-        
-        backgroundColor = UIColor.clear
-        
-        label.font = UIFont.systemFont(ofSize: 15.0)
-        label.textColor = UIColor.lightGray
-        label.text = ~"No subjects on your course load!"
-        label.sizeToFit()
-        
-        addSubview(label)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        label.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
-    }
-    
 }

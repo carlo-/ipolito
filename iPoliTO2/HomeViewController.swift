@@ -22,6 +22,11 @@ class HomeViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+    var status: PTViewControllerStatus = .unknown {
+        didSet {
+            statusDidChange()
+        }
+    }
     
     // Mon = 0, Tue = 1, ...
     var scheduleByWeekday: [Int: [PTLecture]] = [:]
@@ -46,7 +51,43 @@ class HomeViewController: UITableViewController {
         super.viewDidLoad()
     }
 
-    
+    func statusDidChange() {
+        
+        let isTableEmpty = schedule.isEmpty
+        
+        if isTableEmpty {
+            
+            navigationItem.titleView = nil
+            
+            switch status {
+            case .logginIn:
+                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"Logging in...")
+            case .fetching:
+                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"Loading schedule...")
+            case .offline:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Offline")
+            case .error:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Could not retrieve the data!")
+            default:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"No lectures this week!")
+            }
+            
+        } else {
+            
+            tableView.backgroundView = nil
+            
+            switch status {
+            case .logginIn:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+            case .fetching:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Updating schedule...")
+            case .offline:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Offline")
+            default:
+                navigationItem.titleView = nil
+            }
+        }
+    }
     
     func recomputeScheduleByWeekday() {
         
@@ -150,13 +191,6 @@ class HomeViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if schedule.isEmpty {
-            tableView.backgroundView = EmptyScheduleBackgroundView(frame: tableView.bounds)
-        } else {
-            tableView.backgroundView = nil
-        }
-        
         let todaysSchedule = scheduleByWeekday[section] ?? []
         return todaysSchedule.count
     }
@@ -398,37 +432,5 @@ class HomeViewController: UITableViewController {
         }
         return nil
     }
-}
-
-fileprivate class EmptyScheduleBackgroundView: UIView {
-    
-    private let label: UILabel
-    
-    override init(frame: CGRect) {
-        
-        label = UILabel()
-        
-        super.init(frame: frame)
-        
-        backgroundColor = UIColor.clear
-        
-        label.font = UIFont.systemFont(ofSize: 15.0)
-        label.textColor = UIColor.lightGray
-        label.text = ~"No lectures this week!"
-        label.sizeToFit()
-        
-        addSubview(label)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        label.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
-    }
-    
 }
 

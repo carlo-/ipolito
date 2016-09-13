@@ -21,6 +21,11 @@ class CareerViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+    var status: PTViewControllerStatus = .unknown {
+        didSet {
+            statusDidChange()
+        }
+    }
     
     
     override func viewDidLoad() {
@@ -28,6 +33,45 @@ class CareerViewController: UITableViewController {
         
         // Removes annoying row separators after the last cell
         tableView.tableFooterView = UIView()
+    }
+    
+    func statusDidChange() {
+        
+        let isTableEmpty = temporaryGrades.isEmpty && passedExams.isEmpty
+        
+        if isTableEmpty {
+            
+            navigationItem.titleView = nil
+            
+            switch status {
+            case .logginIn:
+                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"Logging in...")
+            case .offline:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Offline")
+            case .error:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Could not retrieve the data!")
+            case .ready:
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"No exams on your career!")
+            default:
+                tableView.backgroundView = nil
+            }
+            
+        } else {
+            
+            tableView.backgroundView = nil
+            
+            switch status {
+            case .logginIn:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+            case .fetching:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading temporary grades...")
+            case .offline:
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Offline")
+            default:
+                navigationItem.titleView = nil
+            }
+            
+        }
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -99,12 +143,6 @@ class CareerViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if temporaryGrades.isEmpty && passedExams.isEmpty {
-            tableView.backgroundView = EmptyCareerBackgroundView(frame: tableView.bounds)
-        } else {
-            tableView.backgroundView = nil
-        }
         
         switch section {
         case 0:
@@ -373,37 +411,4 @@ class PTGraphCell: UITableViewCell {
         return graphView
     }
     */
-}
-
-
-fileprivate class EmptyCareerBackgroundView: UIView {
-    
-    private let label: UILabel
-    
-    override init(frame: CGRect) {
-        
-        label = UILabel()
-        
-        super.init(frame: frame)
-        
-        backgroundColor = UIColor.clear
-        
-        label.font = UIFont.systemFont(ofSize: 15.0)
-        label.textColor = UIColor.lightGray
-        label.text = ~"No exams on your career!"
-        label.sizeToFit()
-        
-        addSubview(label)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        label.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
-    }
-    
 }

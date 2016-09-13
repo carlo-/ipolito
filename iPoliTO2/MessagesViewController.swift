@@ -60,7 +60,7 @@ class MessagesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if content.isEmpty {
-            tableView.backgroundView = LoadingTableBackgroundView(frame: tableView.bounds)
+            tableView.backgroundView = PTLoadingTableBackgroundView(frame: tableView.bounds)
         } else {
             tableView.backgroundView = nil
         }
@@ -88,60 +88,6 @@ class MessagesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return nil
-    }
-}
-
-class LoadingTableBackgroundView: UIView {
-    
-    private let stack: UIStackView
-    
-    override init(frame: CGRect) {
-        
-        stack = UIStackView()
-        
-        super.init(frame: frame)
-        
-        
-        backgroundColor = UIColor.clear
-        
-        
-        let stackSpacing: CGFloat = 10
-        
-        stack.axis = .horizontal
-        stack.spacing = stackSpacing
-        
-        
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 20))
-        
-        label.font = UIFont.systemFont(ofSize: 15.0)
-        label.textColor = UIColor.lightGray
-        label.text = ~"Loading..."
-        label.sizeToFit()
-        
-        
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        indicator.color = UIColor.lightGray
-        indicator.startAnimating()
-        
-        
-        let stackWidth = label.frame.width + indicator.frame.width + stackSpacing
-        
-        stack.frame = CGRect(x: 0, y: 0, width: stackWidth, height: 20)
-        
-        stack.addArrangedSubview(indicator)
-        stack.addArrangedSubview(label)
-        
-        addSubview(stack)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        stack.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
     }
 }
 
