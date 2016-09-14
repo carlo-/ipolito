@@ -97,7 +97,7 @@
                 <constraint firstAttribute="trailing" secondItem="dZ6-KQ-t0Q" secondAttribute="trailing" id="ops-uC-ajn"/>
                 <constraint firstItem="dZ6-KQ-t0Q" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="pC8-hd-UrG"/>
                 <constraint firstItem="5hG-VM-9tA" firstAttribute="centerY" secondItem="dZ6-KQ-t0Q" secondAttribute="centerY" id="rhl-eL-Y7D"/>
-                <constraint firstAttribute="trailing" secondItem="gBj-mr-ujt" secondAttribute="trailing" id="zBM-im-2Qi"/>
+                <constraint firstAttribute="trailing" secondItem="gBj-mr-ujt" secondAttribute="trailing" constant="5" id="zBM-im-2Qi"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
