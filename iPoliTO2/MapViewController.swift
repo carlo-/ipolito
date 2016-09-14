@@ -14,6 +14,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     @IBOutlet private var searchResultsTable: UITableView!
     @IBOutlet private var mapView: MKMapView!
     
+    private var locationManager = CLLocationManager()
     private var searchController = UISearchController(searchResultsController: nil)
     private var searchBar: UISearchBar { return searchController.searchBar }
     private var timePicker: CRTimePicker?
@@ -68,6 +69,11 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]
         UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: .normal)
+        
+        locationManager.delegate = self
+        if CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
+            locationManager.requestWhenInUseAuthorization()
+        }
         
         showAllRooms()
         zoomToMainCampus(animated: false)
