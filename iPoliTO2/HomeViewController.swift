@@ -89,6 +89,18 @@ class HomeViewController: UITableViewController {
         }
     }
     
+    func handleTabBarItemSelection(wasAlreadySelected: Bool) {
+        if wasAlreadySelected {
+            scrollToMostRelevantRow()
+        }
+    }
+    
+    
+    /// Scrolls to the current lecture if possible, otherwise scrolls to the next lecture.
+    func scrollToMostRelevantRow() {
+        // TODO: Implement this method
+    }
+    
     func recomputeScheduleByWeekday() {
         
         let sortedSchedule = schedule.sorted { (lectureA, lectureB) -> Bool in

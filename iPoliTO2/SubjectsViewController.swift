@@ -82,6 +82,10 @@ class SubjectsViewController: UITableViewController {
         }
     }
     
+    func handleTabBarItemSelection(wasAlreadySelected: Bool) {
+        return
+    }
+    
     func showMessages(forSubject subject: PTSubject) {
         
         let id = MessagesViewController.identifier

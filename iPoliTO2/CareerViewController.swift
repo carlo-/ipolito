@@ -74,6 +74,12 @@ class CareerViewController: UITableViewController {
         }
     }
     
+    func handleTabBarItemSelection(wasAlreadySelected: Bool) {
+        if wasAlreadySelected {
+            tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: true)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if tableView.cellForRow(at: indexPath)?.selectionStyle == .none {
             return nil

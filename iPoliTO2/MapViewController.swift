@@ -100,6 +100,12 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         }
     }
     
+    func handleTabBarItemSelection(wasAlreadySelected: Bool) {
+        if wasAlreadySelected {
+            focusOnRoom(nil, animated: true)
+        }
+    }
+    
     // MARK: Room Managing Methods
     
     func shouldFocus(onRoom room: PTRoom?) {

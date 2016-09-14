@@ -16,11 +16,14 @@ enum ControllerIndex: Int {
 }
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate, PTSessionDelegate {
 
     var window: UIWindow?
     var session: PTSession? {
         return PTSession.shared
+    }
+    var tabBarController: UITabBarController? {
+        return window?.rootViewController as? UITabBarController
     }
     var homeVC: HomeViewController? {
         return getController(.home)     as? HomeViewController
@@ -38,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     func applicationDidFinishLaunching(_ application: UIApplication) {
         
         window?.makeKeyAndVisible()
+        tabBarController?.delegate = self
         
         login()
     }
@@ -68,6 +72,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     
     func logout() {
         session?.close()
+    }
+    
+    private var previousSelection: ControllerIndex = .home
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        guard let index = ControllerIndex(rawValue: tabBarController.selectedIndex) else {
+            return
+        }
+        
+        switch index {
+        case .home:
+            homeVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .home)
+        case .subjects:
+            subjectsVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .subjects)
+        case .career:
+            careerVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .career)
+        case .map:
+            mapVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .map)
+        }
+        
+        previousSelection = index
     }
     
     
@@ -238,13 +263,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     }
     
     func selectController(_ index: ControllerIndex) {
-        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
-        tabbarCtrl?.selectedIndex = index.rawValue
+        tabBarController?.selectedIndex = index.rawValue
     }
     
     func getController(_ index: ControllerIndex) -> UIViewController? {
-        let tabbarCtrl = self.window?.rootViewController as? UITabBarController
-        let navCtrl = tabbarCtrl?.viewControllers?[index.rawValue] as? UINavigationController
+        let navCtrl = tabBarController?.viewControllers?[index.rawValue] as? UINavigationController
         
         return navCtrl?.viewControllers.first
     }
