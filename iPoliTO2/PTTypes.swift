@@ -207,6 +207,8 @@ public struct PTSubjectData: PTFetchedItem {
     var messages: [PTMessage]! = []
     var documents: [PTMElement]! = []
     
+    private(set) var isValid: Bool = true
+    
     init(dateFetched: Date, subject: PTSubject, lecturers: [PTLecturer], messages: [PTMessage], documents: [PTMElement]) {
         self.dateFetched = dateFetched
         self.subject = subject
@@ -215,8 +217,18 @@ public struct PTSubjectData: PTFetchedItem {
         self.documents = documents
     }
     
+    
+    
     var numberOfFiles: Int {
         return self.flatDocuments.flatMap({ $0 as? PTMFile }).count
+    }
+    
+    static var invalid: PTSubjectData {
+        
+        let subject = PTSubject(name: "", incarico: "", inserimento: "", credits: 0)
+        var data = PTSubjectData(dateFetched: Date(), subject: subject, lecturers: [], messages: [], documents: [])
+        data.isValid = false
+        return data
     }
     
     /*

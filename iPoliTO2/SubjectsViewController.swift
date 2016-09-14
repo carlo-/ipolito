@@ -108,11 +108,16 @@ class SubjectsViewController: UITableViewController {
         }
     }
     
-    func presentOptions(forSubject subject: PTSubject, withData data: PTSubjectData?) {
+    func presentOptions(forSubject subject: PTSubject) {
+        
+        guard let data = dataOfSubjects[subject] else {
+            // Still fetching data for this particular subject
+            return
+        }
         
         let alertController: UIAlertController
         
-        if let data = data {
+        if data.isValid {
             
             let nmessages = data.messages.count
             let ndocuments = data.numberOfFiles
@@ -143,14 +148,18 @@ class SubjectsViewController: UITableViewController {
             } else {
                 
                 alertController = UIAlertController(title: ~"Oops!",
-                                                    message: ~"This course doesn't have any messages or files",
+                                                    message: ~"This course doesn't have any messages or files.",
                                                     preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: ~"Dismiss", style: .default, handler: nil))
             }
             
         } else {
-            // data is nil, which means it's still loading
-            return
+            // Data for this subject is invalid, which means parsing has failed
+            
+            alertController = UIAlertController(title: ~"Oops!",
+                                                message: ~"Something went wrong when trying to retrieve data for this subject.",
+                                                preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: ~"Dismiss", style: .default, handler: nil))
         }
         
         present(alertController, animated: true, completion: nil)
@@ -192,7 +201,7 @@ class SubjectsViewController: UITableViewController {
         
         let subject = subjects[indexPath.row]
         
-        presentOptions(forSubject: subject, withData: dataOfSubjects[subject])
+        presentOptions(forSubject: subject)
     }
 }
 

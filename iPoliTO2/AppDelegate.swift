@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
     var session: PTSession? {
         return PTSession.shared
     }
-    
     var homeVC: HomeViewController? {
         return getController(.home)     as? HomeViewController
     }
@@ -36,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         return getController(.map)      as? MapViewController
     }
     
-
     func applicationDidFinishLaunching(_ application: UIApplication) {
         
         window?.makeKeyAndVisible()
@@ -68,13 +66,141 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         }
     }
     
+    func logout() {
+        session?.close()
+    }
+    
+    
+    
+    // MARK: PTSession delegate methods
+    
+    func sessionDidFinishOpening() {
+        
+        print("sessionDidFinishOpening")
+        guard let session = session else { return }
+        
+        mapVC?.status = .ready
+        
+        if session.passedExams == nil || session.studentInfo == nil || session.subjects == nil {
+            
+            // Some info might be missing!
+            let alert = UIAlertController(title: ~"Oops!", message: ~"There was a problem while downloading the data. Some information might be missing.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: ~"Dismiss", style: .cancel, handler: nil))
+            window?.rootViewController?.present(alert, animated: true, completion: nil)
+        }
+        
+        if let passedExams = session.passedExams {
+            
+            careerVC?.passedExams = passedExams
+        }
+        
+        careerVC?.status = .fetching
+        session.requestTemporaryGrades()
+        
+        homeVC?.status = .fetching
+        session.requestSchedule()
+        
+        if let subjects = self.session?.subjects {
+            
+            subjectsVC?.subjects = subjects
+            
+            if subjects.isEmpty {
+                subjectsVC?.status = .ready
+            } else {
+                subjectsVC?.status = .fetching
+                session.requestDataForSubjects(subjects: subjects)
+            }
+            
+        }
+    }
+    
+    func sessionDidFailOpeningWithError(error: PTRequestError) {
+        
+        print("sessionDidFailOpeningWithError: \(error)")
+        
+        homeVC?.status = .error
+        subjectsVC?.status = .error
+        careerVC?.status = .error
+        mapVC?.status = .error
+        
+        switch error {
+        case .InvalidCredentials:
+            // Presents login window
+            presentSignInViewController()
+        default:
+            presentLoginErrorAlert(error: error)
+            break
+        }
+    }
+    
+    
+    func managerDidRetrieveSchedule(schedule: [PTLecture]) {
+        
+        print("managerDidRetrieveSchedule")
+        
+        homeVC?.schedule = schedule
+        homeVC?.status = .ready
+    }
+    
+    func managerDidFailRetrievingScheduleWithError(error: PTRequestError) {
+        
+        print("managerDidFailRetrievingScheduleWithError: \(error)")
+        
+        homeVC?.status = .error
+    }
+    
+    
+    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]) {
+        
+        careerVC?.temporaryGrades = temporaryGrades
+        careerVC?.status = .ready
+    }
+    
+    func managerDidFailRetrievingTemporaryGradesWithError(error: PTRequestError) {
+        careerVC?.status = .error
+    }
+    
+    
+    func managerDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject) {
+        
+        print("managerDidRetrieveSubjectData:_, subject: \(subject.name)")
+        
+        subjectsVC?.dataOfSubjects[subject] = data
+        
+        if session?.dataOfSubjects.count == session?.subjects?.count {
+            subjectsVC?.status = .ready
+        }
+    }
+    
+    func managerDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject) {
+        
+        print("managerDidFailRetrievingSubjectDataWithError: \(error), subject: \(subject.name)")
+        
+        subjectsVC?.dataOfSubjects[subject] = PTSubjectData.invalid
+    }
+    
+    
+    func sessionDidFinishClosing() {
+        presentSignInViewController()
+    }
+    
+    func sessionDidFailClosingWithError(error: PTRequestError) {
+        let alert = UIAlertController(title: ~"Oops!", message: ~"Could not logout at this time!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: ~"Dismiss", style: .cancel, handler: nil))
+        window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    // MARK: Utilities
+    
     func showMapViewController(withHighlightedRoom room: PTRoom? = nil) {
         
         mapVC?.shouldFocus(onRoom: room)
         selectController(.map)
     }
     
-    func showLoginErrorAlert(error: PTRequestError) {
+    func presentLoginErrorAlert(error: PTRequestError) {
         
         let alert = UIAlertController(title: ~"Oops...", message: nil, preferredStyle: .alert)
         
@@ -99,52 +225,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         window?.rootViewController?.present(alert, animated: true)
     }
 
-    func sessionDidFinishOpening() {
-        
-        print("sessionDidFinishOpening")
-        guard let session = session else { return }
-        
-        mapVC?.status = .ready
-        
-        if let passedExams = session.passedExams {
-            
-            careerVC?.passedExams = passedExams
-        }
-        
-        careerVC?.status = .fetching
-        session.requestTemporaryGrades()
-        
-        homeVC?.status = .fetching
-        session.requestSchedule()
-        
-        if let subjects = self.session?.subjects {
-            
-            subjectsVC?.subjects = subjects
-            subjectsVC?.status = .fetching
-            session.requestDataForSubjects(subjects: subjects)
-            
-        } else {
-            
-            // No subjects!
-            subjectsVC?.status = .ready
-        }
-    }
-    
-    func managerDidRetrieveSchedule(schedule: [PTLecture]?) {
-        
-        print("managerDidRetrieveSchedule")
-        
-        homeVC?.schedule = schedule ?? []
-        homeVC?.status = .ready
-    }
-    
-    func managerDidFailRetrievingScheduleWithError(error: PTRequestError) {
-        
-        print("managerDidFailRetrievingScheduleWithError: \(error)")
-        
-        homeVC?.status = .error
-    }
-    
     func presentSignInViewController() {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -157,58 +237,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         presenterController.present(signInController, animated: true, completion: nil)
     }
     
-    func sessionDidFailOpeningWithError(error: PTRequestError) {
-        
-        print("sessionDidFailOpeningWithError: \(error)")
-        
-        homeVC?.status = .error
-        subjectsVC?.status = .error
-        careerVC?.status = .error
-        mapVC?.status = .error
-        
-        switch error {
-        case .InvalidCredentials:
-            // Presents login window
-            presentSignInViewController()
-        default:
-            showLoginErrorAlert(error: error)
-            break
-        }
-    }
-    
-    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]?) {
-        
-        if let temporaryGrades = temporaryGrades {
-            careerVC?.temporaryGrades = temporaryGrades
-        }
-        
-        careerVC?.status = .ready
-    }
-    
-    func managerDidFailRetrievingTemporaryGradesWithError(error: PTRequestError) {
-        careerVC?.status = .error
-    }
-    
-    func managerDidRetrieveSubjectData(data: PTSubjectData?, subject: PTSubject) {
-        
-        if let data = data {
-            subjectsVC?.dataOfSubjects[subject] = data
-        }
-        
-        if session?.dataOfSubjects.count == session?.subjects?.count {
-            subjectsVC?.status = .ready
-        }
-    }
-    
-    func managerDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject) {
-        subjectsVC?.status = .error
-    }
-    
-    
-    func performLogout() {
-        session?.close()
-    }
-    
     func selectController(_ index: ControllerIndex) {
         let tabbarCtrl = self.window?.rootViewController as? UITabBarController
         tabbarCtrl?.selectedIndex = index.rawValue
@@ -219,16 +247,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PTSessionDelegate {
         let navCtrl = tabbarCtrl?.viewControllers?[index.rawValue] as? UINavigationController
         
         return navCtrl?.viewControllers.first
-    }
-
-    func sessionDidFinishClosing() {
-        presentSignInViewController()
-    }
-    
-    func sessionDidFailClosingWithError(error: PTRequestError) {
-        let alert = UIAlertController(title: ~"Oops!", message: ~"Could not logout at this time!", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: ~"Dismiss", style: .cancel, handler: nil))
-        window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 }
 

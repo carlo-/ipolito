@@ -21,13 +21,13 @@ protocol PTSessionDelegate {
     func sessionDidFinishClosing()
     func sessionDidFailClosingWithError(error: PTRequestError)
     
-    func managerDidRetrieveSchedule(schedule: [PTLecture]?)
+    func managerDidRetrieveSchedule(schedule: [PTLecture])
     func managerDidFailRetrievingScheduleWithError(error: PTRequestError)
     
-    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]?)
+    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade])
     func managerDidFailRetrievingTemporaryGradesWithError(error: PTRequestError)
     
-    func managerDidRetrieveSubjectData(data: PTSubjectData?, subject: PTSubject)
+    func managerDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject)
     func managerDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject)
 }
 
@@ -38,13 +38,13 @@ extension PTSessionDelegate {
     func sessionDidFinishClosing() {}
     func sessionDidFailClosingWithError(error: PTRequestError) {}
     
-    func managerDidRetrieveSchedule(schedule: [PTLecture]?) {}
+    func managerDidRetrieveSchedule(schedule: [PTLecture]) {}
     func managerDidFailRetrievingScheduleWithError(error: PTRequestError) {}
     
-    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]?) {}
+    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]) {}
     func managerDidFailRetrievingTemporaryGradesWithError(error: PTRequestError) {}
     
-    func managerDidRetrieveSubjectData(data: PTSubjectData?, subject: PTSubject) {}
+    func managerDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject) {}
     func managerDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject) {}
 }
 
@@ -85,13 +85,11 @@ class PTSession: NSObject {
         if let plistPath = Bundle.main.path(forResource: "Rooms", ofType: "plist"),
             let dict = NSDictionary(contentsOfFile: plistPath) {
             
-            return PTParser.roomsFromRawContainer(dict)
+            return PTParser.roomsFromRawContainer(dict) ?? []
         } else {
             return []
         }
     }()
-    
-    // static let shared = PTSession()
     
     private static var privateShared: PTSession?
     
@@ -190,7 +188,14 @@ class PTSession: NSObject {
                     } else {
                         
                         self.temporaryGrades = temporaryGrades
-                        self.delegate?.managerDidRetrieveTemporaryGrades(temporaryGrades)
+                        
+                        if temporaryGrades != nil {
+                            self.delegate?.managerDidRetrieveTemporaryGrades(temporaryGrades!)
+                        } else {
+                            self.delegate?.managerDidFailRetrievingTemporaryGradesWithError(error: .JSONSerializationFailed)
+                        }
+                        
+                        
                     }
                     
                 })
@@ -260,7 +265,13 @@ class PTSession: NSObject {
                     } else {
                         
                         self.schedule = schedule
-                        self.delegate?.managerDidRetrieveSchedule(schedule: schedule)
+                        
+                        if schedule != nil {
+                            self.delegate?.managerDidRetrieveSchedule(schedule: schedule!)
+                        } else {
+                            self.delegate?.managerDidFailRetrievingScheduleWithError(error: .JSONSerializationFailed)
+                        }
+                        
                     }
                 })
             })
@@ -279,7 +290,7 @@ class PTSession: NSObject {
     
     
     
-    private func requestDataForSubject(_ subject: PTSubject) {
+    func requestDataForSubject(_ subject: PTSubject) {
         
         guard let token = self.token else {
             self.delegate?.managerDidFailRetrievingSubjectDataWithError(error: .InvalidToken, subject: subject)
@@ -293,6 +304,8 @@ class PTSession: NSObject {
                 
                 OperationQueue.main.addOperation({
                     
+                    self.dataOfSubjects[subject] = subjectData ?? PTSubjectData.invalid
+                    
                     if error != nil {
                         
                         self.delegate?.managerDidFailRetrievingSubjectDataWithError(error: error!, subject: subject)
@@ -300,10 +313,10 @@ class PTSession: NSObject {
                     } else {
                         
                         if subjectData != nil {
-                            self.dataOfSubjects[subject] = subjectData!
+                            self.delegate?.managerDidRetrieveSubjectData(data: subjectData!, subject: subject)
+                        } else {
+                            self.delegate?.managerDidFailRetrievingSubjectDataWithError(error: .JSONSerializationFailed, subject: subject)
                         }
-                        
-                        self.delegate?.managerDidRetrieveSubjectData(data: subjectData, subject: subject)
                     }
                 })
             })

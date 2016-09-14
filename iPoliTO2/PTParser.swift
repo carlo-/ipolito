@@ -9,38 +9,74 @@
 import Foundation
 
 private func rawRoomsFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.site") is NSArray else {
+            return nil
+    }
     return container.value(forKeyPath: "data.site") as AnyObject?
 }
 
 private func rawPassedExamsFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.libretto") is NSArray else {
+            return nil
+    }
     return container.value(forKeyPath: "data.libretto") as AnyObject?
 }
 
 private func rawCaricoDidatticoFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.carico_didattico") is NSArray else {
+            return nil
+    }
     return container.value(forKeyPath: "data.carico_didattico") as AnyObject?
 }
 
 private func rawMessagesFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.avvisi") is NSArray else {
+            return nil
+    }
     return container.value(forKeyPath: "data.avvisi") as AnyObject?
 }
 
 private func rawDocumentsFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.materiale") is NSArray else {
+            return nil
+    }
     return container.value(forKeyPath: "data.materiale") as AnyObject?
 }
 
 private func rawScheduleFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.orari") is NSArray else {
+            return nil
+    }
     return container.value(forKeyPath: "data.orari") as AnyObject?
 }
 
 private func rawFileLinkFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.url") is NSString else {
+            return nil
+    }
     return container.value(forKeyPath: "data.url") as AnyObject?
 }
 
 private func rawTemporaryGradesFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.valutazioni_provvisorie") is NSArray else {
+            return nil
+    }
     return container.value(forKeyPath: "data.valutazioni_provvisorie") as AnyObject?
 }
 
 private func rawFreeRoomsFromRawContainer(_ container:AnyObject) -> [NSDictionary]? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+          container.value(forKeyPath: "data.aule_libere") is NSDictionary else {
+            return nil
+    }
     
     if let dict = container.value(forKeyPath: "data.aule_libere") as? [String: [NSDictionary]] {
         
@@ -150,12 +186,19 @@ class PTParser: NSObject {
     
     
     class func sessionTokenFromRawContainer(_ container:AnyObject) -> String? {
+        guard container.value(forKeyPath: "data") is NSDictionary,
+              container.value(forKeyPath: "data.login") is NSDictionary else {
+                return nil
+        }
         return container.value(forKeyPath: "data.login.token") as? String
     }
     
     
     class func statusCodeFromRawContainer(_ container: AnyObject) -> Int? {
-        
+        guard container.value(forKeyPath: "esito") is NSDictionary,
+              container.value(forKeyPath: "esito.generale") is NSDictionary else {
+                return nil
+        }
         if let rawValue = container.value(forKeyPath: "esito.generale.stato") as AnyObject? {
             
             return Int(rawValue.description)
@@ -166,7 +209,7 @@ class PTParser: NSObject {
     }
     
     
-    class func namesOfFreeRoomsFromRawContainer(_ container: AnyObject) -> [String] {
+    class func namesOfFreeRoomsFromRawContainer(_ container: AnyObject) -> [String]? {
         
         if let rawFreeRooms = rawFreeRoomsFromRawContainer(container) {
             
@@ -183,12 +226,12 @@ class PTParser: NSObject {
             return freeRooms
             
         } else {
-            return []
+            return nil
         }
     }
     
     
-    class func subjectsFromRawContainer(_ container: AnyObject!) -> [PTSubject] {
+    class func subjectsFromRawContainer(_ container: AnyObject!) -> [PTSubject]? {
         
         if let rawCarico = rawCaricoDidatticoFromRawContainer(container) as? [[String: AnyObject]] {
             
@@ -210,12 +253,12 @@ class PTParser: NSObject {
             return subjects
             
         } else {
-            return []
+            return nil
         }
     }
     
     
-    class func passedExamsFromRawContainer(_ container: AnyObject!) -> [PTExam] {
+    class func passedExamsFromRawContainer(_ container: AnyObject!) -> [PTExam]? {
         
         if let rawExams = rawPassedExamsFromRawContainer(container) as? [[String: AnyObject]] {
             
@@ -256,12 +299,12 @@ class PTParser: NSObject {
             return exams
             
         } else {
-            return []
+            return nil
         }
     }
     
     
-    class func temporaryGradesFromRawContainer(_ container: AnyObject!) -> [PTTemporaryGrade] {
+    class func temporaryGradesFromRawContainer(_ container: AnyObject!) -> [PTTemporaryGrade]? {
         
         if let rawGrades = rawTemporaryGradesFromRawContainer(container) as? [[String: AnyObject]] {
             
@@ -320,7 +363,7 @@ class PTParser: NSObject {
             return grades
             
         } else {
-            return []
+            return nil
         }
     }
     
@@ -335,17 +378,17 @@ class PTParser: NSObject {
         }
     }
     
-    class func documentsFromRawContainer(_ container: AnyObject!) -> [PTMElement] {
+    class func documentsFromRawContainer(_ container: AnyObject!) -> [PTMElement]? {
         
         if let rawDocuments = rawDocumentsFromRawContainer(container) as? [[String: AnyObject]] {
             return parsedPTMElementsFromRawFolder(rawDocuments)
         } else {
-            return []
+            return nil
         }
     }
     
     
-    class func messagesFromRawContainer(_ container: AnyObject!) -> [PTMessage] {
+    class func messagesFromRawContainer(_ container: AnyObject!) -> [PTMessage]? {
         
         if let rawMessages = rawMessagesFromRawContainer(container) as? [[String: AnyObject]] {
             
@@ -374,12 +417,12 @@ class PTParser: NSObject {
             return messages
             
         } else {
-            return []
+            return nil
         }
     }
     
     
-    class func roomsFromRawContainer(_ container:AnyObject) -> [PTRoom] {
+    class func roomsFromRawContainer(_ container:AnyObject) -> [PTRoom]? {
         
         if let rawRooms = rawRoomsFromRawContainer(container) as? [[String: AnyObject]] {
         
@@ -408,12 +451,12 @@ class PTParser: NSObject {
             return rooms
             
         } else {
-            return []
+            return nil
         }
     }
     
     
-    class func scheduleFromRawContainer(_ container:AnyObject) -> [PTLecture] {
+    class func scheduleFromRawContainer(_ container:AnyObject) -> [PTLecture]? {
         
         if let rawSchedule = rawScheduleFromRawContainer(container) as? [[String: AnyObject]] {
             
@@ -460,12 +503,17 @@ class PTParser: NSObject {
             return schedule
             
         } else {
-            return []
+            return nil
         }
     }
     
     
-    class func studentInfoFromRawContainer(_ container:AnyObject) -> PTStudentInfo {
+    class func studentInfoFromRawContainer(_ container:AnyObject) -> PTStudentInfo? {
+        
+        guard container.value(forKeyPath: "data") is NSDictionary,
+              container.value(forKeyPath: "data.anagrafica") is NSDictionary else {
+            return nil
+        }
         
         let firstName:String?
         if let obj = container.value(forKeyPath: "data.anagrafica.nome") as? String {
@@ -509,13 +557,13 @@ class PTParser: NSObject {
         
         return PTStudentInfo(dateFetched: Date.init(),
                              firstName: firstName,
-                                 lastName: lastName,
-                                 weightedAverage: weightedAverage,
-                                 cleanWeightedAverage: cleanWeightedAverage,
-                                 graduationMark: graduationMark,
-                                 cleanGraduationMark: cleanGraduationMark,
-                                 obtainedCredits: obtainedCredits,
-                                 academicMajor: academicMajor)
+                             lastName: lastName,
+                             weightedAverage: weightedAverage,
+                             cleanWeightedAverage: cleanWeightedAverage,
+                             graduationMark: graduationMark,
+                             cleanGraduationMark: cleanGraduationMark,
+                             obtainedCredits: obtainedCredits,
+                             academicMajor: academicMajor)
     }
 
 }

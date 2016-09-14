@@ -312,14 +312,19 @@ class PTRequest: NSObject {
             
             if error == nil && container != nil {
                 
-                let messages = PTParser.messagesFromRawContainer(container!)
-                let documents = PTParser.documentsFromRawContainer(container!)
+                let subjectData: PTSubjectData
                 
-                let subjectData = PTSubjectData(dateFetched: Date.init(),
+                if let messages = PTParser.messagesFromRawContainer(container!),
+                   let documents = PTParser.documentsFromRawContainer(container!) {
+                    
+                    subjectData = PTSubjectData(dateFetched: Date.init(),
                                                 subject: subject,
                                                 lecturers: [],
                                                 messages: messages,
                                                 documents: documents)
+                } else {
+                    subjectData = PTSubjectData.invalid
+                }
                 
                 completion(subjectData, nil)
                 

@@ -29,7 +29,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         if let plistPath = Bundle.main.path(forResource: "Rooms", ofType: "plist"),
            let dict = NSDictionary(contentsOfFile: plistPath) {
             
-            return PTParser.roomsFromRawContainer(dict)
+            return PTParser.roomsFromRawContainer(dict) ?? []
         } else {
             return []
         }
