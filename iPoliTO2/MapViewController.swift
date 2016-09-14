@@ -85,7 +85,6 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         reloadFreeRoomsIfNeeded()
         
         focusOnRoom(roomToFocus, animated: true)
-        roomToFocus = nil
     }
     
     deinit {
@@ -181,7 +180,8 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         return false
     }
     
-    private func reloadRoomAnnotations() {
+    @discardableResult
+    private func reloadRoomAnnotations() -> [MKPointAnnotation] {
         
         removeAllAnnotations()
         
@@ -201,6 +201,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         }
         
         mapView.addAnnotations(annotations)
+        return annotations
     }
     
     private func showAllRooms() {
@@ -315,9 +316,10 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         searchBar.resignFirstResponder()
         
         if CLLocationCoordinate2DIsValid(CLLocationCoordinate2D(fromRoom: room)) {
+            roomToFocus = room
             focusOnRoom(room)
         } else {
-            searchBar.text = nil
+            focusOnRoom(nil)
         }
     }
     
@@ -342,6 +344,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
             
             if query.isEmpty {
                 
+                roomToFocus = nil
                 showAllRooms()
                 zoomToMainCampus()
                 return
@@ -407,6 +410,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
             
             searchController.isActive = false
             searchBar.text = nil
+            roomToFocus = nil
             showAllRooms()
             zoomToMainCampus(animated: animated)
             return
@@ -416,14 +420,14 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         searchBar.text = room.localizedName
         
         roomsToShow = [room]
-        reloadRoomAnnotations()
+        let visibleAnnots = reloadRoomAnnotations()
         
         let coords = CLLocationCoordinate2D(fromRoom: room)
         guard CLLocationCoordinate2DIsValid(coords) else { return }
         
         zoomToCoordinates(coords, withDelta: 0.00125, animated: animated)
         
-        if let annotation = mapView.annotations.first {
+        if let annotation = visibleAnnots.first {
             mapView.selectAnnotation(annotation, animated: true)
         }
     }
