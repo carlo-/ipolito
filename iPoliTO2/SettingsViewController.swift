@@ -15,6 +15,7 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     @IBOutlet var usernameLabel: UILabel!
     
     private let logoutIndexPath = IndexPath(row: 1, section: 0)
+    private let learnMoreIndexPath = IndexPath(row: 0, section: 1)
     private let feedbackIndexPath = IndexPath(row: 0, section: 2)
     private let reviewIndexPath = IndexPath(row: 0, section: 3)
     private let tellSomeFriendsIndexPath = IndexPath(row: 1, section: 3)
@@ -34,6 +35,8 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
         switch indexPath {
         case logoutIndexPath:
             logoutPressed()
+        case learnMoreIndexPath:
+            learnMorePressed()
         case feedbackIndexPath:
             feedbackPressed()
         case reviewIndexPath:
@@ -55,6 +58,11 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
         }))
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    func learnMorePressed() {
+        let url = URL(string: kGitHubReadmeLink)!
+        UIApplication.shared.openURL(url)
     }
     
     func feedbackPressed() {

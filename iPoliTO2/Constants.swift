@@ -12,6 +12,9 @@ public let kDemoAccount = PTAccount(rawStudentID: kDemoStudentID, password: kDem
 
 public let kAppStoreReviewLink = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1069740093&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8"
 
+public let kGitHubLink = "https://github.com/carlo-/ipolito"
+public let kGitHubReadmeLink = "https://github.com/carlo-/ipolito/blob/master/README.md#ipolito"
+
 public let kAppStoreLink = "https://itunes.apple.com/us/app/ipolito-per-iphone/id1069740093?mt=8"
 
 public let kFeedbackEmail = "rapisarda.carlo@outlook.com"
