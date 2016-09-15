@@ -184,14 +184,14 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="n6s-WQ-7l3" firstAttribute="leading" secondItem="H5M-T2-WRc" secondAttribute="leadingMargin" id="1Lf-YR-35i"/>
-                                        <constraint firstItem="QXf-jI-5xG" firstAttribute="leading" secondItem="n6s-WQ-7l3" secondAttribute="trailing" constant="8" id="8OZ-k0-G1q"/>
+                                        <constraint firstItem="n6s-WQ-7l3" firstAttribute="leading" secondItem="H5M-T2-WRc" secondAttribute="leadingMargin" constant="5" id="1Lf-YR-35i"/>
+                                        <constraint firstItem="QXf-jI-5xG" firstAttribute="leading" secondItem="n6s-WQ-7l3" secondAttribute="trailing" constant="13" id="8OZ-k0-G1q"/>
                                         <constraint firstItem="fki-j6-Xtk" firstAttribute="top" secondItem="H5M-T2-WRc" secondAttribute="topMargin" id="Qml-5v-PvE"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="fki-j6-Xtk" secondAttribute="trailing" constant="38" id="UGf-x0-t4I"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="fki-j6-Xtk" secondAttribute="trailing" id="UGf-x0-t4I"/>
                                         <constraint firstItem="QXf-jI-5xG" firstAttribute="top" secondItem="fki-j6-Xtk" secondAttribute="bottom" id="YDF-oa-Vyq"/>
-                                        <constraint firstItem="fki-j6-Xtk" firstAttribute="leading" secondItem="n6s-WQ-7l3" secondAttribute="trailing" constant="8" id="h2p-8c-qOv"/>
+                                        <constraint firstItem="fki-j6-Xtk" firstAttribute="leading" secondItem="n6s-WQ-7l3" secondAttribute="trailing" constant="13" id="h2p-8c-qOv"/>
                                         <constraint firstItem="n6s-WQ-7l3" firstAttribute="centerY" secondItem="H5M-T2-WRc" secondAttribute="centerY" id="slL-xd-TqG"/>
-                                        <constraint firstAttribute="trailing" secondItem="QXf-jI-5xG" secondAttribute="trailing" constant="46" id="uev-nD-Tjv"/>
+                                        <constraint firstAttribute="trailing" secondItem="QXf-jI-5xG" secondAttribute="trailing" constant="8" id="uev-nD-Tjv"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -224,10 +224,10 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mat-tc-Qez" firstAttribute="centerY" secondItem="ucL-sq-4I2" secondAttribute="centerY" id="27m-hG-fE8"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="LJJ-KB-vYr" secondAttribute="trailing" constant="5" id="9dh-9k-W0F"/>
-                                        <constraint firstItem="LJJ-KB-vYr" firstAttribute="centerY" secondItem="ucL-sq-4I2" secondAttribute="centerY" id="Go9-jp-4XJ"/>
-                                        <constraint firstItem="LJJ-KB-vYr" firstAttribute="leading" secondItem="mat-tc-Qez" secondAttribute="trailing" constant="8" id="Wky-pH-G4P"/>
-                                        <constraint firstItem="mat-tc-Qez" firstAttribute="leading" secondItem="ucL-sq-4I2" secondAttribute="leadingMargin" id="gsV-oJ-1Mp"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="LJJ-KB-vYr" secondAttribute="trailing" constant="-8" id="9dh-9k-W0F"/>
+                                        <constraint firstItem="LJJ-KB-vYr" firstAttribute="centerY" secondItem="ucL-sq-4I2" secondAttribute="centerY" constant="1" id="Go9-jp-4XJ"/>
+                                        <constraint firstItem="LJJ-KB-vYr" firstAttribute="leading" secondItem="mat-tc-Qez" secondAttribute="trailing" constant="13" id="Wky-pH-G4P"/>
+                                        <constraint firstItem="mat-tc-Qez" firstAttribute="leading" secondItem="ucL-sq-4I2" secondAttribute="leadingMargin" constant="5" id="gsV-oJ-1Mp"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -253,7 +253,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j7O-VR-FU9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2313" y="-402"/>
+            <point key="canvasLocation" x="2312.8000000000002" y="-402.54872563718146"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QIg-cz-HBY">
@@ -958,7 +958,7 @@
                             <tableViewSection headerTitle="About" footerTitle="iPoliTO is an open-source project developed by Carlo Rapisarda, Computer Eng. student at Politecnico di Torino" id="F5F-hH-WN8">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="bxt-6t-0bP">
-                                        <rect key="frame" x="0.0" y="359" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="358" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxt-6t-0bP" id="69J-kp-PIR">
                                             <frame key="frameInset" width="375" height="49"/>
@@ -985,7 +985,7 @@
                                 <string key="footerTitle">Are you having issues with the app and want to report a bug, or simply suggest a feature? You can get in touch with me by tapping the button above.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="rau-35-gvp">
-                                        <rect key="frame" x="0.0" y="517" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="516" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rau-35-gvp" id="3bQ-Ab-fm2">
                                             <frame key="frameInset" width="375" height="49"/>
@@ -1009,7 +1009,7 @@
                             <tableViewSection headerTitle="Spread the word" footerTitle="If you like iPoliTO and find it useful, write a review on the App Store and spread the word with your friends!" id="kGO-u5-WYM">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="yqe-po-5Uv">
-                                        <rect key="frame" x="0.0" y="675" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="673" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yqe-po-5Uv" id="Tbg-Am-y9o">
                                             <frame key="frameInset" width="375" height="49"/>
@@ -1029,7 +1029,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="qlr-HU-mGv">
-                                        <rect key="frame" x="0.0" y="725" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="723" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qlr-HU-mGv" id="XM3-fu-vwd">
                                             <frame key="frameInset" width="375" height="49"/>
@@ -1175,7 +1175,7 @@ v2.0-beta (2001)</string>
         <image name="toolbox" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cbe-1M-r3Z"/>
+        <segue reference="M2D-aB-cSl"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
