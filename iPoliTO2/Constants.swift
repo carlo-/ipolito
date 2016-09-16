@@ -19,6 +19,8 @@ public let kAppStoreLink = "https://itunes.apple.com/us/app/ipolito-per-iphone/i
 
 public let kFeedbackEmail = "rapisarda.carlo@outlook.com"
 
-public let kDebugForcePresentLoginVC = true
+public let kDebugForcePresentLoginVC = false
 public let kDebugShouldForceCredentials = false
 public let kDebugForcingCredentials: PTAccount = kDemoAccount
+
+public let kReleaseVersionOfLastExecutionKey = "releaseVersionOfLastExecution"

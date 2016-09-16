@@ -37,13 +37,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     var mapVC: MapViewController? {
         return getController(.map)      as? MapViewController
     }
+    var releaseVersionOfLastExecution: String? {
+        UserDefaults().synchronize()
+        return UserDefaults().string(forKey: kReleaseVersionOfLastExecutionKey)
+    }
+    var isFirstTimeWithThisRelease: Bool {
+        return Bundle.main.releaseVersionNumber != releaseVersionOfLastExecution
+    }
+    var isFirstTimeWithThisApp: Bool {
+        return releaseVersionOfLastExecution == nil
+    }
+    
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
+        
+        migrateFromOlderReleaseIfNeeded()
         
         window?.makeKeyAndVisible()
         tabBarController?.delegate = self
         
-        login()
+        if isFirstTimeWithThisApp {
+            firstTimeWithThisApp()
+        } else if isFirstTimeWithThisRelease {
+            firstTimeWithThisRelease()
+        } else {
+            login()
+        }
     }
     
     func login() {
@@ -93,6 +112,90 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         }
         
         previousSelection = index
+    }
+    
+    
+    
+    // MARK: Migration & FirstTime assistance methods
+    
+    func migrateFromOlderReleaseIfNeeded() {
+        
+        let userDefaults = UserDefaults()
+        userDefaults.synchronize()
+        
+        if userDefaults.string(forKey: "firstExe") != nil {
+            
+            // User updated from 1.x.x
+            
+            PTKeychain.removeAllValues()
+            
+            if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                userDefaults.removePersistentDomain(forName: bundleIdentifier)
+            }
+            
+            emptyDocumentsDirectory()
+            
+            userDefaults.set("1.x.x", forKey: kReleaseVersionOfLastExecutionKey)
+        }
+    }
+    
+    func firstTimeWithThisRelease() {
+        
+        // TODO: Add welcome & what's new message
+        let alert = UIAlertController(title: ~"Welcome", message: ~"firstTimeWithThisRelease", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: ~"Continue", style: .default, handler: {
+            action in
+            self.updateVersionOfLastExecution()
+            self.login()
+        }))
+        window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    func firstTimeWithThisApp() {
+        
+        // Removes any trace of previous versions that were deleted
+        PTKeychain.removeAllValues()
+        
+        presentSignInViewController(completion: {
+            signInController in
+            
+            let alert = UIAlertController(title: ~"Welcome", message: ~"Thank you for downloading iPoliTO!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: ~"Continue", style: .default, handler: {
+                action in
+                self.updateVersionOfLastExecution()
+            }))
+            signInController.present(alert, animated: true, completion: nil)
+        })
+    }
+    
+    func updateVersionOfLastExecution() {
+        
+        guard let release = Bundle.main.releaseVersionNumber else { return }
+        UserDefaults().set(release, forKey: kReleaseVersionOfLastExecutionKey)
+    }
+    
+    func emptyDocumentsDirectory() {
+        
+        if let documentDirectory =
+            NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
+            
+            let fileManager = FileManager()
+            
+            let paths: [String]
+            do {
+                try paths = fileManager.contentsOfDirectory(atPath: documentDirectory)
+            } catch _ {
+                paths = []
+            }
+            
+            for path in paths {
+                
+                let fullPath = (documentDirectory as NSString).appendingPathComponent(path)
+                do {
+                    try fileManager.removeItem(atPath: fullPath)
+                } catch _ {}
+            }
+        }
     }
     
     
@@ -250,7 +353,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         window?.rootViewController?.present(alert, animated: true)
     }
 
-    func presentSignInViewController() {
+    func presentSignInViewController(completion: ((SignInViewController) -> Void)? = nil) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let signInController = storyboard.instantiateViewController(withIdentifier: "SignInViewController_id") as? SignInViewController,
@@ -259,7 +362,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         }
         
         presenterController.modalPresentationStyle = .currentContext
-        presenterController.present(signInController, animated: true, completion: nil)
+        presenterController.present(signInController, animated: true, completion: {
+            completion?(signInController)
+        })
     }
     
     func selectController(_ index: ControllerIndex) {

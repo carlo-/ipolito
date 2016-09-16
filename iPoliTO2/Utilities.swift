@@ -21,6 +21,16 @@ enum PTViewControllerStatus {
     case unknown
 }
 
+extension Bundle {
+    
+    var releaseVersionNumber: String? {
+        return self.infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+    var buildVersionNumber: String? {
+        return self.infoDictionary?["CFBundleVersion"] as? String
+    }
+}
+
 extension UIColor {
     struct iPoliTO {
         static let darkGray = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
