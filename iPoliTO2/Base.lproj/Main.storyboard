@@ -1166,8 +1166,8 @@ v2.0-beta (2001)</string>
     <resources>
         <image name="calendar" width="25" height="25"/>
         <image name="career" width="25" height="25"/>
-        <image name="docType_folder" width="25" height="25"/>
-        <image name="docType_generic" width="25" height="25"/>
+        <image name="docType_folder" width="40" height="40"/>
+        <image name="docType_generic" width="40" height="40"/>
         <image name="downloads" width="25" height="25"/>
         <image name="map" width="25" height="25"/>
         <image name="settings" width="25" height="25"/>
