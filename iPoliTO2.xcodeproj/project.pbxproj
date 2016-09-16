@@ -33,6 +33,7 @@
 		239CCE201D6F906200BDF6E7 /* CRRoundedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */; };
 		239CCE221D6F926200BDF6E7 /* PTLectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CCE211D6F926200BDF6E7 /* PTLectureView.swift */; };
 		239CCE241D6F928300BDF6E7 /* PTLectureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 239CCE231D6F928300BDF6E7 /* PTLectureView.xib */; };
+		23AA447C1D8C807D00BF882E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23AA447B1D8C807D00BF882E /* Settings.bundle */; };
 		23B67D501D5338A5009CB44B /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */; };
 		23B67D521D534AD5009CB44B /* PTDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B67D511D534AD5009CB44B /* PTDownloadManager.swift */; };
 		23CC5D0E1D55FF4600EDF589 /* Rooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23CC5D0D1D55FF4600EDF589 /* Rooms.plist */; };
@@ -72,6 +73,7 @@
 		239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRRoundedCell.swift; sourceTree = "<group>"; };
 		239CCE211D6F926200BDF6E7 /* PTLectureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTLectureView.swift; sourceTree = "<group>"; };
 		239CCE231D6F928300BDF6E7 /* PTLectureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PTLectureView.xib; sourceTree = "<group>"; };
+		23AA447B1D8C807D00BF882E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
 		23B67D511D534AD5009CB44B /* PTDownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTDownloadManager.swift; sourceTree = "<group>"; };
 		23CC5D0D1D55FF4600EDF589 /* Rooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Rooms.plist; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 		23FD09771D77405900ABD65E /* Additional Files */ = {
 			isa = PBXGroup;
 			children = (
+				23AA447B1D8C807D00BF882E /* Settings.bundle */,
 				2372F1DC1D7F968100DBC708 /* iPoliTO2-Bridging-Header.h */,
 				2399D83A1D4CD7340001C99C /* Assets.xcassets */,
 				2399D83C1D4CD7340001C99C /* LaunchScreen.storyboard */,
@@ -214,6 +217,7 @@
 			buildConfigurationList = 2399D8421D4CD7340001C99C /* Build configuration list for PBXNativeTarget "iPoliTO2" */;
 			buildPhases = (
 				23296CB31D74A376004789A2 /* Highlight TODOs and FIXMEs as warnings */,
+				23AA447D1D8C822800BF882E /* Update Build number */,
 				2399D82A1D4CD7340001C99C /* Sources */,
 				2399D82B1D4CD7340001C99C /* Frameworks */,
 				2399D82C1D4CD7340001C99C /* Resources */,
@@ -280,6 +284,7 @@
 				2399D83B1D4CD7340001C99C /* Assets.xcassets in Resources */,
 				2399D8391D4CD7340001C99C /* Main.storyboard in Resources */,
 				239CCE241D6F928300BDF6E7 /* PTLectureView.xib in Resources */,
+				23AA447C1D8C807D00BF882E /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +304,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "KEYWORDS=\"TODO|FIXME|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+		};
+		23AA447D1D8C822800BF882E /* Update Build number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Update Build number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "\n#increment the build number\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n\n#compose the version number string\nversionString=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\nversionString+=\" (\"\nversionString+=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$INFOPLIST_FILE\")\nversionString+=\")\"\n\n#write the version number string to the settings bundle\n#IMPORTANT: this assumes the version number is the first property in the settings bundle!\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:0:DefaultValue $versionString\" \"/Users/Carlo/Documents/Progetti/iPoliTO2/iPoliTO2/iPoliTO2/Settings.bundle/Root.plist\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
