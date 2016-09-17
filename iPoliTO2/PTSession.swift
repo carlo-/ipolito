@@ -423,6 +423,11 @@ class PTSession: NSObject {
             UserDefaults().removePersistentDomain(forName: bundleIdentifier)
         }
         
+        if let release = Bundle.main.releaseVersionNumber {
+            UserDefaults().synchronize()
+            UserDefaults().set(release, forKey: kReleaseVersionOfLastExecutionKey)
+        }
+        
         PTSession.reset()
     }
 }
