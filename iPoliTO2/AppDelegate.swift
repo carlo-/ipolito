@@ -65,12 +65,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         }
     }
     
-    func login() {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         
-        homeVC?.status = .logginIn
-        subjectsVC?.status = .logginIn
-        careerVC?.status = .logginIn
-        mapVC?.status = .logginIn
+        refreshSessionDataIfNeeded()
+    }
+    
+    func refreshSessionDataIfNeeded() {
+        
+        guard let session = session else { return }
+        
+        var shouldRefresh = false
+        
+        if let date = session.dateOpened {
+            var cal = Calendar(identifier: .gregorian)
+            cal.timeZone = TimeZone.Turin
+            shouldRefresh = !(cal.isDateInToday(date))
+        } else {
+            shouldRefresh = true
+        }
+        
+        if shouldRefresh { login() }
+    }
+    
+    func login() {
         
         if let account = storedAccount() {
             
@@ -202,6 +219,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     // MARK: PTSession delegate methods
     
+    func sessionDidBeginOpening() {
+        
+        homeVC?.status = .logginIn
+        subjectsVC?.status = .logginIn
+        careerVC?.status = .logginIn
+        mapVC?.status = .logginIn
+    }
+    
     func sessionDidFinishOpening() {
         
         print("sessionDidFinishOpening")
@@ -217,15 +242,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
         
-        if let passedExams = session.passedExams {
-            
-            careerVC?.passedExams = passedExams
-        }
+        careerVC?.passedExams = session.passedExams ?? []
         
-        careerVC?.status = .fetching
         session.requestTemporaryGrades()
         
-        homeVC?.status = .fetching
         session.requestSchedule()
         
         if let subjects = self.session?.subjects {
@@ -235,10 +255,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             if subjects.isEmpty {
                 subjectsVC?.status = .ready
             } else {
-                subjectsVC?.status = .fetching
                 session.requestDataForSubjects(subjects: subjects)
             }
-            
         }
     }
     
@@ -262,6 +280,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     
+    func sessionDidBeginRetrievingSchedule() {
+        homeVC?.status = .fetching
+    }
+    
     func sessionDidRetrieveSchedule(schedule: [PTLecture]) {
         
         print("managerDidRetrieveSchedule")
@@ -278,6 +300,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     
+    func sessionDidBeginRetrievingTemporaryGrades() {
+        careerVC?.status = .fetching
+    }
+    
     func sessionDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]) {
         
         careerVC?.temporaryGrades = temporaryGrades
@@ -288,6 +314,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         careerVC?.status = .error
     }
     
+    
+    func sessionDidBeginRetrievingSubjectData(subject: PTSubject) {
+        subjectsVC?.status = .fetching
+    }
     
     func sessionDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject) {
         
@@ -307,6 +337,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         subjectsVC?.dataOfSubjects[subject] = PTSubjectData.invalid
     }
     
+    
+    func sessionDidBeginClosing() {
+        return
+    }
     
     func sessionDidFinishClosing() {
         presentSignInViewController()

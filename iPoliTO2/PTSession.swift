@@ -72,6 +72,8 @@ class PTSession: NSObject {
     var dataOfSubjects: [PTSubject: PTSubjectData] = [:]
     var shouldLoadTestData: Bool = false
     
+    private(set) var dateOpened: Date?
+    
     private(set) var isOpening: Bool = false
     private(set) var isClosing: Bool = false
     
@@ -171,6 +173,7 @@ class PTSession: NSObject {
                         
                         self.forgetSessionData()
                         
+                        self.dateOpened = nil
                         self.isClosing = false
                         self.delegate?.sessionDidFinishClosing()
                     }
@@ -398,6 +401,7 @@ class PTSession: NSObject {
                     PTKeychain.storeAccount(self.account!)
                     PTKeychain.storeValue(token, ofType: .token)
                     
+                    self.dateOpened = Date()
                     self.isOpening = false
                     self.delegate?.sessionDidFinishOpening()
                 })
