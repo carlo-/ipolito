@@ -343,6 +343,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     func sessionDidFinishClosing() {
+        
+        homeVC?.schedule = []
+        homeVC?.status = .loggedOut
+        
+        subjectsVC?.dataOfSubjects = [:]
+        subjectsVC?.subjects = []
+        subjectsVC?.status = .loggedOut
+        
+        careerVC?.passedExams = []
+        careerVC?.temporaryGrades = []
+        careerVC?.status = .loggedOut
+        
         presentSignInViewController()
     }
     

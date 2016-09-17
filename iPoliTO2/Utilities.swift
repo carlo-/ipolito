@@ -18,7 +18,7 @@ enum PTViewControllerStatus {
     case logginIn
     case error
     case ready
-    case unknown
+    case loggedOut
 }
 
 extension Bundle {

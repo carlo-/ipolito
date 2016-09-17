@@ -19,7 +19,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     private var searchBar: UISearchBar { return searchController.searchBar }
     private var timePicker: CRTimePicker?
     
-    var status: PTViewControllerStatus = .unknown {
+    var status: PTViewControllerStatus = .loggedOut {
         didSet {
             statusDidChange()
         }

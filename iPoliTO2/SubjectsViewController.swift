@@ -20,7 +20,7 @@ class SubjectsViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
-    var status: PTViewControllerStatus = .unknown {
+    var status: PTViewControllerStatus = .loggedOut {
         didSet {
             statusDidChange()
         }

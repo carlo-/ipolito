@@ -22,7 +22,7 @@ class HomeViewController: UITableViewController {
             tableView.reloadData()
         }
     }
-    var status: PTViewControllerStatus = .unknown {
+    var status: PTViewControllerStatus = .loggedOut {
         didSet {
             statusDidChange()
         }
