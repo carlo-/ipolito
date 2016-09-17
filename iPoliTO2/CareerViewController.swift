@@ -109,6 +109,11 @@ class CareerViewController: UITableViewController {
             
         case 2:
             
+            guard let studentInfo = PTSession.shared.studentInfo else { return }
+            (cell as? PTCareerDetailsCell)?.configure(withStudentInfo: studentInfo)
+            
+        case 3:
+            
             (cell as? PTGraphCell)?.setExams(passedExams)
             
         default:
@@ -125,13 +130,15 @@ class CareerViewController: UITableViewController {
             return tableView.dequeueReusableCell(withIdentifier: PTTemporaryGradeCell.identifier, for: indexPath)
         case 1:
             return tableView.dequeueReusableCell(withIdentifier: PTGradeCell.identifier, for: indexPath)
+        case 2:
+            return tableView.dequeueReusableCell(withIdentifier: PTCareerDetailsCell.identifier, for: indexPath)
         default:
             return tableView.dequeueReusableCell(withIdentifier: PTGraphCell.identifier, for: indexPath)
         }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -142,6 +149,8 @@ class CareerViewController: UITableViewController {
         case 1:
             return passedExams.count > 0 ? ~"Grades" : nil
         case 2:
+            return passedExams.count > 0 ? ~"Details" : nil
+        case 3:
             return passedExams.count > 0 ? ~"Overview" : nil
         default:
             return nil
@@ -157,6 +166,8 @@ class CareerViewController: UITableViewController {
             return passedExams.count
         case 2:
             return passedExams.count > 0 ? 1 : 0
+        case 3:
+            return passedExams.count > 0 ? 1 : 0
         default:
             return 0
         }
@@ -171,6 +182,8 @@ class CareerViewController: UITableViewController {
             return PTTemporaryGradeCell.estimatedHeight(temporaryGrade: temporaryGrades[indexPath.row], rowWidth: tableView.frame.width)
         case 1:
             return PTGradeCell.height
+        case 2:
+            return PTCareerDetailsCell.height
         default:
             return PTGraphCell.height
         }
@@ -207,6 +220,78 @@ class PTGradeCell: UITableViewCell {
         self.selectionStyle = .none
     }
     
+}
+
+class PTCareerDetailsCell: UITableViewCell {
+    
+    @IBOutlet var weightedAvgLabel: UILabel!
+    @IBOutlet var cleanAvgLabel: UILabel!
+    
+    static let identifier = "PTCareerDetailsCell_id"
+    static let height: CGFloat = 63
+    
+    func configure(withStudentInfo studentInfo: PTStudentInfo) {
+        
+        let formatter = NumberFormatter()
+        formatter.allowsFloats = true
+        formatter.maximumFractionDigits = 2
+        
+        let blackAttributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
+                               NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]
+        
+        let grayAttributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 12.0),
+                              NSForegroundColorAttributeName: UIColor.lightGray]
+        
+        
+        var weightedAvgStr: String? = nil
+        if let weightedAvg = studentInfo.weightedAverage {
+            weightedAvgStr = formatter.string(from: NSNumber(floatLiteral: weightedAvg))
+        }
+        
+        var cleanAvgStr: String? = nil
+        if let cleanAvg = studentInfo.cleanWeightedAverage {
+            cleanAvgStr = formatter.string(from: NSNumber(floatLiteral: cleanAvg))
+        }
+        
+        var graduationMarkStr: String? = nil
+        if let graduationMark = studentInfo.graduationMark {
+            graduationMarkStr = formatter.string(from: NSNumber(floatLiteral: graduationMark))
+        }
+        
+        var cleanGraduationMarkStr: String? = nil
+        if let cleanGraduationMark = studentInfo.cleanGraduationMark {
+            cleanGraduationMarkStr = formatter.string(from: NSNumber(floatLiteral: cleanGraduationMark))
+        }
+        
+        
+        let weightedAvgAttrib = NSAttributedString(string: weightedAvgStr ?? "??", attributes: blackAttributes)
+        let cleanAvgAttrib = NSAttributedString(string: cleanAvgStr ?? "??", attributes: blackAttributes)
+        let graduationMarkAttrib = NSAttributedString(string: graduationMarkStr ?? "??", attributes: blackAttributes)
+        let cleanGraduationMarkAttrib = NSAttributedString(string: cleanGraduationMarkStr ?? "??", attributes: blackAttributes)
+        
+        let maximumAverage = NSAttributedString(string: "/30", attributes: grayAttributes)
+        let maximumGradMark = NSAttributedString(string: "/110", attributes: grayAttributes)
+        let spacesAttrib = NSAttributedString(string: "    ", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 17.0)])
+        
+        
+        let weightedAvgLabelText = NSMutableAttributedString()
+        weightedAvgLabelText.append(weightedAvgAttrib)
+        weightedAvgLabelText.append(maximumAverage)
+        weightedAvgLabelText.append(spacesAttrib)
+        weightedAvgLabelText.append(graduationMarkAttrib)
+        weightedAvgLabelText.append(maximumGradMark)
+        
+        let cleanAvgLabelText = NSMutableAttributedString()
+        cleanAvgLabelText.append(cleanAvgAttrib)
+        cleanAvgLabelText.append(maximumAverage)
+        cleanAvgLabelText.append(spacesAttrib)
+        cleanAvgLabelText.append(cleanGraduationMarkAttrib)
+        cleanAvgLabelText.append(maximumGradMark)
+        
+        
+        weightedAvgLabel.attributedText = weightedAvgLabelText
+        cleanAvgLabel.attributedText = cleanAvgLabelText
+    }
 }
 
 class PTTemporaryGradeCell: UITableViewCell {
