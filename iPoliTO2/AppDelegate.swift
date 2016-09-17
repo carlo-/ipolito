@@ -262,7 +262,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     
-    func managerDidRetrieveSchedule(schedule: [PTLecture]) {
+    func sessionDidRetrieveSchedule(schedule: [PTLecture]) {
         
         print("managerDidRetrieveSchedule")
         
@@ -270,7 +270,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         homeVC?.status = .ready
     }
     
-    func managerDidFailRetrievingScheduleWithError(error: PTRequestError) {
+    func sessionDidFailRetrievingScheduleWithError(error: PTRequestError) {
         
         print("managerDidFailRetrievingScheduleWithError: \(error)")
         
@@ -278,18 +278,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     
-    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]) {
+    func sessionDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]) {
         
         careerVC?.temporaryGrades = temporaryGrades
         careerVC?.status = .ready
     }
     
-    func managerDidFailRetrievingTemporaryGradesWithError(error: PTRequestError) {
+    func sessionDidFailRetrievingTemporaryGradesWithError(error: PTRequestError) {
         careerVC?.status = .error
     }
     
     
-    func managerDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject) {
+    func sessionDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject) {
         
         print("managerDidRetrieveSubjectData:_, subject: \(subject.name)")
         
@@ -300,7 +300,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         }
     }
     
-    func managerDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject) {
+    func sessionDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject) {
         
         print("managerDidFailRetrievingSubjectDataWithError: \(error), subject: \(subject.name)")
         

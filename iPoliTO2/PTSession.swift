@@ -1,5 +1,5 @@
 //
-//  PTSessionManager.swift
+//  PTSession.swift
 //  iPoliTO2
 //
 //  Created by Carlo Rapisarda on 22/06/16.
@@ -15,37 +15,47 @@ enum PTSessionStatus {
 }
 
 protocol PTSessionDelegate {
+    func sessionDidBeginOpening()
     func sessionDidFinishOpening()
     func sessionDidFailOpeningWithError(error: PTRequestError)
     
+    func sessionDidBeginClosing()
     func sessionDidFinishClosing()
     func sessionDidFailClosingWithError(error: PTRequestError)
     
-    func managerDidRetrieveSchedule(schedule: [PTLecture])
-    func managerDidFailRetrievingScheduleWithError(error: PTRequestError)
+    func sessionDidBeginRetrievingSchedule()
+    func sessionDidRetrieveSchedule(schedule: [PTLecture])
+    func sessionDidFailRetrievingScheduleWithError(error: PTRequestError)
     
-    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade])
-    func managerDidFailRetrievingTemporaryGradesWithError(error: PTRequestError)
+    func sessionDidBeginRetrievingTemporaryGrades()
+    func sessionDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade])
+    func sessionDidFailRetrievingTemporaryGradesWithError(error: PTRequestError)
     
-    func managerDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject)
-    func managerDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject)
+    func sessionDidBeginRetrievingSubjectData(subject: PTSubject)
+    func sessionDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject)
+    func sessionDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject)
 }
 
 extension PTSessionDelegate {
+    func sessionDidBeginOpening() {}
     func sessionDidFinishOpening() {}
     func sessionDidFailOpeningWithError(error: PTRequestError) {}
     
+    func sessionDidBeginClosing() {}
     func sessionDidFinishClosing() {}
     func sessionDidFailClosingWithError(error: PTRequestError) {}
     
-    func managerDidRetrieveSchedule(schedule: [PTLecture]) {}
-    func managerDidFailRetrievingScheduleWithError(error: PTRequestError) {}
+    func sessionDidBeginRetrievingSchedule() {}
+    func sessionDidRetrieveSchedule(schedule: [PTLecture]) {}
+    func sessionDidFailRetrievingScheduleWithError(error: PTRequestError) {}
     
-    func managerDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]) {}
-    func managerDidFailRetrievingTemporaryGradesWithError(error: PTRequestError) {}
+    func sessionDidBeginRetrievingTemporaryGrades() {}
+    func sessionDidRetrieveTemporaryGrades(_ temporaryGrades: [PTTemporaryGrade]) {}
+    func sessionDidFailRetrievingTemporaryGradesWithError(error: PTRequestError) {}
     
-    func managerDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject) {}
-    func managerDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject) {}
+    func sessionDidBeginRetrievingSubjectData(subject: PTSubject) {}
+    func sessionDidRetrieveSubjectData(data: PTSubjectData, subject: PTSubject) {}
+    func sessionDidFailRetrievingSubjectDataWithError(error: PTRequestError, subject: PTSubject) {}
 }
 
 class PTSession: NSObject {
@@ -119,6 +129,7 @@ class PTSession: NSObject {
     func open() {
         
         isOpening = true
+        self.delegate?.sessionDidBeginOpening()
         
         OperationQueue().addOperation({
             
@@ -137,6 +148,7 @@ class PTSession: NSObject {
     func close() {
         
         isClosing = true
+        self.delegate?.sessionDidBeginClosing()
         
         guard let token = self.token else {
             isClosing = false
@@ -169,8 +181,10 @@ class PTSession: NSObject {
     
     func requestTemporaryGrades() {
         
+        self.delegate?.sessionDidBeginRetrievingTemporaryGrades()
+        
         guard let token = self.token else {
-            self.delegate?.managerDidFailRetrievingScheduleWithError(error: .InvalidToken)
+            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .InvalidToken)
             return
         }
         
@@ -183,16 +197,16 @@ class PTSession: NSObject {
                     
                     if let error = error {
                         
-                        self.delegate?.managerDidFailRetrievingTemporaryGradesWithError(error: error)
+                        self.delegate?.sessionDidFailRetrievingTemporaryGradesWithError(error: error)
                         
                     } else {
                         
                         self.temporaryGrades = temporaryGrades
                         
                         if temporaryGrades != nil {
-                            self.delegate?.managerDidRetrieveTemporaryGrades(temporaryGrades!)
+                            self.delegate?.sessionDidRetrieveTemporaryGrades(temporaryGrades!)
                         } else {
-                            self.delegate?.managerDidFailRetrievingTemporaryGradesWithError(error: .JSONSerializationFailed)
+                            self.delegate?.sessionDidFailRetrievingTemporaryGradesWithError(error: .JSONSerializationFailed)
                         }
                         
                         
@@ -246,8 +260,10 @@ class PTSession: NSObject {
     
     func requestSchedule(date: Date = Date.init()) {
         
+        self.delegate?.sessionDidBeginRetrievingSchedule()
+        
         guard let token = self.token else {
-            self.delegate?.managerDidFailRetrievingScheduleWithError(error: .InvalidToken)
+            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .InvalidToken)
             return
         }
         
@@ -260,16 +276,16 @@ class PTSession: NSObject {
                 
                     if error != nil {
                         
-                        self.delegate?.managerDidFailRetrievingScheduleWithError(error: error!)
+                        self.delegate?.sessionDidFailRetrievingScheduleWithError(error: error!)
                         
                     } else {
                         
                         self.schedule = schedule
                         
                         if schedule != nil {
-                            self.delegate?.managerDidRetrieveSchedule(schedule: schedule!)
+                            self.delegate?.sessionDidRetrieveSchedule(schedule: schedule!)
                         } else {
-                            self.delegate?.managerDidFailRetrievingScheduleWithError(error: .JSONSerializationFailed)
+                            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .JSONSerializationFailed)
                         }
                         
                     }
@@ -292,8 +308,10 @@ class PTSession: NSObject {
     
     func requestDataForSubject(_ subject: PTSubject) {
         
+        self.delegate?.sessionDidBeginRetrievingSubjectData(subject: subject)
+        
         guard let token = self.token else {
-            self.delegate?.managerDidFailRetrievingSubjectDataWithError(error: .InvalidToken, subject: subject)
+            self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: .InvalidToken, subject: subject)
             return
         }
         
@@ -308,14 +326,14 @@ class PTSession: NSObject {
                     
                     if error != nil {
                         
-                        self.delegate?.managerDidFailRetrievingSubjectDataWithError(error: error!, subject: subject)
+                        self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: error!, subject: subject)
                         
                     } else {
                         
                         if subjectData != nil {
-                            self.delegate?.managerDidRetrieveSubjectData(data: subjectData!, subject: subject)
+                            self.delegate?.sessionDidRetrieveSubjectData(data: subjectData!, subject: subject)
                         } else {
-                            self.delegate?.managerDidFailRetrievingSubjectDataWithError(error: .JSONSerializationFailed, subject: subject)
+                            self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: .JSONSerializationFailed, subject: subject)
                         }
                     }
                 })
