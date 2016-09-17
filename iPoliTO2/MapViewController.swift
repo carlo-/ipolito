@@ -97,6 +97,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         case .logginIn:
             navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
         case .ready:
+            navigationItem.titleView = nil
             if isViewLoaded {
                 reloadFreeRoomsIfNeeded()
             }
