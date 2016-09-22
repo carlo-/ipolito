@@ -221,7 +221,7 @@ class PTSession: NSObject {
         })
     }
     
-    func requestFreeRooms(forDate date: Date? = nil, completion: (([PTFreeRoom]?) -> Void)) {
+    func requestFreeRooms(forDate date: Date? = nil, completion: @escaping (([PTFreeRoom]?) -> Void)) {
         
         PTRequest.fetchFreeRooms(date: date ?? Date(), regID: registeredID, loadTestData: shouldLoadTestData, completion: {
             (freeRooms: [PTFreeRoom]?, error: PTRequestError?) in
@@ -235,7 +235,7 @@ class PTSession: NSObject {
         })
     }
     
-    func requestDownloadURL(forFile file: PTMFile, completion: ((URL?) -> Void)) {
+    func requestDownloadURL(forFile file: PTMFile, completion: @escaping ((URL?) -> Void)) {
         
         guard let token = self.token else {
             completion(nil)
