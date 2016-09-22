@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Charts
 
 
 class CareerViewController: UITableViewController {
@@ -114,7 +115,7 @@ class CareerViewController: UITableViewController {
             
         case 3:
             
-            (cell as? PTGraphCell)?.setExams(passedExams)
+            (cell as? PTGraphCell)?.configure(withExams: passedExams)
             
         default:
             return
@@ -362,144 +363,98 @@ class PTGraphCell: UITableViewCell {
     static let identifier = "PTGraphCell_id"
     static let height: CGFloat = 300
     
-    var graphView: ScrollableGraphView?
-    private var graphData: [Double] = []
-    private var graphLabels: [String] = []
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        self.selectionStyle = .none
-    }
+    private var pieChart: PieChartView?
+    private var pieChartData: PieChartData?
     
     override func draw(_ rect: CGRect) {
-    
-        graphView?.removeFromSuperview()
         
-        graphView = setupBarGraph()
-        graphView?.frame = rect
+        if pieChart == nil {
+            
+            pieChart = PieChartView()
+            pieChart?.noDataText = ~"Not enough data"
+            pieChart?.descriptionText = ""
+            pieChart?.drawEntryLabelsEnabled = false
+            pieChart?.usePercentValuesEnabled = false
+            pieChart?.transparentCircleRadiusPercent = 0.6
+            pieChart?.legend.horizontalAlignment = .center
+            pieChart?.setExtraOffsets(left: 0, top: 0, right: 0, bottom: -10)
+            pieChart?.isUserInteractionEnabled = false
+            
+            addSubview(pieChart!)
+        }
         
-        graphView?.setData(data: graphData, withLabels: graphLabels)
+        if let data = pieChartData {
+            pieChart?.data = data
+        }
         
-        addSubview(graphView!)
+        pieChart?.frame = CGRect(origin: rect.origin, size: CGSize(width: rect.width, height: (rect.height - 10)))
     }
     
-    func setExams(_ exams: [PTExam]) {
+    func configure(withExams exams: [PTExam]) {
         
-        let sorted = exams.sorted(by: { (examA, examB) in
-            return examA.date.timeIntervalSince(examB.date) < 0
-        })
+        var n18_20 = 0.0
+        var n21_23 = 0.0
+        var n24_26 = 0.0
+        var n27_30 = 0.0
+        var n30L = 0.0
         
-        var data: [Double] = []
-        var labels: [String] = []
-        
-        for exam in sorted {
-            
-            let dataPoint: Double
+        for exam in exams {
             
             switch exam.grade {
             case .Passed:
                 continue
             case .Honors:
-                dataPoint = 30
+                n30L += 1
             case .Numerical(let numb):
-                dataPoint = Double(numb)
+                
+                if numb >= 18 && numb <= 20 {
+                    n18_20 += 1
+                } else if numb >= 21 && numb <= 23 {
+                    n21_23 += 1
+                } else if numb >= 24 && numb <= 26 {
+                    n24_26 += 1
+                } else if numb >= 27 && numb <= 30 {
+                    n27_30 += 1
+                }
             }
-            
-            let labelText = exam.name // PTSubject.abbreviationFromName(exam.name)
-            
-            data.append(dataPoint)
-            labels.append(labelText)
         }
         
-        graphData = data
-        graphLabels = labels
+        var entries: [PieChartDataEntry] = []
+        var colors: [UIColor] = []
         
-        setNeedsLayout()
+        if n18_20 > 0 {
+            entries.append(PieChartDataEntry(value: n18_20, label: "18~20"))
+            colors.append(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1))
+        }
+        if n21_23 > 0 {
+            entries.append(PieChartDataEntry(value: n21_23, label: "21~23"))
+            colors.append(#colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1))
+        }
+        if n24_26 > 0 {
+            entries.append(PieChartDataEntry(value: n24_26, label: "24~26"))
+            colors.append(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))
+        }
+        if n27_30 > 0 {
+            entries.append(PieChartDataEntry(value: n27_30, label: "27~30"))
+            colors.append(#colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1))
+        }
+        if n30L > 0 {
+            entries.append(PieChartDataEntry(value: n30L,   label: "30L"  ))
+            colors.append(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1))
+        }
+        
+        let set = PieChartDataSet(values: entries, label: nil)
+        set.colors = colors
+        
+        let data = PieChartData(dataSet: set)
+        
+        let formatter = DefaultValueFormatter()
+        formatter.decimals = 0
+        data.setValueFormatter(formatter)
+        
+        pieChartData = data
+        pieChart?.data = data
     }
     
-    func setupBarGraph() -> ScrollableGraphView {
-     
-        let graphView = ScrollableGraphView()
-        
-        // Disable the lines and data points.
-        graphView.shouldDrawDataPoint = false
-        graphView.lineColor = UIColor.clear
-        
-        // Tell the graph it should draw the bar layer instead.
-        graphView.shouldDrawBarLayer = true
-        
-        graphView.dataPointSpacing = 80
-        graphView.leftmostPointPadding = 70
-        
-        graphView.topMargin = 15
-        //graphView.bottomMargin = 80
-        
-        graphView.dataPointLabelLines = 3
-        
-        // graphView.dataPointLabelTopMargin = 30
-        // graphView.dataPointLabelBottomMargin = 30
-        
-        // Customise the bar.
-        graphView.barWidth = 65
-        graphView.barLineWidth = 1
-        graphView.barLineColor = UIColor(red:0.47, green:0.47, blue:0.47, alpha:1.0)
-        graphView.barColor = UIColor(red:0.33, green:0.33, blue:0.33, alpha:1.0)
-        graphView.backgroundFillColor = UIColor(red:0.20, green:0.20, blue:0.20, alpha:1.0)
-        
-        graphView.referenceLineLabelFont = UIFont.boldSystemFont(ofSize: 8)
-        graphView.referenceLineColor = UIColor.white.withAlphaComponent(0.2)
-        graphView.referenceLineLabelColor = UIColor.white
-        graphView.numberOfIntermediateReferenceLines = 5
-        graphView.dataPointLabelColor = UIColor.white.withAlphaComponent(0.5)
-        graphView.dataPointLabelFont = UIFont.systemFont(ofSize: 7.0)
-        
-        graphView.shouldAnimateOnStartup = true
-        graphView.shouldAdaptRange = false
-        graphView.adaptAnimationType = ScrollableGraphViewAnimationType.Elastic
-        graphView.animationDuration = 1.5
-        graphView.rangeMax = 30
-        graphView.rangeMin = 16
-        graphView.shouldRangeAlwaysStartAtZero = true
-        
-        return graphView
-    }
     
-    /*
-    func setupSmoothGraph() -> ScrollableGraphView {
-        
-        let graphView = ScrollableGraphView()
-        
-        graphView.backgroundFillColor = UIColor(red:0.20, green:0.20, blue:0.20, alpha:1.0)
-        
-        graphView.rangeMax = 30
-        graphView.rangeMin = 18
-        // graphView.shouldAutomaticallyDetectRange = true
-        // graphView.shouldAdaptRange = true
-        
-        graphView.adaptAnimationType = .Elastic
-        
-        graphView.lineWidth = 1
-        graphView.lineColor = UIColor(red:0.47, green:0.47, blue:0.47, alpha:1.0)
-        graphView.lineStyle = ScrollableGraphViewLineStyle.Smooth
-        
-        graphView.shouldFill = true
-        graphView.fillType = ScrollableGraphViewFillType.Gradient
-        graphView.fillColor = UIColor(red:0.33, green:0.33, blue:0.33, alpha:1.0)
-        graphView.fillGradientType = ScrollableGraphViewGradientType.Linear
-        graphView.fillGradientStartColor = UIColor(red:0.33, green:0.33, blue:0.33, alpha:1.0)
-        graphView.fillGradientEndColor = UIColor(red:0.27, green:0.27, blue:0.27, alpha:1.0)
-        
-        graphView.dataPointSpacing = 80
-        graphView.dataPointSize = 2
-        graphView.dataPointFillColor = UIColor.white
-        
-        graphView.referenceLineLabelFont = UIFont.boldSystemFont(ofSize: 8)
-        graphView.referenceLineColor = UIColor.white.withAlphaComponent(0.2)
-        graphView.referenceLineLabelColor = UIColor.white
-        graphView.dataPointLabelColor = UIColor.white.withAlphaComponent(0.5)
-        
-        return graphView
-    }
-    */
 }

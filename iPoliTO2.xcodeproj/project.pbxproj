@@ -33,14 +33,67 @@
 		239CCE201D6F906200BDF6E7 /* CRRoundedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */; };
 		239CCE221D6F926200BDF6E7 /* PTLectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CCE211D6F926200BDF6E7 /* PTLectureView.swift */; };
 		239CCE241D6F928300BDF6E7 /* PTLectureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 239CCE231D6F928300BDF6E7 /* PTLectureView.xib */; };
+		23A930891D9031F600E826CD /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A930821D9031E500E826CD /* Charts.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		23A9308A1D9031F600E826CD /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23A930821D9031E500E826CD /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		23AA447C1D8C807D00BF882E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23AA447B1D8C807D00BF882E /* Settings.bundle */; };
 		23B67D501D5338A5009CB44B /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */; };
 		23B67D521D534AD5009CB44B /* PTDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B67D511D534AD5009CB44B /* PTDownloadManager.swift */; };
 		23CC5D0E1D55FF4600EDF589 /* Rooms.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23CC5D0D1D55FF4600EDF589 /* Rooms.plist */; };
 		23CC5D101D57294900EDF589 /* CRTimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC5D0F1D57294900EDF589 /* CRTimePicker.swift */; };
 		23D042361D6B5DB100F932DD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D042351D6B5DB100F932DD /* SignInViewController.swift */; };
-		23FD097B1D7749AC00ABD65E /* ScrollableGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FD097A1D7749AC00ABD65E /* ScrollableGraphView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		23A930811D9031E500E826CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06165F241D8110E600722320;
+			remoteInfo = Charts;
+		};
+		23A930831D9031E500E826CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06165F2E1D8110E600722320;
+			remoteInfo = ChartsTests;
+		};
+		23A930851D9031E500E826CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06B120D51D811E6200D14B02;
+			remoteInfo = ChartsRealm;
+		};
+		23A930871D9031E500E826CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06B120FF1D811F1600D14B02;
+			remoteInfo = ChartsRealmTests;
+		};
+		23A9308B1D9031F600E826CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 06165F231D8110E600722320;
+			remoteInfo = Charts;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		23A9308D1D9031F700E826CD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				23A9308A1D9031F600E826CD /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		230323611D877AC1003881E9 /* PTAccessoryViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTAccessoryViews.swift; sourceTree = "<group>"; };
@@ -73,13 +126,13 @@
 		239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRRoundedCell.swift; sourceTree = "<group>"; };
 		239CCE211D6F926200BDF6E7 /* PTLectureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTLectureView.swift; sourceTree = "<group>"; };
 		239CCE231D6F928300BDF6E7 /* PTLectureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PTLectureView.xib; sourceTree = "<group>"; };
+		23A9307A1D9031E400E826CD /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "Third-Party Libraries/Charts/Charts.xcodeproj"; sourceTree = "<group>"; };
 		23AA447B1D8C807D00BF882E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
 		23B67D511D534AD5009CB44B /* PTDownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTDownloadManager.swift; sourceTree = "<group>"; };
 		23CC5D0D1D55FF4600EDF589 /* Rooms.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Rooms.plist; sourceTree = "<group>"; };
 		23CC5D0F1D57294900EDF589 /* CRTimePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRTimePicker.swift; sourceTree = "<group>"; };
 		23D042351D6B5DB100F932DD /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		23FD097A1D7749AC00ABD65E /* ScrollableGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableGraphView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2399D8581D4CF5520001C99C /* MapKit.framework in Frameworks */,
+				23A930891D9031F600E826CD /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +151,7 @@
 		2399D8251D4CD7340001C99C = {
 			isa = PBXGroup;
 			children = (
+				23A9307A1D9031E400E826CD /* Charts.xcodeproj */,
 				2399D8591D4CF79C0001C99C /* MyCredentials.swift */,
 				2399D8301D4CD7340001C99C /* iPoliTO2 */,
 				2399D82F1D4CD7340001C99C /* Products */,
@@ -152,6 +207,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		23A9307B1D9031E400E826CD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				23A930821D9031E500E826CD /* Charts.framework */,
+				23A930841D9031E500E826CD /* ChartsTests.xctest */,
+				23A930861D9031E500E826CD /* ChartsRealm.framework */,
+				23A930881D9031E500E826CD /* ChartsRealmTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		23FD09751D773F6C00ABD65E /* Required Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,7 +270,6 @@
 			children = (
 				2372F1D71D7F8CD200DBC708 /* KeychainWrapper.h */,
 				2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */,
-				23FD097A1D7749AC00ABD65E /* ScrollableGraphView.swift */,
 			);
 			path = "Third-Party Libraries";
 			sourceTree = SOURCE_ROOT;
@@ -221,10 +286,12 @@
 				2399D82A1D4CD7340001C99C /* Sources */,
 				2399D82B1D4CD7340001C99C /* Frameworks */,
 				2399D82C1D4CD7340001C99C /* Resources */,
+				23A9308D1D9031F700E826CD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				23A9308C1D9031F600E826CD /* PBXTargetDependency */,
 			);
 			name = iPoliTO2;
 			productName = iPoliTO2;
@@ -266,12 +333,49 @@
 			mainGroup = 2399D8251D4CD7340001C99C;
 			productRefGroup = 2399D82F1D4CD7340001C99C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 23A9307B1D9031E400E826CD /* Products */;
+					ProjectRef = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				2399D82D1D4CD7340001C99C /* iPoliTO2 */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		23A930821D9031E500E826CD /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = 23A930811D9031E500E826CD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		23A930841D9031E500E826CD /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = 23A930831D9031E500E826CD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		23A930861D9031E500E826CD /* ChartsRealm.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ChartsRealm.framework;
+			remoteRef = 23A930851D9031E500E826CD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		23A930881D9031E500E826CD /* ChartsRealmTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsRealmTests.xctest;
+			remoteRef = 23A930871D9031E500E826CD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2399D82C1D4CD7340001C99C /* Resources */ = {
@@ -303,7 +407,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "KEYWORDS=\"TODO|FIXME|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+			shellScript = "KEYWORDS=\"TODO|FIXME|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}/iPoliTO2\" \\( -name \"*.swift\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
 		};
 		23AA447D1D8C822800BF882E /* Update Build number */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -339,7 +443,6 @@
 				2399D8541D4CEDDB0001C99C /* SettingsViewController.swift in Sources */,
 				232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */,
 				2399D84C1D4CDA990001C99C /* PTTypes.swift in Sources */,
-				23FD097B1D7749AC00ABD65E /* ScrollableGraphView.swift in Sources */,
 				2399D8521D4CEDC40001C99C /* MapViewController.swift in Sources */,
 				2399D84B1D4CDA990001C99C /* PTRequest.swift in Sources */,
 				236690FE1D834643000BC822 /* DocumentsViewController.swift in Sources */,
@@ -355,6 +458,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		23A9308C1D9031F600E826CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Charts;
+			targetProxy = 23A9308B1D9031F600E826CD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2399D8371D4CD7340001C99C /* Main.storyboard */ = {
@@ -466,8 +577,10 @@
 		2399D8431D4CD7340001C99C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = iPoliTO2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.crapisarda.iPoliTO;
@@ -481,8 +594,10 @@
 		2399D8441D4CD7340001C99C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = iPoliTO2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.crapisarda.iPoliTO;
