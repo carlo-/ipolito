@@ -32,7 +32,7 @@ iPoliTO is released under the GPL license. See `LICENSE.txt` for more informatio
 ## Third-party Libraries
 
 The following dependencies are bundled with iPoliTO, but are under terms of a separate license:
-* [Scrollable-GraphView](https://github.com/philackm/Scrollable-GraphView) by [philackm](https://github.com/philackm)
+* [Charts](https://github.com/danielgindi/Charts) by [danielgindi](https://github.com/danielgindi)
 * [KeychainWrapper](http://www.raywenderlich.com/wp-content/uploads/2014/12/KeychainWrapper.zip) modified version by Tim Mitra, originally from [Apple](https://developer.apple.com/library/ios/samplecode/GenericKeychain/Listings/Classes_KeychainItemWrapper_m.html#//apple_ref/doc/uid/DTS40007797-Classes_KeychainItemWrapper_m-DontLinkElementID_10)
 
 ## Disclaimer
