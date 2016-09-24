@@ -12,6 +12,8 @@
 		232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8311D4CD7340001C99C /* AppDelegate.swift */; };
 		232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */; };
 		234762001D94A8CD004C5FB3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 234762021D94A8CD004C5FB3 /* Localizable.strings */; };
+		2352C07C1D96C5CE008DED0F /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2352C0751D96C551008DED0F /* Charts.framework */; };
+		2352C07D1D96C5CE008DED0F /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2352C0751D96C551008DED0F /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		236690FC1D8345C4000BC822 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236690FB1D8345C4000BC822 /* MessagesViewController.swift */; };
 		236690FE1D834643000BC822 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236690FD1D834643000BC822 /* DocumentsViewController.swift */; };
 		2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */; };
@@ -34,8 +36,6 @@
 		239CCE201D6F906200BDF6E7 /* CRRoundedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */; };
 		239CCE221D6F926200BDF6E7 /* PTLectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CCE211D6F926200BDF6E7 /* PTLectureView.swift */; };
 		239CCE241D6F928300BDF6E7 /* PTLectureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 239CCE231D6F928300BDF6E7 /* PTLectureView.xib */; };
-		23A930891D9031F600E826CD /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A930821D9031E500E826CD /* Charts.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		23A9308A1D9031F600E826CD /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23A930821D9031E500E826CD /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		23AA447C1D8C807D00BF882E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23AA447B1D8C807D00BF882E /* Settings.bundle */; };
 		23B67D501D5338A5009CB44B /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */; };
 		23B67D521D534AD5009CB44B /* PTDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B67D511D534AD5009CB44B /* PTDownloadManager.swift */; };
@@ -45,35 +45,35 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		23A930811D9031E500E826CD /* PBXContainerItemProxy */ = {
+		2352C0741D96C551008DED0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 06165F241D8110E600722320;
 			remoteInfo = Charts;
 		};
-		23A930831D9031E500E826CD /* PBXContainerItemProxy */ = {
+		2352C0761D96C551008DED0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 06165F2E1D8110E600722320;
 			remoteInfo = ChartsTests;
 		};
-		23A930851D9031E500E826CD /* PBXContainerItemProxy */ = {
+		2352C0781D96C551008DED0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 06B120D51D811E6200D14B02;
 			remoteInfo = ChartsRealm;
 		};
-		23A930871D9031E500E826CD /* PBXContainerItemProxy */ = {
+		2352C07A1D96C551008DED0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 06B120FF1D811F1600D14B02;
 			remoteInfo = ChartsRealmTests;
 		};
-		23A9308B1D9031F600E826CD /* PBXContainerItemProxy */ = {
+		2352C07E1D96C5CE008DED0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
 			proxyType = 1;
@@ -83,13 +83,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		23A9308D1D9031F700E826CD /* Embed Frameworks */ = {
+		2352C06D1D96C4B6008DED0F /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				23A9308A1D9031F600E826CD /* Charts.framework in Embed Frameworks */,
+				2352C07D1D96C5CE008DED0F /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,7 +130,7 @@
 		239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRRoundedCell.swift; sourceTree = "<group>"; };
 		239CCE211D6F926200BDF6E7 /* PTLectureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTLectureView.swift; sourceTree = "<group>"; };
 		239CCE231D6F928300BDF6E7 /* PTLectureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PTLectureView.xib; sourceTree = "<group>"; };
-		23A9307A1D9031E400E826CD /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "Third-Party Libraries/Charts/Charts.xcodeproj"; sourceTree = "<group>"; };
+		23A9307A1D9031E400E826CD /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = Charts/Charts.xcodeproj; sourceTree = "<group>"; };
 		23AA447B1D8C807D00BF882E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
 		23B67D511D534AD5009CB44B /* PTDownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTDownloadManager.swift; sourceTree = "<group>"; };
@@ -145,20 +145,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				2399D8581D4CF5520001C99C /* MapKit.framework in Frameworks */,
-				23A930891D9031F600E826CD /* Charts.framework in Frameworks */,
+				2352C07C1D96C5CE008DED0F /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2352C06E1D96C551008DED0F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2352C0751D96C551008DED0F /* Charts.framework */,
+				2352C0771D96C551008DED0F /* ChartsTests.xctest */,
+				2352C0791D96C551008DED0F /* ChartsRealm.framework */,
+				2352C07B1D96C551008DED0F /* ChartsRealmTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		2399D8251D4CD7340001C99C = {
 			isa = PBXGroup;
 			children = (
-				23A9307A1D9031E400E826CD /* Charts.xcodeproj */,
 				2399D8591D4CF79C0001C99C /* MyCredentials.swift */,
 				2399D8301D4CD7340001C99C /* iPoliTO2 */,
 				2399D82F1D4CD7340001C99C /* Products */,
+				23FD09791D7749AC00ABD65E /* Third-Party-Libraries */,
 				2399D8561D4CF5520001C99C /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -183,7 +194,6 @@
 				23FD09761D77404300ABD65E /* Modules */,
 				23FD09751D773F6C00ABD65E /* Required Data */,
 				23FD09771D77405900ABD65E /* Additional Files */,
-				23FD09791D7749AC00ABD65E /* Third-Party Libraries */,
 			);
 			path = iPoliTO2;
 			sourceTree = "<group>";
@@ -210,17 +220,6 @@
 				2399D8571D4CF5520001C99C /* MapKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		23A9307B1D9031E400E826CD /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				23A930821D9031E500E826CD /* Charts.framework */,
-				23A930841D9031E500E826CD /* ChartsTests.xctest */,
-				23A930861D9031E500E826CD /* ChartsRealm.framework */,
-				23A930881D9031E500E826CD /* ChartsRealmTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		23FD09751D773F6C00ABD65E /* Required Data */ = {
@@ -270,13 +269,14 @@
 			name = "Custom Views";
 			sourceTree = "<group>";
 		};
-		23FD09791D7749AC00ABD65E /* Third-Party Libraries */ = {
+		23FD09791D7749AC00ABD65E /* Third-Party-Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				23A9307A1D9031E400E826CD /* Charts.xcodeproj */,
 				2372F1D71D7F8CD200DBC708 /* KeychainWrapper.h */,
 				2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */,
 			);
-			path = "Third-Party Libraries";
+			path = "Third-Party-Libraries";
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
@@ -291,12 +291,12 @@
 				2399D82A1D4CD7340001C99C /* Sources */,
 				2399D82B1D4CD7340001C99C /* Frameworks */,
 				2399D82C1D4CD7340001C99C /* Resources */,
-				23A9308D1D9031F700E826CD /* Embed Frameworks */,
+				2352C06D1D96C4B6008DED0F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				23A9308C1D9031F600E826CD /* PBXTargetDependency */,
+				2352C07F1D96C5CE008DED0F /* PBXTargetDependency */,
 			);
 			name = iPoliTO2;
 			productName = iPoliTO2;
@@ -341,7 +341,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 23A9307B1D9031E400E826CD /* Products */;
+					ProductGroup = 2352C06E1D96C551008DED0F /* Products */;
 					ProjectRef = 23A9307A1D9031E400E826CD /* Charts.xcodeproj */;
 				},
 			);
@@ -353,32 +353,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		23A930821D9031E500E826CD /* Charts.framework */ = {
+		2352C0751D96C551008DED0F /* Charts.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Charts.framework;
-			remoteRef = 23A930811D9031E500E826CD /* PBXContainerItemProxy */;
+			remoteRef = 2352C0741D96C551008DED0F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		23A930841D9031E500E826CD /* ChartsTests.xctest */ = {
+		2352C0771D96C551008DED0F /* ChartsTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ChartsTests.xctest;
-			remoteRef = 23A930831D9031E500E826CD /* PBXContainerItemProxy */;
+			remoteRef = 2352C0761D96C551008DED0F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		23A930861D9031E500E826CD /* ChartsRealm.framework */ = {
+		2352C0791D96C551008DED0F /* ChartsRealm.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = ChartsRealm.framework;
-			remoteRef = 23A930851D9031E500E826CD /* PBXContainerItemProxy */;
+			remoteRef = 2352C0781D96C551008DED0F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		23A930881D9031E500E826CD /* ChartsRealmTests.xctest */ = {
+		2352C07B1D96C551008DED0F /* ChartsRealmTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ChartsRealmTests.xctest;
-			remoteRef = 23A930871D9031E500E826CD /* PBXContainerItemProxy */;
+			remoteRef = 2352C07A1D96C551008DED0F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -467,10 +467,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		23A9308C1D9031F600E826CD /* PBXTargetDependency */ = {
+		2352C07F1D96C5CE008DED0F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Charts;
-			targetProxy = 23A9308B1D9031F600E826CD /* PBXContainerItemProxy */;
+			targetProxy = 2352C07E1D96C5CE008DED0F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
