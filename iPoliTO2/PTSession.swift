@@ -417,7 +417,7 @@ class PTSession: NSObject {
     private func forgetSessionData() {
         
         PTKeychain.removeAllValues()
-        PTDownloadManager.clearDownloadsFolder()
+        PTDownloadManager.clearAll()
         
         if let bundleIdentifier = Bundle.main.bundleIdentifier {
             UserDefaults().removePersistentDomain(forName: bundleIdentifier)

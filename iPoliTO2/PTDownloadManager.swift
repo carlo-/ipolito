@@ -334,6 +334,21 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         UserDefaults().setValue(nil, forKey: downloadedFilesArchiveKey)
     }
     
+    class func clearAll() {
+        
+        let dlManager = PTDownloadManager.shared
+        
+        for (task, _) in dlManager.ongoingTasks {
+            task.cancel()
+        }
+        
+        dlManager.ongoingTasks.removeAll()
+        dlManager.queue.removeAll()
+        dlManager.downloadedFiles.removeAll()
+        
+        clearDownloadsFolder()
+    }
+    
     
     
     // MARK: Other methods
