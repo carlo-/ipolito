@@ -14,27 +14,24 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
     @IBOutlet var signinLabel: UILabel!
     @IBOutlet var spacerView2: UIView!
     @IBOutlet var studentIdField: UITextField!
-    @IBOutlet var studentIdFieldContainer: UIView!
     @IBOutlet var passwordField: UITextField!
-    @IBOutlet var passwordFieldContainer: UIView!
     @IBOutlet var signinButton: UIButton!
-    @IBOutlet var signinLabelHeightContraint: NSLayoutConstraint!
     @IBOutlet var stackTopMarginContraint: NSLayoutConstraint!
     @IBOutlet var activityIndicatorView: UIView!
+    @IBOutlet var blurEffectView: UIVisualEffectView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // view.backgroundColor = UIColor.clear()
         modalPresentationStyle = .overCurrentContext
-        
-        studentIdFieldContainer.layer.cornerRadius = 5
-        passwordFieldContainer.layer.cornerRadius = 5
-        signinButton.layer.cornerRadius = 5
-        activityIndicatorView.layer.cornerRadius = 5
         
         studentIdField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         passwordField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        
+        if UIAccessibilityIsReduceTransparencyEnabled() {
+            blurEffectView.isHidden = true
+            view.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1).withAlphaComponent(0.9)
+        }
     }
     
     func textFieldDidChange(_ textField: UITextField) {

@@ -5,8 +5,8 @@
 /* Class = "UINavigationItem"; title = "Subjects"; ObjectID = "3vL-aT-lX7"; */
 "3vL-aT-lX7.title" = "Carico Didattico";
 
-/* Class = "UITextField"; placeholder = "Student ID"; ObjectID = "4HK-ot-uHA"; */
-"4HK-ot-uHA.placeholder" = "Matricola";
+/* Class = "UITextField"; placeholder = "Student ID"; ObjectID = "wnB-6t-0j9"; */
+"wnB-6t-0j9.placeholder" = "Matricola";
 
 /* Class = "UITableViewController"; title = "Settings"; ObjectID = "4oE-I1-IkX"; */
 "4oE-I1-IkX.title" = "Impostazioni";
@@ -20,8 +20,8 @@
 /* Class = "UILabel"; text = "Subject Name"; ObjectID = "ATL-0F-McC"; */
 "ATL-0F-McC.text" = "Subject Name";
 
-/* Class = "UILabel"; text = "Sign in"; ObjectID = "ArZ-jT-arm"; */
-"ArZ-jT-arm.text" = "Log in";
+/* Class = "UILabel"; text = "Sign in"; ObjectID = "LLN-Vc-oLO"; */
+"LLN-Vc-oLO.text" = "Log in";
 
 /* Class = "UILabel"; text = "100 of 215 KB (46.5%)"; ObjectID = "Bgt-m6-XgK"; */
 "Bgt-m6-XgK.text" = "100 of 215 KB (46.5%)";
@@ -29,8 +29,8 @@
 /* Class = "UINavigationItem"; title = "Map"; ObjectID = "Brb-hV-cpk"; */
 "Brb-hV-cpk.title" = "Mappa";
 
-/* Class = "UIButton"; normalTitle = "Sign in"; ObjectID = "D3D-FH-ZVC"; */
-"D3D-FH-ZVC.normalTitle" = "Log in";
+/* Class = "UIButton"; normalTitle = "Sign in"; ObjectID = "RHE-if-afL"; */
+"RHE-if-afL.normalTitle" = "Log in";
 
 /* Class = "UITableViewSection"; footerTitle = "iPoliTO is an open-source project developed by Carlo Rapisarda, Computer Eng. student at Politecnico di Torino"; ObjectID = "F5F-hH-WN8"; */
 "F5F-hH-WN8.footerTitle" = "iPoliTO è un progetto open-source sviluppato da Carlo Rapisarda, studente di Computer Eng. al Politecnico di Torino";
@@ -92,14 +92,14 @@
 /* Class = "UILabel"; text = "ECTS: 00"; ObjectID = "YdT-9h-I0V"; */
 "YdT-9h-I0V.text" = "CFU: 00";
 
-/* Class = "UILabel"; text = "iPoliTO does not collect any data about you or this device"; ObjectID = "aSJ-jW-M41"; */
-"aSJ-jW-M41.text" = "iPoliTO non raccoglie alcun tipo di dato su di te";
+/* Class = "UILabel"; text = "iPoliTO does not collect any data about you or this device"; ObjectID = "VhV-40-a9u"; */
+"VhV-40-a9u.text" = "iPoliTO non raccoglie alcun tipo di dato su di te";
 
 /* Class = "UITabBarItem"; title = "Home"; ObjectID = "acW-dT-cKf"; */
 "acW-dT-cKf.title" = "Home";
 
-/* Class = "UITextField"; placeholder = "Password"; ObjectID = "bBK-No-op6"; */
-"bBK-No-op6.placeholder" = "Password";
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "ZmW-0G-kul"; */
+"ZmW-0G-kul.placeholder" = "Password";
 
 /* Class = "UITabBarItem"; title = "Map"; ObjectID = "bDH-zl-OrI"; */
 "bDH-zl-OrI.title" = "Mappa";
