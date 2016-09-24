@@ -54,13 +54,13 @@ class SubjectsViewController: UITableViewController {
             
             switch status {
             case .logginIn:
-                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"Logging in...")
+                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.loggingIn")
             case .offline:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Offline")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.offline")
             case .error:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Could not retrieve the data!")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.couldNotRetrieve")
             case .ready:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"No subjects on your course load!")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.subjectsVC.status.noSubjects")
             default:
                 tableView.backgroundView = nil
             }
@@ -71,11 +71,11 @@ class SubjectsViewController: UITableViewController {
             
             switch status {
             case .logginIn:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.loggingIn")
             case .fetching:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading data of subjects...")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.subjectsVC.status.loading")
             case .offline:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Offline")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.offline")
             default:
                 navigationItem.titleView = nil
             }
@@ -131,7 +131,7 @@ class SubjectsViewController: UITableViewController {
                 alertController = UIAlertController(title: subject.name, message: nil, preferredStyle: .actionSheet)
                 
                 if nmessages > 0 {
-                    let messagesTitle = ~"Messages"+" (\(nmessages))"
+                    let messagesTitle = ~"ls.subjectsVC.subjectOptions.messages"+" (\(nmessages))"
                     alertController.addAction(UIAlertAction(title: messagesTitle, style: .default, handler: {
                         action in
                         self.showMessages(forSubject: subject)
@@ -140,30 +140,30 @@ class SubjectsViewController: UITableViewController {
                 
                 if ndocuments > 0 {
                     
-                    let documentsTitle = ~"Documents"+" (\(ndocuments))"
+                    let documentsTitle = ~"ls.subjectsVC.subjectOptions.documents"+" (\(ndocuments))"
                     alertController.addAction(UIAlertAction(title: documentsTitle, style: .default, handler: {
                         action in
                         self.showDocuments(forSubject: subject)
                     }))
                 }
                 
-                alertController.addAction(UIAlertAction(title: ~"Cancel", style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: ~"ls.generic.alert.cancel", style: .cancel, handler: nil))
                 
             } else {
                 
-                alertController = UIAlertController(title: ~"Oops!",
-                                                    message: ~"This course doesn't have any messages or files.",
+                alertController = UIAlertController(title: ~"ls.generic.alert.error.title",
+                                                    message: ~"ls.subjectsVC.noFilesOrMessagesAlert.body",
                                                     preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: ~"Dismiss", style: .default, handler: nil))
+                alertController.addAction(UIAlertAction(title: ~"ls.generic.alert.dismiss", style: .default, handler: nil))
             }
             
         } else {
             // Data for this subject is invalid, which means parsing has failed
             
-            alertController = UIAlertController(title: ~"Oops!",
-                                                message: ~"Something went wrong when trying to retrieve data for this subject.",
+            alertController = UIAlertController(title: ~"ls.generic.alert.error.title",
+                                                message: ~"ls.subjectsVC.invalidSubjectDataAlert.body",
                                                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: ~"Dismiss", style: .default, handler: nil))
+            alertController.addAction(UIAlertAction(title: ~"ls.generic.alert.dismiss", style: .default, handler: nil))
         }
         
         present(alertController, animated: true, completion: nil)
@@ -220,6 +220,6 @@ class PTSubjectCell: UITableViewCell {
     
     func configure(forSubject subject: PTSubject) {
         mainLabel.text = subject.name
-        subtitleLabel.text = subject.inserimento+" - \(subject.credits) "+(~"ECTS")
+        subtitleLabel.text = subject.inserimento+" - \(subject.credits) "+(~"ls.generic.credits")
     }
 }

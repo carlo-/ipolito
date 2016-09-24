@@ -89,7 +89,7 @@ class PTLoadingTableBackgroundView: UIView {
     
     convenience override init(frame: CGRect) {
         
-        self.init(frame: frame, title: ~"Loading...")
+        self.init(frame: frame, title: ~"ls.generic.status.loading")
     }
     
     required init?(coder aDecoder: NSCoder) {

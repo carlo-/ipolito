@@ -158,9 +158,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     func firstTimeWithThisRelease() {
         
-        // TODO: Add welcome & what's new message
-        let alert = UIAlertController(title: ~"Welcome", message: ~"firstTimeWithThisRelease", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: ~"Continue", style: .default, handler: {
+        let alert = UIAlertController(title: ~"ls.appDelegate.justUpdatedAlert.title", message: ~"ls.appDelegate.justUpdatedAlert.body", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.continue", style: .default, handler: {
             action in
             self.updateVersionOfLastExecution()
             self.login()
@@ -176,8 +175,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         presentSignInViewController(completion: {
             signInController in
             
-            let alert = UIAlertController(title: ~"Welcome", message: ~"Thank you for downloading iPoliTO!", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: ~"Continue", style: .default, handler: {
+            let alert = UIAlertController(title: ~"ls.appDelegate.justDownloadedAlert.title", message: ~"ls.appDelegate.justDownloadedAlert.body", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: ~"ls.generic.alert.continue", style: .default, handler: {
                 action in
                 self.updateVersionOfLastExecution()
             }))
@@ -237,8 +236,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if session.passedExams == nil || session.studentInfo == nil || session.subjects == nil {
             
             // Some info might be missing!
-            let alert = UIAlertController(title: ~"Oops!", message: ~"There was a problem while downloading the data. Some information might be missing.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: ~"Dismiss", style: .cancel, handler: nil))
+            let alert = UIAlertController(title: ~"ls.generic.alert.error.title", message: ~"ls.appDelegate.partiallyMissingInfoAlert.body", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: ~"ls.generic.alert.dismiss", style: .cancel, handler: nil))
             window?.rootViewController?.present(alert, animated: true, completion: nil)
         }
         
@@ -359,8 +358,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     func sessionDidFailClosingWithError(error: PTRequestError) {
-        let alert = UIAlertController(title: ~"Oops!", message: ~"Could not logout at this time!", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: ~"Dismiss", style: .cancel, handler: nil))
+        let alert = UIAlertController(title: ~"ls.generic.alert.error.title", message: ~"ls.appDelegate.couldNotLogoutAlert.body", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.dismiss", style: .cancel, handler: nil))
         window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
@@ -376,22 +375,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     func presentLoginErrorAlert(error: PTRequestError) {
         
-        let alert = UIAlertController(title: ~"Oops...", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: ~"ls.generic.alert.error.title", message: nil, preferredStyle: .alert)
         
         alert.message = {
             switch (error) {
             case .NotConnectedToInternet:
-                return ~"You're not connected to the internet!"
+                return ~"ls.generic.ptRequestError.notConnectedToInternet"
             case .ServerUnreachable:
-                return ~"Servers unreachable or under maintenance!"
+                return ~"ls.generic.ptRequestError.serverUnreachable"
             case .TimedOut:
-                return ~"Request took too long! Try again."
+                return ~"ls.generic.ptRequestError.timedOut"
             default:
-                return ~"An unknown error has occurred!"
+                return ~"ls.generic.ptRequestError.unknown"
             }
         }()
         
-        alert.addAction(UIAlertAction(title: ~"Retry", style: .default, handler: {
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.retry", style: .default, handler: {
             action in
             self.login()
         }))

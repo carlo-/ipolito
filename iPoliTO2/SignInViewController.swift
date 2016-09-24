@@ -106,28 +106,28 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
     func showRequestErrorAlert(error: PTRequestError) {
         
         
-        let alert = UIAlertController(title: ~"Oops...", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: ~"ls.generic.alert.error.title", message: nil, preferredStyle: .alert)
         
         alert.message = {
             switch (error) {
             case .InvalidCredentials:
-                return ~"Invalid credentials!"
+                return ~"ls.generic.ptRequestError.invalidCredentials"
             case .NotConnectedToInternet:
-                return ~"You're not connected to the internet!"
+                return ~"ls.generic.ptRequestError.notConnectedToInternet"
             case .ServerUnreachable:
-                return ~"Servers unreachable or under maintenance!"
+                return ~"ls.generic.ptRequestError.serverUnreachable"
             case .TimedOut:
-                return ~"Request took too long! Try again."
+                return ~"ls.generic.ptRequestError.timedOut"
             default:
-                return ~"An unknown error has occurred!"
+                return ~"ls.generic.ptRequestError.unknown"
             }
         }()
         
-        alert.addAction(UIAlertAction(title: ~"Edit", style: .cancel, handler: {
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.edit", style: .cancel, handler: {
             action in
             self.studentIdField.becomeFirstResponder()
         }))
-        alert.addAction(UIAlertAction(title: ~"Retry", style: .default, handler: {
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.retry", style: .default, handler: {
             action in
             self.signinButtonPressed(self.signinButton)
         }))

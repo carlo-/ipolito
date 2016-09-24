@@ -46,13 +46,13 @@ class CareerViewController: UITableViewController {
             
             switch status {
             case .logginIn:
-                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"Logging in...")
+                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.loggingIn")
             case .offline:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Offline")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.offline")
             case .error:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Could not retrieve the data!")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.couldNotRetrieve")
             case .ready:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"No exams on your career!")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.careerVC.status.emptyCareer")
             default:
                 tableView.backgroundView = nil
             }
@@ -63,11 +63,11 @@ class CareerViewController: UITableViewController {
             
             switch status {
             case .logginIn:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.loggingIn")
             case .fetching:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading temporary grades...")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.careerVC.status.loading")
             case .offline:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Offline")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.offline")
             default:
                 navigationItem.titleView = nil
             }
@@ -146,13 +146,13 @@ class CareerViewController: UITableViewController {
         
         switch section {
         case 0:
-            return temporaryGrades.count > 0 ? ~"Temporary Grades" : nil
+            return temporaryGrades.count > 0 ? ~"ls.careerVC.section.tempGrades" : nil
         case 1:
-            return passedExams.count > 0 ? ~"Grades" : nil
+            return passedExams.count > 0 ? ~"ls.careerVC.section.grades" : nil
         case 2:
-            return passedExams.count > 0 ? ~"Details" : nil
+            return passedExams.count > 0 ? ~"ls.careerVC.section.details" : nil
         case 3:
-            return passedExams.count > 0 ? ~"Overview" : nil
+            return passedExams.count > 0 ? ~"ls.careerVC.section.overview" : nil
         default:
             return nil
         }
@@ -212,7 +212,7 @@ class PTGradeCell: UITableViewCell {
         formatter.dateStyle = DateFormatter.Style.medium
         
         let dateStr = formatter.string(from: exam.date)
-        subtitleLabel.text = dateStr+" - \(exam.credits) "+(~"ECTS")
+        subtitleLabel.text = dateStr+" - \(exam.credits) "+(~"ls.generic.credits")
     }
     
     override func awakeFromNib() {
@@ -320,14 +320,14 @@ class PTTemporaryGradeCell: UITableViewCell {
         details.append(dateStr)
         
         if tempGrade.absent {
-            details.append(~"Absent")
+            details.append(~"ls.careerVC.tempGrade.absent")
         }
         
         if tempGrade.failed {
-            details.append(~"Failed")
+            details.append(~"ls.careerVC.tempGrade.failed")
         }
         
-        let stateStr = ~"State"+": "+tempGrade.state
+        let stateStr = ~"ls.careerVC.tempGrade.state"+": "+tempGrade.state
         details.append(stateStr)
         
         subtitleLabel.text = details.joined(separator: " - ")
@@ -371,7 +371,7 @@ class PTGraphCell: UITableViewCell {
         if pieChart == nil {
             
             pieChart = PieChartView()
-            pieChart?.noDataText = ~"Not enough data"
+            pieChart?.noDataText = ~"ls.careerVC.chart.noData"
             pieChart?.descriptionText = ""
             pieChart?.drawEntryLabelsEnabled = false
             pieChart?.usePercentValuesEnabled = false

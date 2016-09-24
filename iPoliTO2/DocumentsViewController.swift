@@ -58,13 +58,13 @@ class DocumentsViewController: UITableViewController {
     
     func didSelectFile(_ file: PTMFile) {
         
-        let alertTitle = ~"Do you want to proceed?"
-        let alertMessage = ~"You chose \""+file.description+"\"."
+        let alertTitle = ~"ls.documentsVC.downloadAlert.title"
+        let alertMessage = ~"ls.documentsVC.downloadAlert.body1" + " \"\(file.description)\"."
         
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
         
-        let alertCancel = ~"Cancel"
-        let alertConfirm = ~"Confirm"
+        let alertCancel = ~"ls.generic.alert.cancel"
+        let alertConfirm = ~"ls.generic.alert.confirm"
         
         alert.addAction(UIAlertAction(title: alertCancel, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: alertConfirm, style: .default, handler: {
@@ -97,13 +97,13 @@ class DocumentsViewController: UITableViewController {
         
         if PTDownloadManager.shared.needsToOverwrite(byDownloadingFile: file) {
             
-            let alertTitle = ~"File already downloaded!"
-            let alertMessage = ~"A file with that name already exists. Do you want to overwrite it?"
+            let alertTitle = ~"ls.documentsVC.alreadyDownloadedAlert.title"
+            let alertMessage = ~"ls.documentsVC.alreadyDownloadedAlert.body"
             
             let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
             
-            let alertCancel = ~"Cancel"
-            let alertConfirm = ~"Confirm"
+            let alertCancel = ~"ls.generic.alert.cancel"
+            let alertConfirm = ~"ls.generic.alert.confirm"
             
             alert.addAction(UIAlertAction(title: alertCancel, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: alertConfirm, style: .destructive, handler: {

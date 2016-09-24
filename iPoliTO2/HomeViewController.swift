@@ -61,15 +61,15 @@ class HomeViewController: UITableViewController {
             
             switch status {
             case .logginIn:
-                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"Logging in...")
+                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.loggingIn")
             case .fetching:
-                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"Loading schedule...")
+                tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"ls.homeVC.status.loading")
             case .offline:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Offline")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.offline")
             case .error:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"Could not retrieve the data!")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.couldNotRetrieve")
             default:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"No lectures this week!")
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.homeVC.status.noLectures")
             }
             
         } else {
@@ -78,11 +78,11 @@ class HomeViewController: UITableViewController {
             
             switch status {
             case .logginIn:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.loggingIn")
             case .fetching:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Updating schedule...")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.homeVC.status.updating")
             case .offline:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Offline")
+                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.offline")
             default:
                 navigationItem.titleView = nil
             }
@@ -402,8 +402,8 @@ class HomeViewController: UITableViewController {
     
     func showMapNotAvailableAlert() {
         
-        let alert = UIAlertController(title: ~"Oops!", message: ~"Map not available for this room!", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: ~"Dismiss", style: .cancel, handler: nil))
+        let alert = UIAlertController(title: ~"ls.generic.alert.error.title", message: ~"ls.homeVC.noMapAlert.body", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.dismiss", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     

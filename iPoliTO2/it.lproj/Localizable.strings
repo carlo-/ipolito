@@ -1,0 +1,165 @@
+/* 
+  Localizable.strings
+  iPoliTO2
+
+  Created by Carlo Rapisarda on 23/09/2016.
+  Copyright © 2016 crapisarda. All rights reserved.
+*/
+
+
+
+// MARK: Generic
+
+"ls.generic.alert.error.title" = "Oops!";
+"ls.generic.alert.dismiss" = "Ok";
+"ls.generic.alert.continue" = "Continua";
+"ls.generic.alert.confirm" = "Conferma";
+"ls.generic.alert.retry" = "Riprova";
+"ls.generic.alert.cancel" = "Annulla";
+"ls.generic.alert.edit" = "Modifica";
+
+"ls.generic.ptRequestError.notConnectedToInternet" = "Non sei connesso ad internet.";
+"ls.generic.ptRequestError.serverUnreachable" = "Server non disponibile o in manutenzione.";
+"ls.generic.ptRequestError.timedOut" = "Connessione lenta! Prova di nuovo.";
+"ls.generic.ptRequestError.unknown" = "Errore sconosciuto.";
+"ls.generic.ptRequestError.invalidCredentials" = "Account inesistente o password errata.";
+
+"ls.generic.status.loggingIn" = "Effettuo login...";
+"ls.generic.status.loading" = "Caricamento...";
+"ls.generic.status.offline" = "Offline";
+"ls.generic.status.couldNotRetrieve" = "Impossibile scaricare i dati!";
+
+"ls.generic.credits" = "CFU";
+
+
+
+// MARK: AppDelegate
+
+"ls.appDelegate.justUpdatedAlert.title" = "Benvenuto";
+"ls.appDelegate.justUpdatedAlert.body" = "iPoliTO 2.0 è stata completamente riscritta e presenta una nuova veste grafica! Inoltre, il progetto è ora 100% open-source ed il codice è interamente disponibile online su GitHub (https://github.com/carlo-/ipolito).";
+
+"ls.appDelegate.justDownloadedAlert.title" = "Benvenuto";
+"ls.appDelegate.justDownloadedAlert.body" = "Grazie per aver scaricato iPoliTO!";
+
+"ls.appDelegate.partiallyMissingInfoAlert.body" = "C'è stato un problema durante il download dei dati. Alcune informazioni potrebbero risultare mancanti.";
+
+"ls.appDelegate.couldNotLogoutAlert.body" = "Non è stato possibile effettuare il logout in questo momento.";
+
+
+
+// MARK: HomeViewController
+
+"ls.homeVC.status.loading" = "Carico orario...";
+"ls.homeVC.status.updating" = "Aggiorno orario...";
+"ls.homeVC.status.noLectures" = "Nessuna lezione questa settimana!";
+
+"ls.homeVC.noMapAlert.body" = "Mappa non disponibile per quest'aula.";
+
+
+
+// MARK: SubjectsViewController
+
+"ls.subjectsVC.status.loading" = "Carico avvisi e materiale...";
+"ls.subjectsVC.status.noSubjects" = "Nessuna materia trovata!";
+
+"ls.subjectsVC.subjectOptions.messages" = "Messaggi";
+"ls.subjectsVC.subjectOptions.documents" = "Materiale";
+
+"ls.subjectsVC.noFilesOrMessagesAlert.body" = "Questo corso non ha alcun messaggio né file.";
+"ls.subjectsVC.invalidSubjectDataAlert.body" = "Non è stato possibile scaricare i dati per questa materia.";
+
+
+
+// MARK: CareerViewController
+
+"ls.careerVC.status.loading" = "Carico valutazioni prov...";
+"ls.careerVC.status.emptyCareer" = "Nessun esame passato!";
+
+"ls.careerVC.section.tempGrades" = "Valutazioni provvisorie";
+"ls.careerVC.section.grades" = "Voti";
+"ls.careerVC.section.details" = "Dettagli";
+"ls.careerVC.section.overview" = "Panoramica";
+
+"ls.careerVC.tempGrade.absent" = "Assente";
+"ls.careerVC.tempGrade.failed" = "Respinto";
+"ls.careerVC.tempGrade.state" = "Stato";
+
+"ls.careerVC.chart.noData" = "Non ci sono abbastanza dati";
+
+
+
+// MARK: MapViewController
+
+"ls.mapVC.searchBarPlaceholder" = "Cerca un'aula";
+"ls.mapVC.title" = "Mappa";
+"ls.mapVC.showingFreeRoomsFor" = "In verde aule libere alle";
+"ls.mapVC.status.loading" = "Carico aule libere...";
+"ls.mapVC.freeRoom.status.free" = "Libera";
+"ls.mapVC.freeRoom.status.occupied" = "Occupata";
+
+
+
+// MARK: SettingsViewController
+
+"ls.settingsVC.logoutAlert.title" = "Attenzione";
+"ls.settingsVC.logoutAlert.body" = "Sei sicuro di voler effettuare il logout?";
+
+"ls.settingsVC.tellSomeFriendsBody" = "Scarica iPoliTO: la prima app per iOS dedicata agli studenti del Politecnico di Torino!";
+
+"ls.settingsVC.noEmailConfiguredAlert.body" = "Non è stato configurato alcun account email su questo dispositivo!";
+
+
+
+// MARK: DocumentsViewController
+
+"ls.documentsVC.downloadAlert.title" = "Vuoi scaricare questo file?";
+"ls.documentsVC.downloadAlert.body1" = "Hai scelto";
+
+"ls.documentsVC.alreadyDownloadedAlert.title" = "File già scaricato!";
+"ls.documentsVC.alreadyDownloadedAlert.body" = "Un file con quel nome è già stato scaricato. Vuoi sovrascriverlo?";
+
+
+
+// MARK: DownloadsViewController
+
+"ls.downloadsVC.section.transfers" = "Trasferimenti";
+"ls.downloadsVC.section.completed" = "Completati";
+
+"ls.downloadsVC.action.retry" = "Riprova";
+"ls.downloadsVC.action.resume" = "Riavvia";
+"ls.downloadsVC.action.pause" = "Pausa";
+"ls.downloadsVC.action.cancel" = "Annulla";
+"ls.downloadsVC.action.delete" = "Cancella";
+
+"ls.downloadsVC.fileDoesntExistAlert.body" = "Questo file potrebbe essere danneggiato! Prova a scaricarlo nuovamente.";
+
+"ls.downloadsVC.progressPreposition" = "di";
+
+"ls.downloadsVC.downloadedOn" = "Scaricato il";
+"ls.downloadsVC.noDownloads" = "Nessun download!";
+
+
+
+// MARK: CRTimePicker
+
+"ls.timePicker.subtitle" = "Visualizza aule libere alle";
+
+
+
+// MARK: PTTypes
+
+"ls.ptGrade.passed.short" = "pass";
+
+
+
+// MARK: PTDownloadManager
+
+"ls.fileTransfer.status.downloading" = "Scarico...";
+"ls.fileTransfer.status.cancelled" = "Annullato";
+"ls.fileTransfer.status.failed" = "Fallito";
+"ls.fileTransfer.status.paused" = "In pausa";
+"ls.fileTransfer.status.completed" = "Completato";
+"ls.fileTransfer.status.waitingForURL" = "In attesa di una URL valida";
+"ls.fileTransfer.status.onQueue" = "In coda";
+
+

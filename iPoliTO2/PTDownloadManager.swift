@@ -24,19 +24,19 @@ enum PTFileTransferStatus {
         
         switch self {
         case .Downloading:
-            return ~"Downloading..."
+            return ~"ls.fileTransfer.status.downloading"
         case .Cancelled:
-            return ~"Cancelled"
+            return ~"ls.fileTransfer.status.cancelled"
         case .Failed:
-            return ~"Failed"
+            return ~"ls.fileTransfer.status.failed"
         case .Paused:
-            return ~"Paused"
+            return ~"ls.fileTransfer.status.paused"
         case .Completed:
-            return ~"Completed"
+            return ~"ls.fileTransfer.status.completed"
         case .WaitingForURL:
-            return ~"Waiting for a valid URL"
+            return ~"ls.fileTransfer.status.waitingForURL"
         case .Ready, .Added:
-            return ~"On queue"
+            return ~"ls.fileTransfer.status.onQueue"
         }
     }
 }

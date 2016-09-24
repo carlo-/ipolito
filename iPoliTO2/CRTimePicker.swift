@@ -108,7 +108,7 @@ class CRTimePicker: UIView, UIScrollViewDelegate {
         guard let subtitleLabel = subtitleLabel else { return }
         
         subtitleLabel.textColor = tintColor // UIColor.white()
-        subtitleLabel.text = ~"Looking up free rooms at"+" XXXXX"
+        subtitleLabel.text = ~"ls.timePicker.subtitle"+" XXXXX"
         
         subtitleLabel.adjustsFontSizeToFitWidth = true
         subtitleLabel.sizeToFit()
@@ -161,7 +161,7 @@ class CRTimePicker: UIView, UIScrollViewDelegate {
         formatter.locale = Locale(identifier: "it-IT")
         
         let selection = currentSelection()
-        subtitleLabel?.text = ~"Looking up free rooms at"+" "+formatter.string(from: selection)
+        subtitleLabel?.text = ~"ls.timePicker.subtitle"+" "+formatter.string(from: selection)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

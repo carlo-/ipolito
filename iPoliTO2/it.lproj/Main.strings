@@ -1,0 +1,180 @@
+
+/* Class = "UILabel"; text = "Nome Cognome"; ObjectID = "2ts-Pc-Ffz"; */
+"2ts-Pc-Ffz.text" = "Nome Cognome";
+
+/* Class = "UINavigationItem"; title = "Subjects"; ObjectID = "3vL-aT-lX7"; */
+"3vL-aT-lX7.title" = "Carico Didattico";
+
+/* Class = "UITextField"; placeholder = "Student ID"; ObjectID = "4HK-ot-uHA"; */
+"4HK-ot-uHA.placeholder" = "Matricola";
+
+/* Class = "UITableViewController"; title = "Settings"; ObjectID = "4oE-I1-IkX"; */
+"4oE-I1-IkX.title" = "Impostazioni";
+
+/* Class = "UILabel"; text = "Subject Name"; ObjectID = "8XR-H1-PcC"; */
+"8XR-H1-PcC.text" = "Subject Name";
+
+/* Class = "UILabel"; text = "Date and credits"; ObjectID = "AQP-zY-ojy"; */
+"AQP-zY-ojy.text" = "Date and credits";
+
+/* Class = "UILabel"; text = "Subject Name"; ObjectID = "ATL-0F-McC"; */
+"ATL-0F-McC.text" = "Subject Name";
+
+/* Class = "UILabel"; text = "Sign in"; ObjectID = "ArZ-jT-arm"; */
+"ArZ-jT-arm.text" = "Log in";
+
+/* Class = "UILabel"; text = "100 of 215 KB (46.5%)"; ObjectID = "Bgt-m6-XgK"; */
+"Bgt-m6-XgK.text" = "100 of 215 KB (46.5%)";
+
+/* Class = "UINavigationItem"; title = "Map"; ObjectID = "Brb-hV-cpk"; */
+"Brb-hV-cpk.title" = "Mappa";
+
+/* Class = "UIButton"; normalTitle = "Sign in"; ObjectID = "D3D-FH-ZVC"; */
+"D3D-FH-ZVC.normalTitle" = "Log in";
+
+/* Class = "UITableViewSection"; footerTitle = "iPoliTO is an open-source project developed by Carlo Rapisarda, Computer Eng. student at Politecnico di Torino"; ObjectID = "F5F-hH-WN8"; */
+"F5F-hH-WN8.footerTitle" = "iPoliTO è un progetto open-source sviluppato da Carlo Rapisarda, studente di Computer Eng. al Politecnico di Torino";
+
+/* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "F5F-hH-WN8"; */
+"F5F-hH-WN8.headerTitle" = "About";
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "FKD-3X-Zz8"; */
+"FKD-3X-Zz8.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "GOL-sq-61A"; */
+"GOL-sq-61A.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "UILabel"; text = "99L"; ObjectID = "HUo-hu-S1n"; */
+"HUo-hu-S1n.text" = "99L";
+
+/* Class = "UILabel"; text = "Tell some friends"; ObjectID = "JGe-J3-adp"; */
+"JGe-J3-adp.text" = "Condividi con i tuoi amici";
+
+/* Class = "UINavigationItem"; title = "Downloads"; ObjectID = "Juq-hJ-3Di"; */
+"Juq-hJ-3Di.title" = "Downloads";
+
+/* Class = "UILabel"; text = "Send Feedback"; ObjectID = "KVv-d5-Nw9"; */
+"KVv-d5-Nw9.text" = "Invia Feedback";
+
+/* Class = "UILabel"; text = "Folder Name"; ObjectID = "LJJ-KB-vYr"; */
+"LJJ-KB-vYr.text" = "Folder Name";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "MAY-At-tqF"; */
+"MAY-At-tqF.text" = "Title";
+
+/* Class = "UILabel"; text = "Subject Name"; ObjectID = "Q9e-TX-LQ0"; */
+"Q9e-TX-LQ0.text" = "Subject Name";
+
+/* Class = "UILabel"; text = "Date - Type - Size"; ObjectID = "QXf-jI-5xG"; */
+"QXf-jI-5xG.text" = "Date - Type - Size";
+
+/* Class = "UILabel"; text = "Subject Name"; ObjectID = "Str-Sh-fUJ"; */
+"Str-Sh-fUJ.text" = "Subject Name";
+
+/* Class = "UILabel"; text = "Clean Weighted Avg."; ObjectID = "UVU-dI-Mpk"; */
+"UVU-dI-Mpk.text" = "Media Depurata";
+
+/* Class = "UILabel"; text = "Learn More & Contribute"; ObjectID = "UhO-9A-IFv"; */
+"UhO-9A-IFv.text" = "Approfondisci";
+
+/* Class = "UINavigationItem"; title = "Documents View Controller"; ObjectID = "UpG-tk-UaB"; */
+"UpG-tk-UaB.title" = "Documents View Controller";
+
+/* Class = "UILabel"; text = "Date and credits"; ObjectID = "W8L-xQ-AgT"; */
+"W8L-xQ-AgT.text" = "Date and credits";
+
+/* Class = "UILabel"; text = "Matricola"; ObjectID = "Wrt-k6-M7r"; */
+"Wrt-k6-M7r.text" = "Matricola";
+
+/* Class = "UILabel"; text = "Downloading..."; ObjectID = "YNq-UL-VWL"; */
+"YNq-UL-VWL.text" = "Scarico...";
+
+/* Class = "UILabel"; text = "ECTS: 00"; ObjectID = "YdT-9h-I0V"; */
+"YdT-9h-I0V.text" = "CFU: 00";
+
+/* Class = "UILabel"; text = "iPoliTO does not collect any data about you or this device"; ObjectID = "aSJ-jW-M41"; */
+"aSJ-jW-M41.text" = "iPoliTO non raccoglie alcun tipo di dato su di te";
+
+/* Class = "UITabBarItem"; title = "Home"; ObjectID = "acW-dT-cKf"; */
+"acW-dT-cKf.title" = "Home";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "bBK-No-op6"; */
+"bBK-No-op6.placeholder" = "Password";
+
+/* Class = "UITabBarItem"; title = "Map"; ObjectID = "bDH-zl-OrI"; */
+"bDH-zl-OrI.title" = "Mappa";
+
+/* Class = "UITabBarItem"; title = "Subjects"; ObjectID = "cPa-gy-q4n"; */
+"cPa-gy-q4n.title" = "Carico";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "fdl-9d-a62"; */
+"fdl-9d-a62.text" = "Subtitle";
+
+/* Class = "UILabel"; text = "File Name"; ObjectID = "fki-j6-Xtk"; */
+"fki-j6-Xtk.text" = "File Name";
+
+/* Class = "UITableViewController"; title = "Messages"; ObjectID = "h1f-2m-RXU"; */
+"h1f-2m-RXU.title" = "Messaggi";
+
+/* Class = "UITableViewSection"; footerTitle = "© 2016 Carlo Rapisarda\nv2.0-beta (2001)"; ObjectID = "hg2-hQ-iJl"; */
+/*"hg2-hQ-iJl.footerTitle" = "© 20XX Carlo Rapisarda\nvx.x.x (XXXX)";*/
+
+/* Class = "UILabel"; text = "File Name"; ObjectID = "hon-7b-JEu"; */
+"hon-7b-JEu.text" = "File Name";
+
+/* Class = "UITableViewController"; title = "Career"; ObjectID = "jSq-PC-0ux"; */
+"jSq-PC-0ux.title" = "Libretto";
+
+/* Class = "UITableViewSection"; footerTitle = "If you like iPoliTO and find it useful, write a review on the App Store and spread the word with your friends!"; ObjectID = "kGO-u5-WYM"; */
+"kGO-u5-WYM.footerTitle" = "Se ti piace iPoliTO e la trovi utile, scrivi una recensione sul App Store e spargi la voce tra i tuoi amici!";
+
+/* Class = "UITableViewSection"; headerTitle = "Spread the word"; ObjectID = "kGO-u5-WYM"; */
+"kGO-u5-WYM.headerTitle" = "Spargi la voce";
+
+/* Class = "UILabel"; text = "Subject Name"; ObjectID = "kqK-eN-7iS"; */
+"kqK-eN-7iS.text" = "Subject Name";
+
+/* Class = "UILabel"; text = "99L"; ObjectID = "m4F-1M-dzL"; */
+"m4F-1M-dzL.text" = "99L";
+
+/* Class = "UILabel"; text = "Message Date"; ObjectID = "nRj-1a-OKn"; */
+"nRj-1a-OKn.text" = "Message Date";
+
+/* Class = "UINavigationItem"; title = "Home"; ObjectID = "pP0-WX-rwc"; */
+"pP0-WX-rwc.title" = "Home";
+
+/* Class = "UILabel"; text = "Weighted Avg."; ObjectID = "qbR-vo-whW"; */
+"qbR-vo-whW.text" = "Media Ponderata";
+
+/* Class = "UILabel"; text = "Logout"; ObjectID = "rbd-IF-oV6"; */
+"rbd-IF-oV6.text" = "Logout";
+
+/* Class = "UINavigationItem"; title = "Messages View Controller"; ObjectID = "saT-hR-NYs"; */
+"saT-hR-NYs.title" = "Messages View Controller";
+
+/* Class = "UITabBarItem"; title = "Career"; ObjectID = "slK-sB-0ab"; */
+"slK-sB-0ab.title" = "Libretto";
+
+/* Class = "UITableViewSection"; footerTitle = "Are you having issues with the app and want to report a bug, or simply suggest a feature? You can get in touch with me by tapping the button above."; ObjectID = "tWK-pC-eBg"; */
+"tWK-pC-eBg.footerTitle" = "Hai riscontrato problemi durante l'utilizzo dell'app e vuoi segnalarli? Vuoi suggerire una nuova funzionalità? Contattami utilizzando il pulsante qui sopra.";
+
+/* Class = "UITableViewSection"; headerTitle = "Feedback"; ObjectID = "tWK-pC-eBg"; */
+"tWK-pC-eBg.headerTitle" = "Feedback";
+
+/* Class = "UINavigationItem"; title = "Career"; ObjectID = "wXU-Xr-Xji"; */
+"wXU-Xr-Xji.title" = "Libretto";
+
+/* Class = "UITableViewSection"; headerTitle = "Account"; ObjectID = "x3u-fg-1AG"; */
+"x3u-fg-1AG.headerTitle" = "Account";
+
+/* Class = "UITableViewController"; title = "Documents"; ObjectID = "y17-mP-IJW"; */
+"y17-mP-IJW.title" = "Documenti";
+
+/* Class = "UILabel"; text = "Review on the App Store"; ObjectID = "y5J-Ro-bpf"; */
+"y5J-Ro-bpf.text" = "Scrivi una recensione";
+
+/* Class = "UILabel"; text = "File Name"; ObjectID = "znu-WJ-ye7"; */
+"znu-WJ-ye7.text" = "File Name";
+
+/* Class = "UILabel"; text = "215 KB - Downloaded last week"; ObjectID = "zxe-tx-hnP"; */
+"zxe-tx-hnP.text" = "215 KB - Downloaded last week";

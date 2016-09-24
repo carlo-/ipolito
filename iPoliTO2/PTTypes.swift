@@ -21,9 +21,9 @@ public enum PTGrade {
         get {
             switch self {
             case .Passed:
-                return ~"pass"
+                return ~"ls.ptGrade.passed.short"
             case .Honors:
-                return ~"30L"
+                return "30L"
             case .Numerical(let val):
                 return String(val)
             }

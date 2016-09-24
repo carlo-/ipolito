@@ -1,0 +1,165 @@
+/* 
+  Localizable.strings
+  iPoliTO2
+
+  Created by Carlo Rapisarda on 23/09/2016.
+  Copyright © 2016 crapisarda. All rights reserved.
+*/
+
+
+
+// MARK: Generic
+
+"ls.generic.alert.error.title" = "Oops!";
+"ls.generic.alert.dismiss" = "Dismiss";
+"ls.generic.alert.continue" = "Continue";
+"ls.generic.alert.confirm" = "Confirm";
+"ls.generic.alert.retry" = "Retry";
+"ls.generic.alert.cancel" = "Cancel";
+"ls.generic.alert.edit" = "Edit";
+
+"ls.generic.ptRequestError.notConnectedToInternet" = "You're not connected to the internet!";
+"ls.generic.ptRequestError.serverUnreachable" = "Servers unreachable or under maintenance!";
+"ls.generic.ptRequestError.timedOut" = "Request took too long! Try again.";
+"ls.generic.ptRequestError.unknown" = "An unknown error has occurred!";
+"ls.generic.ptRequestError.invalidCredentials" = "Invalid credentials!";
+
+"ls.generic.status.loggingIn" = "Logging in...";
+"ls.generic.status.loading" = "Loading...";
+"ls.generic.status.offline" = "Offline";
+"ls.generic.status.couldNotRetrieve" = "Unable to retrieve the data!";
+
+"ls.generic.credits" = "ECTS";
+
+
+
+// MARK: AppDelegate
+
+"ls.appDelegate.justUpdatedAlert.title" = "Welcome";
+"ls.appDelegate.justUpdatedAlert.body" = "iPoliTO 2.0 has been completely rewritten and brings a redesigned user interface! Also, the project is now 100% open-source and the code is entirely available on GitHub (https://github.com/carlo-/ipolito).";
+
+"ls.appDelegate.justDownloadedAlert.title" = "Welcome";
+"ls.appDelegate.justDownloadedAlert.body" = "Thank you for downloading iPoliTO!";
+
+"ls.appDelegate.partiallyMissingInfoAlert.body" = "There was a problem while downloading the data. Some information might be missing.";
+
+"ls.appDelegate.couldNotLogoutAlert.body" = "Could not logout at this time!";
+
+
+
+// MARK: HomeViewController
+
+"ls.homeVC.status.loading" = "Loading schedule...";
+"ls.homeVC.status.updating" = "Updating schedule...";
+"ls.homeVC.status.noLectures" = "No lectures this week!";
+
+"ls.homeVC.noMapAlert.body" = "Map not available for this room!";
+
+
+
+// MARK: SubjectsViewController
+
+"ls.subjectsVC.status.loading" = "Loading data of subjects...";
+"ls.subjectsVC.status.noSubjects" = "No subjects on your course load!";
+
+"ls.subjectsVC.subjectOptions.messages" = "Messages";
+"ls.subjectsVC.subjectOptions.documents" = "Documents";
+
+"ls.subjectsVC.noFilesOrMessagesAlert.body" = "This course doesn't have any messages or files.";
+"ls.subjectsVC.invalidSubjectDataAlert.body" = "Something went wrong when trying to retrieve data for this subject.";
+
+
+
+// MARK: CareerViewController
+
+"ls.careerVC.status.loading" = "Loading temporary grades...";
+"ls.careerVC.status.emptyCareer" = "No exams on your career!";
+
+"ls.careerVC.section.tempGrades" = "Temporary Grades";
+"ls.careerVC.section.grades" = "Grades";
+"ls.careerVC.section.details" = "Details";
+"ls.careerVC.section.overview" = "Overview";
+
+"ls.careerVC.tempGrade.absent" = "Absent";
+"ls.careerVC.tempGrade.failed" = "Failed";
+"ls.careerVC.tempGrade.state" = "State";
+
+"ls.careerVC.chart.noData" = "Not enough data";
+
+
+
+// MARK: MapViewController
+
+"ls.mapVC.searchBarPlaceholder" = "Search for a room";
+"ls.mapVC.title" = "Map";
+"ls.mapVC.showingFreeRoomsFor" = "Showing free rooms for";
+"ls.mapVC.status.loading" = "Loading free rooms...";
+"ls.mapVC.freeRoom.status.free" = "Free";
+"ls.mapVC.freeRoom.status.occupied" = "Occupied";
+
+
+
+// MARK: SettingsViewController
+
+"ls.settingsVC.logoutAlert.title" = "Warning";
+"ls.settingsVC.logoutAlert.body" = "Are you sure you want to logout?";
+
+"ls.settingsVC.tellSomeFriendsBody" = "Check out iPoliTO: the first iOS app for the students at Politecnico di Torino!";
+
+"ls.settingsVC.noEmailConfiguredAlert.body" = "No email accounts configured!";
+
+
+
+// MARK: DocumentsViewController
+
+"ls.documentsVC.downloadAlert.title" = "Do you want to download this file?";
+"ls.documentsVC.downloadAlert.body1" = "You chose";
+
+"ls.documentsVC.alreadyDownloadedAlert.title" = "File already downloaded!";
+"ls.documentsVC.alreadyDownloadedAlert.body" = "A file with that name already exists. Do you want to overwrite it?";
+
+
+
+// MARK: DownloadsViewController
+
+"ls.downloadsVC.section.transfers" = "Transfers";
+"ls.downloadsVC.section.completed" = "Completed";
+
+"ls.downloadsVC.action.retry" = "Retry";
+"ls.downloadsVC.action.resume" = "Resume";
+"ls.downloadsVC.action.pause" = "Pause";
+"ls.downloadsVC.action.cancel" = "Cancel";
+"ls.downloadsVC.action.delete" = "Delete";
+
+"ls.downloadsVC.fileDoesntExistAlert.body" = "This file appears to be damaged! Try to download it again.";
+
+"ls.downloadsVC.progressPreposition" = "of";
+
+"ls.downloadsVC.downloadedOn" = "Downloaded on";
+"ls.downloadsVC.noDownloads" = "Nothing to see here!";
+
+
+
+// MARK: CRTimePicker
+
+"ls.timePicker.subtitle" = "Look up free rooms at";
+
+
+
+// MARK: PTTypes
+
+"ls.ptGrade.passed.short" = "pass";
+
+
+
+// MARK: PTDownloadManager
+
+"ls.fileTransfer.status.downloading" = "Downloading...";
+"ls.fileTransfer.status.cancelled" = "Cancelled";
+"ls.fileTransfer.status.failed" = "Failed";
+"ls.fileTransfer.status.paused" = "Paused";
+"ls.fileTransfer.status.completed" = "Completed";
+"ls.fileTransfer.status.waitingForURL" = "Waiting for a valid URL";
+"ls.fileTransfer.status.onQueue" = "On queue";
+
+

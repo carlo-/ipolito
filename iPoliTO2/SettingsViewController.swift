@@ -50,9 +50,9 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     
     func logoutPressed() {
         
-        let alert = UIAlertController(title: ~"Warning", message: ~"Are you sure you want to logout?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: ~"Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: ~"Confirm", style: .destructive, handler: {
+        let alert = UIAlertController(title: ~"ls.settingsVC.logoutAlert.title", message: ~"ls.settingsVC.logoutAlert.body", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.confirm", style: .destructive, handler: {
             action in
             self.performLogout()
         }))
@@ -86,7 +86,7 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     func tellSomeFriendsPressed() {
         
         let url = URL(string: kAppStoreLink)
-        let text = ~"" // TODO: Add text
+        let text = ~"ls.settingsVC.tellSomeFriendsBody"
         
         presentSharePopup(withText: text, image: nil, andURL: url)
     }
@@ -114,9 +114,9 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     
     func showNoEmailAccountAlert() {
         
-        let title = ~"Oops!"
-        let message = ~"No email accounts configured!"
-        let dismissal = ~"Dismiss"
+        let title = ~"ls.generic.alert.error.title"
+        let message = ~"ls.settingsVC.noEmailConfiguredAlert.body"
+        let dismissal = ~"ls.generic.alert.dismiss"
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: dismissal, style: .cancel, handler: nil))

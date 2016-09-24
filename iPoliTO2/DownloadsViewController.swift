@@ -81,9 +81,9 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         
         switch section {
         case 0:
-            return (transfersQueue.isEmpty ? nil : ~"Transfers")
+            return (transfersQueue.isEmpty ? nil : ~"ls.downloadsVC.section.transfers")
         case 1:
-            return (downloadedFiles.isEmpty ? nil : ~"Completed")
+            return (downloadedFiles.isEmpty ? nil : ~"ls.downloadsVC.section.completed")
         default:
             return nil
         }
@@ -96,7 +96,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             let transfer = transfersQueue[indexPath.row]
             
             
-            let retryAction = UITableViewRowAction(style: .normal, title: ~"Retry", handler: {
+            let retryAction = UITableViewRowAction(style: .normal, title: ~"ls.downloadsVC.action.retry", handler: {
                 (action, indexPath) in
                 
                 self.setEditing(false, animated: true)
@@ -104,7 +104,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             })
             retryAction.backgroundColor = #colorLiteral(red: 0.4028071761, green: 0.7315050364, blue: 0.2071235478, alpha: 1)
             
-            let resumeAction = UITableViewRowAction(style: .normal, title: ~"Resume", handler: {
+            let resumeAction = UITableViewRowAction(style: .normal, title: ~"ls.downloadsVC.action.resume", handler: {
                 (action, indexPath) in
                 
                 self.setEditing(false, animated: true)
@@ -112,14 +112,14 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             })
             resumeAction.backgroundColor = #colorLiteral(red: 0.4028071761, green: 0.7315050364, blue: 0.2071235478, alpha: 1)
             
-            let pauseAction = UITableViewRowAction(style: .normal, title: ~"Pause", handler: {
+            let pauseAction = UITableViewRowAction(style: .normal, title: ~"ls.downloadsVC.action.pause", handler: {
                 (action, indexPath) in
                 
                 self.setEditing(false, animated: true)
                 self.downloadManager.pause(fileTransfer: transfer)
             })
             
-            let cancelAction = UITableViewRowAction(style: .destructive, title: ~"Cancel", handler: {
+            let cancelAction = UITableViewRowAction(style: .destructive, title: ~"ls.downloadsVC.action.cancel", handler: {
                 (action, indexPath) in
                 
                 tableView.beginUpdates()
@@ -145,7 +145,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             
             let file = downloadedFiles[indexPath.row]
             
-            let deleteAction = UITableViewRowAction(style: .destructive, title: ~"Delete", handler: {
+            let deleteAction = UITableViewRowAction(style: .destructive, title: ~"ls.downloadsVC.action.delete", handler: {
                 (action, indexPath) in
                 
                 tableView.beginUpdates()
@@ -223,9 +223,9 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
                 
                 // File does not exist!
                 
-                let alert = UIAlertController(title: ~"Oops!", message: ~"This file appears to be damaged! Try to download it again.", preferredStyle: .alert)
+                let alert = UIAlertController(title: ~"ls.generic.alert.error.title", message: ~"ls.downloadsVC.fileDoesntExistAlert.body", preferredStyle: .alert)
                 
-                alert.addAction(UIAlertAction(title: ~"Dismiss", style: .default, handler: {
+                alert.addAction(UIAlertAction(title: ~"ls.generic.alert.dismiss", style: .default, handler: {
                     action in
                     
                     tableView.beginUpdates()
@@ -275,7 +275,7 @@ class PTFileTransferCell: UITableViewCell {
             
             let downloadedKB = progress*Float(size)
             
-            progressLabel.text = "\(downloadedKB)"+(~" of ")+"\(size) KB (\(progress*100.0)%)"
+            progressLabel.text = "\(downloadedKB) "+(~"ls.downloadsVC.progressPreposition")+" \(size) KB (\(progress*100.0)%)"
         }
         
         progressBar.setProgress(progress, animated: animated)
@@ -300,7 +300,7 @@ class PTDownloadedFileCell: UITableViewCell {
         formatter.timeZone = TimeZone.Turin
         formatter.dateStyle = .medium
         
-        detailsLabel.text = ~"Downloaded on "+formatter.string(from: file.downloadDate)
+        detailsLabel.text = ~"ls.downloadsVC.downloadedOn"+" "+formatter.string(from: file.downloadDate)
     }
 }
 
@@ -318,7 +318,7 @@ fileprivate class NoDownloadsBackgroundView: UIView {
         
         label.font = UIFont.systemFont(ofSize: 15.0)
         label.textColor = UIColor.lightGray
-        label.text = ~"Nothing to see here!"
+        label.text = ~"ls.downloadsVC.noDownloads"
         label.sizeToFit()
         
         addSubview(label)

@@ -58,7 +58,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         let searchBar = searchController.searchBar
         searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
-        searchBar.placeholder = ~"Search for a room"
+        searchBar.placeholder = ~"ls.mapVC.searchBarPlaceholder"
         
         searchResultsTable.tableHeaderView = searchBar
         searchResultsTable.isScrollEnabled = false
@@ -95,14 +95,14 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         switch status {
         case .logginIn:
-            navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Logging in...")
+            navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.loggingIn")
         case .ready:
             navigationItem.titleView = nil
             if isViewLoaded {
                 reloadFreeRoomsIfNeeded()
             }
         default:
-            navigationItem.titleView = PTDualTitleView(withTitle: ~"Map", subtitle: ~"Offline")
+            navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: ~"ls.generic.status.offline")
         }
     }
     
@@ -145,10 +145,10 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         formatter.timeZone = TimeZone.Turin
         formatter.dateFormat = "HH:mm"
         
-        let subtitle = ~"Showing free rooms for"+" "+formatter.string(from: date ?? Date())
+        let subtitle = ~"ls.mapVC.showingFreeRoomsFor"+" "+formatter.string(from: date ?? Date())
         
         
-        navigationItem.titleView = PTLoadingTitleView(withTitle: ~"Loading free rooms...")
+        navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.mapVC.status.loading")
         
         PTSession.shared.requestFreeRooms(forDate: date, completion: {
             freeRooms in
@@ -158,7 +158,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
                 self.freeRoomsLoadedDate = date ?? Date()
                 self.freeRooms = freeRooms ?? []
                 self.reloadRoomAnnotations()
-                self.navigationItem.titleView = PTDualTitleView(withTitle: ~"Map", subtitle: subtitle)
+                self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: subtitle)
                 
                 self.isDownloadingFreeRooms = false
             })
@@ -468,7 +468,7 @@ fileprivate extension MKPointAnnotation {
         let roomFloor = room.localizedFloor
         let coords = CLLocationCoordinate2D(fromRoom: room)
         
-        let roomStatus = free ? ~"Free" : ~"Occupied"
+        let roomStatus = free ? ~"ls.mapVC.freeRoom.status.free" : ~"ls.mapVC.freeRoom.status.occupied"
         
         self.coordinate = coords
         self.title = roomName
