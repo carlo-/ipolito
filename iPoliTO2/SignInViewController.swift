@@ -19,6 +19,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
     @IBOutlet var passwordFieldContainer: UIView!
     @IBOutlet var signinButton: UIButton!
     @IBOutlet var signinLabelHeightContraint: NSLayoutConstraint!
+    @IBOutlet var stackTopMarginContraint: NSLayoutConstraint!
     @IBOutlet var activityIndicatorView: UIView!
     
     override func viewDidLoad() {
@@ -192,6 +193,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
     
     func showSignInLabel(_ shouldShow: Bool = true) {
         
+        let smallScreen = UIScreen.main.bounds.height < 500
+        
         let scale: CGFloat = shouldShow ? 1 : 0.5
         
         UIView.animate(withDuration: 0.3, animations: {
@@ -200,6 +203,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
             
             self.spacerView1.isHidden = !shouldShow
             self.spacerView2.isHidden = !shouldShow
+            
+            if smallScreen {
+                self.stackTopMarginContraint.constant = 10
+            }
         })
     }
     
