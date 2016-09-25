@@ -34,6 +34,18 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        UIApplication.shared.statusBarStyle = .lightContent
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        UIApplication.shared.statusBarStyle = .default
+    }
+    
     func textFieldDidChange(_ textField: UITextField) {
         
         if textField == studentIdField {
