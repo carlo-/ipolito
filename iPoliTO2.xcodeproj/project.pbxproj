@@ -32,7 +32,7 @@
 		2399D8541D4CEDDB0001C99C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8531D4CEDDB0001C99C /* SettingsViewController.swift */; };
 		2399D8581D4CF5520001C99C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2399D8571D4CF5520001C99C /* MapKit.framework */; };
 		2399D86F1D4D00C10001C99C /* MyCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8591D4CF79C0001C99C /* MyCredentials.swift */; };
-		239CCE1E1D6DF2DE00BDF6E7 /* TestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 239CCE1D1D6DF2DE00BDF6E7 /* TestData.json */; };
+		239CCE1E1D6DF2DE00BDF6E7 /* DemoData.json in Resources */ = {isa = PBXBuildFile; fileRef = 239CCE1D1D6DF2DE00BDF6E7 /* DemoData.json */; };
 		239CCE201D6F906200BDF6E7 /* CRRoundedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */; };
 		239CCE221D6F926200BDF6E7 /* PTLectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CCE211D6F926200BDF6E7 /* PTLectureView.swift */; };
 		239CCE241D6F928300BDF6E7 /* PTLectureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 239CCE231D6F928300BDF6E7 /* PTLectureView.xib */; };
@@ -127,7 +127,7 @@
 		2399D8531D4CEDDB0001C99C /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		2399D8571D4CF5520001C99C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		2399D8591D4CF79C0001C99C /* MyCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyCredentials.swift; path = iPoliTO2/MyCredentials.swift; sourceTree = "<group>"; };
-		239CCE1D1D6DF2DE00BDF6E7 /* TestData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TestData.json; sourceTree = "<group>"; };
+		239CCE1D1D6DF2DE00BDF6E7 /* DemoData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DemoData.json; sourceTree = "<group>"; };
 		239CCE1F1D6F906200BDF6E7 /* CRRoundedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRRoundedCell.swift; sourceTree = "<group>"; };
 		239CCE211D6F926200BDF6E7 /* PTLectureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTLectureView.swift; sourceTree = "<group>"; };
 		239CCE231D6F928300BDF6E7 /* PTLectureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PTLectureView.xib; sourceTree = "<group>"; };
@@ -226,7 +226,7 @@
 		23FD09751D773F6C00ABD65E /* Required Data */ = {
 			isa = PBXGroup;
 			children = (
-				239CCE1D1D6DF2DE00BDF6E7 /* TestData.json */,
+				239CCE1D1D6DF2DE00BDF6E7 /* DemoData.json */,
 				23CC5D0D1D55FF4600EDF589 /* Rooms.plist */,
 			);
 			name = "Required Data";
@@ -393,7 +393,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				239CCE1E1D6DF2DE00BDF6E7 /* TestData.json in Resources */,
+				239CCE1E1D6DF2DE00BDF6E7 /* DemoData.json in Resources */,
 				2399D83E1D4CD7340001C99C /* LaunchScreen.storyboard in Resources */,
 				23CC5D0E1D55FF4600EDF589 /* Rooms.plist in Resources */,
 				2399D83B1D4CD7340001C99C /* Assets.xcassets in Resources */,

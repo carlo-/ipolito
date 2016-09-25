@@ -97,7 +97,7 @@ private func performTestRequest(withRawParams rawParams: [PTRequestParameter: St
         return
     }
     
-    guard let jsonURL = Bundle.main.url(forResource: "TestData", withExtension: "json") else {
+    guard let jsonURL = Bundle.main.url(forResource: "DemoData", withExtension: "json") else {
         // Error! No test data found
         completion(nil, .JSONSerializationFailed)
         return
