@@ -152,6 +152,19 @@ class PTSession: NSObject {
         isClosing = true
         self.delegate?.sessionDidBeginClosing()
         
+        // We don't really care about telling the server (given the way PoliTO's APIs work)
+        // We simply delete everything and go on
+        
+        self.forgetSessionData()
+        
+        self.dateOpened = nil
+        self.isClosing = false
+        self.delegate?.sessionDidFinishClosing()
+        return
+        
+        // In case we decide to tell the server:
+        
+        /*
         guard let token = self.token else {
             isClosing = false
             self.delegate?.sessionDidFailClosingWithError(error: .InvalidToken)
@@ -159,7 +172,7 @@ class PTSession: NSObject {
         }
         
         OperationQueue().addOperation({
-            
+         
             PTRequest.performLogout(token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
                 (error: PTRequestError?) in
                 
@@ -180,6 +193,7 @@ class PTSession: NSObject {
                 })
             })
         })
+         */
     }
     
     func requestTemporaryGrades() {
