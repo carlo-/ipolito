@@ -28,7 +28,7 @@ class PTLectureView: UIView {
         didSet {
             if let lecture = lecture {
                 subjectLabel.text = lecture.subjectName
-                lecturerLabel.text = lecture.lecturerName
+                lecturerLabel.text = lecture.lecturerName?.capitalized
                 timeLabel.text = getNiceTimeIntervalString(fromLecture: lecture)
                 roomLabel.text = lecture.roomName
                 detailsLabel.text = lecture.cohortDesctiption
