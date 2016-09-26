@@ -154,14 +154,24 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.mapVC.status.loading")
         
         PTSession.shared.requestFreeRooms(forDate: date, completion: {
-            freeRooms in
+            (freeRooms, error) in
             
             OperationQueue.main.addOperation({
                 
-                self.freeRoomsLoadedDate = date ?? Date()
-                self.freeRooms = freeRooms ?? []
-                self.reloadRoomAnnotations()
-                self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: subtitle)
+                if error != nil {
+                    
+                    self.freeRoomsLoadedDate = nil
+                    self.freeRooms = []
+                    self.reloadRoomAnnotations()
+                    self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: ~"ls.mapVC.freeRoomsError")
+                    
+                } else {
+                    
+                    self.freeRoomsLoadedDate = date ?? Date()
+                    self.freeRooms = freeRooms ?? []
+                    self.reloadRoomAnnotations()
+                    self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: subtitle)
+                }
                 
                 self.isDownloadingFreeRooms = false
             })

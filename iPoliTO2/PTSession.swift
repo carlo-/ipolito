@@ -235,17 +235,12 @@ class PTSession: NSObject {
         })
     }
     
-    func requestFreeRooms(forDate date: Date? = nil, completion: @escaping (([PTFreeRoom]?) -> Void)) {
+    func requestFreeRooms(forDate date: Date? = nil, completion: @escaping (([PTFreeRoom]?, PTRequestError?) -> Void)) {
         
         PTRequest.fetchFreeRooms(date: date ?? Date(), regID: registeredID, loadTestData: shouldLoadTestData, completion: {
             (freeRooms: [PTFreeRoom]?, error: PTRequestError?) in
             
-            if error == nil {
-                completion(freeRooms)
-            } else {
-                completion(nil)
-            }
-            
+            completion(freeRooms, error)
         })
     }
     

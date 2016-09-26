@@ -96,6 +96,7 @@
 "ls.mapVC.status.loading" = "Carico aule libere...";
 "ls.mapVC.freeRoom.status.free" = "Libera";
 "ls.mapVC.freeRoom.status.occupied" = "Occupata";
+"ls.mapVC.freeRoomsError" = "Impossibile scaricare aule libere";
 
 
 

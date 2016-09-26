@@ -96,6 +96,7 @@
 "ls.mapVC.status.loading" = "Loading free rooms...";
 "ls.mapVC.freeRoom.status.free" = "Free";
 "ls.mapVC.freeRoom.status.occupied" = "Occupied";
+"ls.mapVC.freeRoomsError" = "Unable to load free rooms";
 
 
 
