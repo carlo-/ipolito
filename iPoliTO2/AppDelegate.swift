@@ -354,6 +354,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         careerVC?.temporaryGrades = []
         careerVC?.status = .loggedOut
         
+        mapVC?.status = .loggedOut
+        
         presentSignInViewController()
     }
     

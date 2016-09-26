@@ -101,6 +101,9 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
             if isViewLoaded {
                 reloadFreeRoomsIfNeeded()
             }
+        case .loggedOut:
+            navigationItem.titleView = nil
+            freeRoomsLoadedDate = nil
         default:
             navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: ~"ls.generic.status.offline")
         }
