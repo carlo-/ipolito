@@ -1088,7 +1088,7 @@
                             <tableViewSection headerTitle="About" footerTitle="iPoliTO is an open-source project developed by Carlo Rapisarda, Computer Eng. student at Politecnico di Torino" id="F5F-hH-WN8">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="bxt-6t-0bP">
-                                        <rect key="frame" x="0.0" y="358" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="359" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxt-6t-0bP" id="69J-kp-PIR">
                                             <frame key="frameInset" width="375" height="49"/>
@@ -1115,7 +1115,7 @@
                                 <string key="footerTitle">Are you having issues with the app and want to report a bug, or simply suggest a feature? You can get in touch with me by tapping the button above.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="rau-35-gvp">
-                                        <rect key="frame" x="0.0" y="516" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="517" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rau-35-gvp" id="3bQ-Ab-fm2">
                                             <frame key="frameInset" width="375" height="49"/>
@@ -1139,7 +1139,7 @@
                             <tableViewSection headerTitle="Spread the word" footerTitle="If you like iPoliTO and find it useful, write a review on the App Store and spread the word with your friends!" id="kGO-u5-WYM">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="yqe-po-5Uv">
-                                        <rect key="frame" x="0.0" y="673" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="675" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yqe-po-5Uv" id="Tbg-Am-y9o">
                                             <frame key="frameInset" width="375" height="49"/>
@@ -1159,7 +1159,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="qlr-HU-mGv">
-                                        <rect key="frame" x="0.0" y="723" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="725" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qlr-HU-mGv" id="XM3-fu-vwd">
                                             <frame key="frameInset" width="375" height="49"/>
@@ -1182,7 +1182,7 @@
                             </tableViewSection>
                             <tableViewSection id="hg2-hQ-iJl">
                                 <string key="footerTitle">© 2016 Carlo Rapisarda
-v2.0-beta (2001)</string>
+v2.0 (2160)</string>
                                 <cells/>
                             </tableViewSection>
                         </sections>
