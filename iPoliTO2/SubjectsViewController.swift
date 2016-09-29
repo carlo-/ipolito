@@ -112,6 +112,21 @@ class SubjectsViewController: UITableViewController {
         }
     }
     
+    func showInfo(forSubject subject: PTSubject) {
+        
+        let id = SubjectInfoViewController.identifier
+        
+        if let childController = storyboard?.instantiateViewController(withIdentifier: id) as? SubjectInfoViewController,
+            let guide = dataOfSubjects[subject]?.guide {
+            
+            let info = dataOfSubjects[subject]?.info
+            
+            childController.configure(forSubject: subject, withGuide: guide, andInfo: info)
+            
+            navigationController?.pushViewController(childController, animated: true)
+        }
+    }
+    
     func presentOptions(forSubject subject: PTSubject) {
         
         guard let data = dataOfSubjects[subject] else {
@@ -126,9 +141,18 @@ class SubjectsViewController: UITableViewController {
             let nmessages = data.messages.count
             let ndocuments = data.numberOfFiles
             
-            if nmessages > 0 || ndocuments > 0 {
+            if nmessages > 0 || ndocuments > 0 || data.guide != nil {
                 
                 alertController = UIAlertController(title: subject.name, message: nil, preferredStyle: .actionSheet)
+                
+                if data.guide != nil {
+                    
+                    let documentsTitle = ~"ls.subjectsVC.subjectOptions.info"
+                    alertController.addAction(UIAlertAction(title: documentsTitle, style: .default, handler: {
+                        action in
+                        self.showInfo(forSubject: subject)
+                    }))
+                }
                 
                 if nmessages > 0 {
                     let messagesTitle = ~"ls.subjectsVC.subjectOptions.messages"+" (\(nmessages))"

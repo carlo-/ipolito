@@ -225,6 +225,18 @@ public enum PTTerm {
             return nil
         }
     }
+    
+    var localizedDescription: String {
+        
+        switch self {
+        case .first:
+            return ~"ls.ptTerm.first"
+        case .second:
+            return ~"ls.ptTerm.second"
+        case .both:
+            return ~"ls.ptTerm.both"
+        }
+    }
 }
 
 public struct PTSubjectInfo {

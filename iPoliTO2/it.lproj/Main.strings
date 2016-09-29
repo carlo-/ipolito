@@ -178,3 +178,10 @@
 
 /* Class = "UILabel"; text = "215 KB - Downloaded last week"; ObjectID = "zxe-tx-hnP"; */
 "zxe-tx-hnP.text" = "215 KB - Downloaded last week";
+
+/* Class = "UILabel" */
+"jhQ-m3-UlN.text" = "Docente:";
+
+/* Class = "UILabel" */
+"fee-es-9Yh.text" = "Anno Accademico:";
+

@@ -64,6 +64,7 @@
 
 "ls.subjectsVC.subjectOptions.messages" = "Messaggi";
 "ls.subjectsVC.subjectOptions.documents" = "Materiale";
+"ls.subjectsVC.subjectOptions.info" = "Informazioni e guida";
 
 "ls.subjectsVC.noFilesOrMessagesAlert.body" = "Questo corso non ha alcun messaggio né file.";
 "ls.subjectsVC.invalidSubjectDataAlert.body" = "Non è stato possibile scaricare i dati per questa materia.";
@@ -150,6 +151,9 @@
 // MARK: PTTypes
 
 "ls.ptGrade.passed.short" = "pass";
+"ls.ptTerm.first" = "1º sem.";
+"ls.ptTerm.second" = "2º sem.";
+"ls.ptTerm.both" = "1º o 2º sem.";
 
 
 
