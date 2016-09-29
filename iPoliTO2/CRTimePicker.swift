@@ -201,9 +201,11 @@ private class CRTimePickerScrollView: UIScrollView {
     
     init(frame: CGRect, date: Date? = nil) {
         
-        pickerContentL = CRTimePickerContentView()
-        pickerContentC = CRTimePickerContentView()
-        pickerContentR = CRTimePickerContentView()
+        let labels = CRTimePickerContentView.precomputeLabels()
+        
+        pickerContentL = CRTimePickerContentView(withPrecomputedLabels: labels)
+        pickerContentC = CRTimePickerContentView(withPrecomputedLabels: labels)
+        pickerContentR = CRTimePickerContentView(withPrecomputedLabels: labels)
         
         super.init(frame: frame)
         
@@ -284,33 +286,66 @@ private class CRTimePickerScrollView: UIScrollView {
 
 private class CRTimePickerContentView: UIView {
     
-    private override func draw(_ rect: CGRect) {
+    static let intervals: Int = 48
+    private var precomputedLabels: [String] = []
+    
+    convenience init(withPrecomputedLabels precomputedLabels: [String]) {
+        self.init()
         
-        let intervalWidth = rect.width/48
+        self.precomputedLabels = precomputedLabels
+    }
+    
+    class func precomputeLabels() -> [String] {
         
-        for i in 0..<48 {
-            
-            let xpos = intervalWidth * (0.5 + CGFloat(i))
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone.Turin
+        
+        let today = Date()
+        
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.Turin
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        formatter.locale = Locale(identifier: "it-IT")
+        
+        var labels: [String] = []
+        
+        for i in 0..<intervals {
             
             let hour = i/2
             let minute = i%2 == 0 ? 0 : 30
-            let timeLabelWidth = intervalWidth-16
             
-            
-            var cal = Calendar(identifier: .gregorian)
-            cal.timeZone = TimeZone.Turin
-            
-            let date = cal.date(bySettingHour: hour, minute: minute, second: 0, of: Date())!
-            
-            
-            let formatter = DateFormatter()
-            formatter.timeZone = TimeZone.Turin
-            formatter.dateStyle = .none
-            formatter.timeStyle = .short
-            formatter.locale = Locale(identifier: "it-IT")
+            let date = cal.date(bySettingHour: hour, minute: minute, second: 0, of: today)!
             
             let timeStr = formatter.string(from: date)
             
+            labels.append(timeStr)
+        }
+        
+        return labels
+    }
+    
+    
+    private override func draw(_ rect: CGRect) {
+        
+        let intervals = CRTimePickerContentView.intervals
+        
+        let intervalWidth = rect.width/CGFloat(intervals)
+        
+        
+        if precomputedLabels.count != intervals {
+            precomputedLabels = CRTimePickerContentView.precomputeLabels()
+        }
+        
+        
+        for i in 0..<intervals {
+            
+            let xpos = intervalWidth * (0.5 + CGFloat(i))
+            
+            let timeLabelWidth = intervalWidth-16
+            
+            
+            let timeStr = precomputedLabels[i]
             
             let timeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: timeLabelWidth, height: 20))
             timeLabel.text = timeStr

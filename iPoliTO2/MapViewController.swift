@@ -248,26 +248,28 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     
     @objc private func presentTimePicker() {
         
-        guard timePicker == nil else { return }
-        
         searchBar.isUserInteractionEnabled = false
-        // searchController.isActive = false
         
         navigationItem.rightBarButtonItem = confirmTimePickerButton()
         navigationItem.leftBarButtonItem = dismissTimePickerButton()
         
-        let pickerFrame = CGRect(x: 0, y: searchResultsTable.frame.origin.y+64, width: view.frame.width, height: 50+44)
+        let finalFrame = CGRect(x: 0, y: searchResultsTable.frame.origin.y+64, width: view.frame.width, height: 50+44)
+        let initialFrame = finalFrame.offsetBy(dx: view.frame.width, dy: 0)
         
-        timePicker = CRTimePicker(frame: pickerFrame.offsetBy(dx: view.frame.width, dy: 0), date: freeRoomsLoadedDate)
+        if timePicker == nil {
+            timePicker = CRTimePicker(frame: initialFrame, date: freeRoomsLoadedDate)
+            view.addSubview(timePicker!)
+        } else {
+            timePicker?.frame = initialFrame
+        }
+        
         guard let timePicker = timePicker else { return }
         
         timePicker.backgroundColor = UIColor.clear
         timePicker.tintColor = UIColor.black
         
-        view.addSubview(timePicker)
-        
         UIView.animate(withDuration: 0.25, animations: {
-            timePicker.frame = pickerFrame
+            timePicker.frame = finalFrame
             }, completion: { complete in
             self.searchController.isActive = false
         })
@@ -286,8 +288,6 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
             
             }, completion: { complete in
                 
-                timePicker.removeFromSuperview()
-                self.timePicker = nil
                 self.searchBar.isUserInteractionEnabled = true
         })
     }
