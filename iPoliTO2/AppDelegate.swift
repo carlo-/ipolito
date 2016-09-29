@@ -127,8 +127,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         case .map:
             mapVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .map)
         }
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
-        previousSelection = index
+        if let previousSelection = ControllerIndex(rawValue: tabBarController.selectedIndex) {
+            self.previousSelection = previousSelection
+        }
+        
+        return true
     }
     
     
