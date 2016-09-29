@@ -317,11 +317,17 @@ class PTRequest: NSObject {
                 if let messages = PTParser.messagesFromRawContainer(container!),
                    let documents = PTParser.documentsFromRawContainer(container!) {
                     
+                    let guide = PTParser.subjectGuideFromRawContainer(container!)
+                    let info = PTParser.subjectInfoFromRawContainer(container!)
+                    
                     subjectData = PTSubjectData(dateFetched: Date.init(),
                                                 subject: subject,
                                                 lecturers: [],
                                                 messages: messages,
-                                                documents: documents)
+                                                documents: documents,
+                                                guide: guide,
+                                                info: info)
+                    
                 } else {
                     subjectData = PTSubjectData.invalid
                 }

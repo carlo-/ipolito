@@ -32,6 +32,14 @@ private func rawCaricoDidatticoFromRawContainer(_ container:AnyObject) -> AnyObj
     return container.value(forKeyPath: "data.carico_didattico") as AnyObject?
 }
 
+private func rawSubjectGuideFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+        container.value(forKeyPath: "data.guida") is NSArray else {
+            return nil
+    }
+    return container.value(forKeyPath: "data.guida") as AnyObject?
+}
+
 private func rawMessagesFromRawContainer(_ container:AnyObject) -> AnyObject? {
     guard container.value(forKeyPath: "data") is NSDictionary,
           container.value(forKeyPath: "data.avvisi") is NSArray else {
@@ -54,6 +62,14 @@ private func rawScheduleFromRawContainer(_ container:AnyObject) -> AnyObject? {
             return nil
     }
     return container.value(forKeyPath: "data.orari") as AnyObject?
+}
+
+private func rawSubjectInfoFromRawContainer(_ container:AnyObject) -> AnyObject? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+        container.value(forKeyPath: "data.info_corso") is NSDictionary else {
+            return nil
+    }
+    return container.value(forKeyPath: "data.info_corso") as AnyObject?
 }
 
 private func rawFileLinkFromRawContainer(_ container:AnyObject) -> AnyObject? {
@@ -258,6 +274,35 @@ class PTParser: NSObject {
     }
     
     
+    class func subjectInfoFromRawContainer(_ container: AnyObject!) -> PTSubjectInfo? {
+        
+        if let rawInfo = rawSubjectInfoFromRawContainer(container) as? [String: AnyObject] {
+            
+            guard let year = rawInfo["a_acc"]?.description,
+                let lecturerFirstName = rawInfo["nome_doce"] as? String,
+                let lecturerLastName = rawInfo["cognome_doce"] as? String,
+                let lecturerNumericalID = rawInfo["matricola_doce"]?.description
+            else {
+                return nil
+            }
+            
+            var term: PTTerm? = nil
+            if let rawTerm = rawInfo["periodo"] as? String {
+                term = PTTerm(fromString: rawTerm)
+            }
+            
+            let lecturer = PTLecturer(firstName: lecturerFirstName,
+                                      lastName: lecturerLastName,
+                                      numericalID: lecturerNumericalID)
+            
+            return PTSubjectInfo(year: year, lecturer: lecturer, term: term)
+            
+        } else {
+            return nil
+        }
+    }
+    
+    
     class func passedExamsFromRawContainer(_ container: AnyObject!) -> [PTExam]? {
         
         if let rawExams = rawPassedExamsFromRawContainer(container) as? [[String: AnyObject]] {
@@ -415,6 +460,30 @@ class PTParser: NSObject {
             }
             
             return messages
+            
+        } else {
+            return nil
+        }
+    }
+    
+    class func subjectGuideFromRawContainer(_ container: AnyObject!) -> PTSubjectGuide? {
+        
+        if let rawGuideEntries = rawSubjectGuideFromRawContainer(container) as? [[String: AnyObject]] {
+            
+            var entries: [PTSubjectGuide.Entry] = []
+            
+            for rawEntry in rawGuideEntries {
+                
+                guard let title = rawEntry["titolo"] as? String,
+                      let body = rawEntry["testo"] as? String
+                else { continue }
+                
+                let entry = PTSubjectGuide.Entry(title: title, body: body)
+                
+                entries.append(entry)
+            }
+            
+            return PTSubjectGuide(entries: entries)
             
         } else {
             return nil

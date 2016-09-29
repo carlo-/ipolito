@@ -101,6 +101,9 @@ public struct PTLecturer {
     let firstName: String!
     let lastName: String!
     
+    /// Numerical digits of the lecturerID, excluding the initial letter
+    let numericalID: String?
+    
     var fullName: String {
         return firstName + " " + lastName
     }
@@ -198,6 +201,38 @@ public func ==(lhs: PTSubject, rhs: PTSubject) -> Bool {
     return concatA == concatB
 }
 
+public struct PTSubjectGuide {
+    struct Entry {
+        let title, body: String
+    }
+    let entries: [Entry]
+}
+
+public enum PTTerm {
+    case first
+    case second
+    case both
+    
+    init?(fromString string: String) {
+        switch string {
+        case "1-1":
+            self = .first
+        case "2-2":
+            self = .second
+        case "1-2":
+            self = .both
+        default:
+            return nil
+        }
+    }
+}
+
+public struct PTSubjectInfo {
+    let year: String
+    let lecturer: PTLecturer
+    let term: PTTerm?
+}
+
 public struct PTSubjectData: PTFetchedItem {
     var dateFetched: Date!
     
@@ -206,15 +241,19 @@ public struct PTSubjectData: PTFetchedItem {
     var lecturers: [PTLecturer]! = []
     var messages: [PTMessage]! = []
     var documents: [PTMElement]! = []
+    var guide: PTSubjectGuide?
+    var info: PTSubjectInfo?
     
     private(set) var isValid: Bool = true
     
-    init(dateFetched: Date, subject: PTSubject, lecturers: [PTLecturer], messages: [PTMessage], documents: [PTMElement]) {
+    init(dateFetched: Date, subject: PTSubject, lecturers: [PTLecturer], messages: [PTMessage], documents: [PTMElement], guide: PTSubjectGuide?, info: PTSubjectInfo?) {
         self.dateFetched = dateFetched
         self.subject = subject
         self.lecturers = lecturers
         self.messages = messages
         self.documents = documents
+        self.guide = guide
+        self.info = info
     }
     
     
@@ -226,7 +265,7 @@ public struct PTSubjectData: PTFetchedItem {
     static var invalid: PTSubjectData {
         
         let subject = PTSubject(name: "", incarico: "", inserimento: "", credits: 0)
-        var data = PTSubjectData(dateFetched: Date(), subject: subject, lecturers: [], messages: [], documents: [])
+        var data = PTSubjectData(dateFetched: Date(), subject: subject, lecturers: [], messages: [], documents: [], guide: nil, info: nil)
         data.isValid = false
         return data
     }
