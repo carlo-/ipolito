@@ -194,7 +194,10 @@ class HomeViewController: UITableViewController {
     }
  
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 5
+        let todaysSchedule = scheduleByWeekday[section] ?? []
+        
+        // Empty day => No section => No footer for that section (i.e. footer of 0 height)
+        return todaysSchedule.isEmpty ? 0 : 5
     }
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let v = UIView()
