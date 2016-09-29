@@ -215,6 +215,11 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         }
         
         mapView.addAnnotations(annotations)
+        
+        if annotations.count == 1 {
+            mapView.selectAnnotation(annotations.first!, animated: true)
+        }
+        
         return annotations
     }
     
@@ -434,16 +439,12 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         searchBar.text = room.localizedName
         
         roomsToShow = [room]
-        let visibleAnnots = reloadRoomAnnotations()
+        reloadRoomAnnotations()
         
         let coords = CLLocationCoordinate2D(fromRoom: room)
         guard CLLocationCoordinate2DIsValid(coords) else { return }
         
         zoomToCoordinates(coords, withDelta: 0.00125, animated: animated)
-        
-        if let annotation = visibleAnnots.first {
-            mapView.selectAnnotation(annotation, animated: true)
-        }
     }
     
     private func zoomToMainCampus(animated: Bool = true) {
