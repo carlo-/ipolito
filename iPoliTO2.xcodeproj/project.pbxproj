@@ -16,7 +16,6 @@
 		2352C07D1D96C5CE008DED0F /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2352C0751D96C551008DED0F /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		236690FC1D8345C4000BC822 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236690FB1D8345C4000BC822 /* MessagesViewController.swift */; };
 		236690FE1D834643000BC822 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236690FD1D834643000BC822 /* DocumentsViewController.swift */; };
-		236CDB511D9D651400A036BC /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 236CDB501D9D651400A036BC /* README.md */; };
 		2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2372F1D81D7F8CD200DBC708 /* KeychainWrapper.m */; };
 		2372F1DB1D7F8F1D00DBC708 /* PTKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2372F1DA1D7F8F1D00DBC708 /* PTKeychain.swift */; };
 		2399D8361D4CD7340001C99C /* SubjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8351D4CD7340001C99C /* SubjectsViewController.swift */; };
@@ -457,7 +456,6 @@
 				230323621D877AC1003881E9 /* PTAccessoryViews.swift in Sources */,
 				2399D8541D4CEDDB0001C99C /* SettingsViewController.swift in Sources */,
 				232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */,
-				236CDB511D9D651400A036BC /* README.md in Sources */,
 				2399D84C1D4CDA990001C99C /* PTTypes.swift in Sources */,
 				2399D8521D4CEDC40001C99C /* MapViewController.swift in Sources */,
 				2399D84B1D4CDA990001C99C /* PTRequest.swift in Sources */,
