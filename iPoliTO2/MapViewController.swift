@@ -277,10 +277,12 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     
     @objc private func dismissTimePicker() {
         
-        guard let timePicker = timePicker else { return }
-        
         navigationItem.rightBarButtonItem = nil
         navigationItem.leftBarButtonItem = presentTimePickerButton()
+        
+        guard let timePicker = timePicker else { return }
+        
+        timePicker.stopScrollView()
         
         UIView.animate(withDuration: 0.25, animations: {
             

@@ -128,6 +128,11 @@ class CRTimePicker: UIView, UIScrollViewDelegate {
         updateSubtitleLabel()
     }
     
+    func stopScrollView() {
+        guard let scrollView = scrollView else { return }
+        scrollView.setContentOffset(scrollView.contentOffset, animated: false)
+    }
+    
     func currentSelection() -> Date {
         
         guard let scrollView = scrollView else {
