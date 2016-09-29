@@ -159,7 +159,7 @@ class HomeViewController: UITableViewController {
         formatter.dateStyle = .full
         formatter.doesRelativeDateFormatting = true
         
-        let title = formatter.string(from: today)
+        let title = formatter.string(from: today).capitalized
         
         
         let bottomSpacing: CGFloat = 5
