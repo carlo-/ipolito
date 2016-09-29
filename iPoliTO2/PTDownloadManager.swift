@@ -285,7 +285,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         
         synchronizeDownloadedFiles()
         
-        downloadedFiles.append(downloadedFile)
+        downloadedFiles.insert(downloadedFile, at: 0)
         
         let archive = NSKeyedArchiver.archivedData(withRootObject: downloadedFiles)
         UserDefaults().setValue(archive, forKey: downloadedFilesArchiveKey)
