@@ -74,7 +74,7 @@ class MessagesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        return tableView.dequeueReusableCell(withIdentifier: PTMessageCell.identifier)!
+        return tableView.dequeueReusableCell(withIdentifier: PTMessageCell.identifier, for: indexPath)
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -147,8 +147,11 @@ class PTMessageCell: UITableViewCell {
         
         dateLabel.text = precompMessage.dateString
         bodyTextView.text = precompMessage.body
+        
         if !precompMessage.isRead {
-            backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+            backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 0.3304975076)
+        } else {
+            backgroundColor = UIColor.clear
         }
         
         repositionSubviews()

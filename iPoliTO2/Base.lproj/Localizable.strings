@@ -63,6 +63,7 @@
 "ls.subjectsVC.status.noSubjects" = "No subjects on your course load!";
 
 "ls.subjectsVC.subjectOptions.messages" = "Messages";
+"ls.subjectsVC.subjectOptions.messages.unread" = "unread";
 "ls.subjectsVC.subjectOptions.documents" = "Documents";
 "ls.subjectsVC.subjectOptions.info" = "Info";
 

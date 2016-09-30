@@ -63,6 +63,7 @@
 "ls.subjectsVC.status.noSubjects" = "Nessuna materia trovata!";
 
 "ls.subjectsVC.subjectOptions.messages" = "Messaggi";
+"ls.subjectsVC.subjectOptions.messages.unread" = "non letti";
 "ls.subjectsVC.subjectOptions.documents" = "Materiale";
 "ls.subjectsVC.subjectOptions.info" = "Informazioni e guida";
 

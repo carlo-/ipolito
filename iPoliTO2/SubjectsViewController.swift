@@ -43,6 +43,7 @@ class SubjectsViewController: UITableViewController {
         
         navigationItem.rightBarButtonItem?.isEnabled = !cannotShowDownloads
         
+        self.tableView.reloadData()
         recomputeBadge()
     }
     
@@ -51,7 +52,9 @@ class SubjectsViewController: UITableViewController {
         for (_, data) in dataOfSubjects {
             total += data.numberOfUnreadMessages
         }
-        
+        if #available(iOS 10.0, *) {
+            parent?.tabBarItem.badgeColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        }
         parent?.tabBarItem.badgeValue = total > 0 ? String(total) : nil
     }
     
@@ -166,7 +169,13 @@ class SubjectsViewController: UITableViewController {
                 }
                 
                 if nmessages > 0 {
-                    let messagesTitle = ~"ls.subjectsVC.subjectOptions.messages"+" (\(nmessages))"
+                    var messagesTitle = ~"ls.subjectsVC.subjectOptions.messages"
+                    
+                    let nunread = data.numberOfUnreadMessages
+                    if nunread > 0 {
+                        messagesTitle += " (\(nunread) " + ~"ls.subjectsVC.subjectOptions.messages.unread" + ")"
+                    }
+                    
                     alertController.addAction(UIAlertAction(title: messagesTitle, style: .default, handler: {
                         action in
                         self.showMessages(forSubject: subject)
@@ -231,7 +240,7 @@ class SubjectsViewController: UITableViewController {
         
         let subject = subjects[indexPath.row]
         
-        cell.configure(forSubject: subject)
+        cell.configure(forSubject: subject, unreadMessages: dataOfSubjects[subject]?.numberOfUnreadMessages ?? 0)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -252,9 +261,25 @@ class PTSubjectCell: UITableViewCell {
     
     @IBOutlet var mainLabel: UILabel!
     @IBOutlet var subtitleLabel: UILabel!
+    @IBOutlet var messagesLabel: UILabel!
+    @IBOutlet var messagesIconWidth: NSLayoutConstraint!
     
-    func configure(forSubject subject: PTSubject) {
+    func configure(forSubject subject: PTSubject, unreadMessages: Int = 0) {
         mainLabel.text = subject.name
-        subtitleLabel.text = subject.inserimento+" - \(subject.credits) "+(~"ls.generic.credits")
+        
+        var subtitle = ""
+        
+        if unreadMessages > 0 {
+            subtitle = "  - "
+            
+            messagesLabel.text = String(unreadMessages) + " "
+            messagesIconWidth.constant = 18
+        } else {
+            
+            messagesLabel.text = nil
+            messagesIconWidth.constant = 0
+        }
+        
+        subtitleLabel.text = subtitle+subject.inserimento+" - \(subject.credits) "+(~"ls.generic.credits")
     }
 }

@@ -105,7 +105,7 @@ public struct PTMessage: PTFetchedItem {
         
         var hashes: [Int] = (ud.array(forKey: PTMessage.readMessagesKey) as? [Int]) ?? []
         
-        let hash = rawHtml.hashValue
+        let hash = self.hashValue
         
         if read && !hashes.contains(hash) {
             
@@ -131,9 +131,11 @@ public struct PTMessage: PTFetchedItem {
             return false
         }
         
-        let hash = rawHtml.hashValue
-        
-        return hashes.contains(hash)
+        return hashes.contains(hashValue)
+    }
+    
+    var hashValue: Int {
+        return (rawHtml + date.hashValue.description).hashValue
     }
 }
 
