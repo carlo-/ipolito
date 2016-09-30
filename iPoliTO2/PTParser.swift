@@ -595,8 +595,11 @@ class PTParser: NSObject {
         } else { lastName = nil }
         
         var weightedAverage:Double?
-        if let obj = (container.value(forKeyPath: "data.anagrafica.media_complessiva") as AnyObject?)?.description {
-            weightedAverage = Double(obj)!/100.0
+        if let obj = (container.value(forKeyPath: "data.anagrafica.media_complessiva") as AnyObject?)?.description,
+            let val = Double(obj) {
+            weightedAverage = val/100.0
+        } else if let obj = (container.value(forKeyPath: "data.anagrafica.media_compl_30") as AnyObject?)?.description {
+            weightedAverage = Double(obj)
         } else { weightedAverage = nil }
         
         let cleanWeightedAverage:Double?
