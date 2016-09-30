@@ -110,8 +110,7 @@ class CareerViewController: UITableViewController {
             
         case 2:
             
-            guard let studentInfo = PTSession.shared.studentInfo else { return }
-            (cell as? PTCareerDetailsCell)?.configure(withStudentInfo: studentInfo)
+            (cell as? PTCareerDetailsCell)?.configure(withStudentInfo: PTSession.shared.studentInfo)
             
         case 3:
             
@@ -231,7 +230,7 @@ class PTCareerDetailsCell: UITableViewCell {
     static let identifier = "PTCareerDetailsCell_id"
     static let height: CGFloat = 63
     
-    func configure(withStudentInfo studentInfo: PTStudentInfo) {
+    func configure(withStudentInfo studentInfo: PTStudentInfo?) {
         
         let formatter = NumberFormatter()
         formatter.allowsFloats = true
@@ -245,22 +244,22 @@ class PTCareerDetailsCell: UITableViewCell {
         
         
         var weightedAvgStr: String? = nil
-        if let weightedAvg = studentInfo.weightedAverage {
+        if let weightedAvg = studentInfo?.weightedAverage {
             weightedAvgStr = formatter.string(from: NSNumber(floatLiteral: weightedAvg))
         }
         
         var cleanAvgStr: String? = nil
-        if let cleanAvg = studentInfo.cleanWeightedAverage {
+        if let cleanAvg = studentInfo?.cleanWeightedAverage {
             cleanAvgStr = formatter.string(from: NSNumber(floatLiteral: cleanAvg))
         }
         
         var graduationMarkStr: String? = nil
-        if let graduationMark = studentInfo.graduationMark {
+        if let graduationMark = studentInfo?.graduationMark {
             graduationMarkStr = formatter.string(from: NSNumber(floatLiteral: graduationMark))
         }
         
         var cleanGraduationMarkStr: String? = nil
-        if let cleanGraduationMark = studentInfo.cleanGraduationMark {
+        if let cleanGraduationMark = studentInfo?.cleanGraduationMark {
             cleanGraduationMarkStr = formatter.string(from: NSNumber(floatLiteral: cleanGraduationMark))
         }
         
