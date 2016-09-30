@@ -84,6 +84,10 @@ class MessagesViewController: UITableViewController {
         let precompMessage = content[indexPath.row]
         
         cell.configure(forPrecomputedMessage: precompMessage)
+        
+        OperationQueue().addOperation({
+            precompMessage.originalMessage.setRead(true)
+        })
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -101,6 +105,7 @@ class PTMessageCell: UITableViewCell {
         let originalMessage: PTMessage
         let body: String
         let dateString: String
+        let isRead: Bool
         
         init(message: PTMessage) {
             
@@ -111,6 +116,7 @@ class PTMessageCell: UITableViewCell {
             self.originalMessage = message
             self.body = message.cleanBody
             self.dateString = formatter.string(from: message.date)
+            self.isRead = message.isRead
         }
     }
     
@@ -141,6 +147,9 @@ class PTMessageCell: UITableViewCell {
         
         dateLabel.text = precompMessage.dateString
         bodyTextView.text = precompMessage.body
+        if !precompMessage.isRead {
+            backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        }
         
         repositionSubviews()
     }

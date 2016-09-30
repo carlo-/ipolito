@@ -18,6 +18,7 @@ class SubjectsViewController: UITableViewController {
     var dataOfSubjects: [PTSubject: PTSubjectData] = [:] {
         didSet {
             self.tableView.reloadData()
+            recomputeBadge()
         }
     }
     var status: PTViewControllerStatus = .loggedOut {
@@ -41,8 +42,18 @@ class SubjectsViewController: UITableViewController {
         let cannotShowDownloads = dlManager.queue.isEmpty && dlManager.downloadedFiles.isEmpty
         
         navigationItem.rightBarButtonItem?.isEnabled = !cannotShowDownloads
+        
+        recomputeBadge()
     }
     
+    func recomputeBadge() {
+        var total = 0
+        for (_, data) in dataOfSubjects {
+            total += data.numberOfUnreadMessages
+        }
+        
+        parent?.tabBarItem.badgeValue = total > 0 ? String(total) : nil
+    }
     
     func statusDidChange() {
         

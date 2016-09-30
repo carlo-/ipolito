@@ -95,6 +95,46 @@ public struct PTMessage: PTFetchedItem {
         let char: Character = "\u{0C}"
         return clean.replacingOccurrences(of: char.description, with: "")
     }
+    
+    static let readMessagesKey = "readMessages"
+    
+    func setRead(_ read: Bool) {
+        
+        let ud = UserDefaults()
+        ud.synchronize()
+        
+        var hashes: [Int] = (ud.array(forKey: PTMessage.readMessagesKey) as? [Int]) ?? []
+        
+        let hash = rawHtml.hashValue
+        
+        if read && !hashes.contains(hash) {
+            
+            hashes.append(hash)
+            
+        } else if !read, let index = hashes.index(of: hash) {
+            
+            hashes.remove(at: index)
+        } else {
+            
+            return
+        }
+        
+        ud.set(hashes, forKey: PTMessage.readMessagesKey)
+    }
+    
+    var isRead: Bool {
+        
+        let ud = UserDefaults()
+        ud.synchronize()
+        
+        guard let hashes = ud.array(forKey: PTMessage.readMessagesKey) as? [Int] else {
+            return false
+        }
+        
+        let hash = rawHtml.hashValue
+        
+        return hashes.contains(hash)
+    }
 }
 
 public struct PTLecturer {
@@ -268,7 +308,14 @@ public struct PTSubjectData: PTFetchedItem {
         self.info = info
     }
     
-    
+    var numberOfUnreadMessages: Int {
+        
+        var count = 0
+        for mex in messages {
+            if !mex.isRead { count += 1 }
+        }
+        return count
+    }
     
     var numberOfFiles: Int {
         return self.flatDocuments.flatMap({ $0 as? PTMFile }).count
