@@ -65,7 +65,7 @@
 "ls.subjectsVC.subjectOptions.messages" = "Messages";
 "ls.subjectsVC.subjectOptions.messages.unread" = "unread";
 "ls.subjectsVC.subjectOptions.documents" = "Documents";
-"ls.subjectsVC.subjectOptions.info" = "Info";
+"ls.subjectsVC.subjectOptions.info" = "About this subject";
 
 "ls.subjectsVC.noFilesOrMessagesAlert.body" = "This course doesn't have any messages or files.";
 "ls.subjectsVC.invalidSubjectDataAlert.body" = "Something went wrong when trying to retrieve data for this subject.";

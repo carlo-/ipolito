@@ -169,13 +169,7 @@ class SubjectsViewController: UITableViewController {
                 }
                 
                 if nmessages > 0 {
-                    var messagesTitle = ~"ls.subjectsVC.subjectOptions.messages"
-                    
-                    let nunread = data.numberOfUnreadMessages
-                    if nunread > 0 {
-                        messagesTitle += " (\(nunread) " + ~"ls.subjectsVC.subjectOptions.messages.unread" + ")"
-                    }
-                    
+                    let messagesTitle = ~"ls.subjectsVC.subjectOptions.messages"
                     alertController.addAction(UIAlertAction(title: messagesTitle, style: .default, handler: {
                         action in
                         self.showMessages(forSubject: subject)
@@ -184,7 +178,7 @@ class SubjectsViewController: UITableViewController {
                 
                 if ndocuments > 0 {
                     
-                    let documentsTitle = ~"ls.subjectsVC.subjectOptions.documents"+" (\(ndocuments))"
+                    let documentsTitle = ~"ls.subjectsVC.subjectOptions.documents"
                     alertController.addAction(UIAlertAction(title: documentsTitle, style: .default, handler: {
                         action in
                         self.showDocuments(forSubject: subject)
