@@ -35,8 +35,8 @@
 
 // MARK: AppDelegate
 
-"ls.appDelegate.justUpdatedAlert.title" = "Welcome";
-"ls.appDelegate.justUpdatedAlert.body" = "iPoliTO 2.0 has been completely rewritten and brings a redesigned user interface! Also, the project is now 100% open-source and the code is entirely available on GitHub (https://github.com/carlo-/ipolito).";
+"ls.appDelegate.justUpdatedAlert.title" = "What's new in v2.1";
+"ls.appDelegate.justUpdatedAlert.body" = "- Several bugs have been fixed\n- Subjects Guides are now available\n- New messages are now shown in yellow to help you track updates";
 
 "ls.appDelegate.justDownloadedAlert.title" = "Welcome";
 "ls.appDelegate.justDownloadedAlert.body" = "Thank you for downloading iPoliTO!";
