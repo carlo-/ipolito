@@ -1,5 +1,5 @@
 # iPoliTO
-##### v2.0.1-beta
+##### v2.1-beta
 ![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg) ![Swift Version](https://img.shields.io/badge/swift-3.0-orange.svg) ![License](https://img.shields.io/badge/license-GPL-blue.svg)
 
 iPoliTO is an [unofficial](#disclaimer) iOS app for the students of Politecnico di Torino. It is currently available on the App Store [here](https://itunes.apple.com/app/id1069740093).
@@ -8,7 +8,7 @@ iPoliTO is an [unofficial](#disclaimer) iOS app for the students of Politecnico 
 
 In order to build the project, you must download and install the third-party libraries required by iPoliTO (see [below](#third-party-libraries)).
 
-During debugging, you can choose to use your own student account (assuming you’re currently enrolled at PoliTO) or a demo account (which will load fake data contained in `TestData.json`) by modifying a few lines in `Constants.swift`:
+During debugging, you can choose to use your own student account (assuming you’re currently enrolled at PoliTO) or a demo account (which will load fake data contained in `DemoData.json`) by modifying a few lines in `Constants.swift`:
 ```swift
 public let kDebugShouldForceCredentials = true
 public let kDebugForcingCredentials = PTAccount(matricola: "YOUR_USERNAME_HERE", password: "YOUR_PASSWORD_HERE")
