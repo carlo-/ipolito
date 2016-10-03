@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol PTFetchedItem {
-    var dateFetched: Date! { get set }
-}
-
 public enum PTGrade {
     case Honors
     case Passed
@@ -31,8 +27,7 @@ public enum PTGrade {
     }
 }
 
-public struct PTTemporaryGrade: PTFetchedItem {
-    var dateFetched: Date!
+public struct PTTemporaryGrade {
     
     let subjectName: String
     let absent: Bool
@@ -50,34 +45,18 @@ public struct PTTemporaryGrade: PTFetchedItem {
     let lecturerID: String
 }
 
-public struct PTExam: PTFetchedItem {
-    var dateFetched: Date!
+public struct PTExam {
     
     let name: String
     let date: Date
     let credits: Int
     let grade: PTGrade
-    
-    /*
-    var gradeShortDescription: String {
-        
-        switch grade {
-        case .Passed:
-            return ~"pass"
-        case .Honors:
-            return ~"30L"
-        default:
-            return String(grade)
-        }
-    }
-    */
 }
 
-public struct PTMessage: PTFetchedItem {
-    var dateFetched: Date!
+public struct PTMessage {
     
-    let date: Date!
-    let rawHtml: String!
+    let date: Date
+    let rawHtml: String
     
     var plainBody: String {
         return rawHtml.htmlToString
@@ -91,9 +70,8 @@ public struct PTMessage: PTFetchedItem {
         let clean = plainBody.trimmingWhitespaceAndNewlines()
         
         // Solves a bug that broke text views when trying to display a special char
-        // TODO: Look into this and find a better solution
         let char: Character = "\u{0C}"
-        return clean.replacingOccurrences(of: char.description, with: "")
+        return clean.replacingOccurrences(of: String(char), with: "")
     }
     
     static let readMessagesKey = "readMessages"
@@ -140,8 +118,8 @@ public struct PTMessage: PTFetchedItem {
 }
 
 public struct PTLecturer {
-    let firstName: String!
-    let lastName: String!
+    let firstName: String
+    let lastName: String
     
     /// Numerical digits of the lecturerID, excluding the initial letter
     let numericalID: String?
@@ -151,13 +129,11 @@ public struct PTLecturer {
     }
 }
 
-public struct PTSubject: PTFetchedItem, Hashable {
-    var dateFetched: Date!
+public struct PTSubject: Hashable {
     
     let name: String
     let incarico: String
     let inserimento: String
-    let initials: String
     let credits: Int
     
     public var hashValue: Int {
@@ -170,70 +146,6 @@ public struct PTSubject: PTFetchedItem, Hashable {
         self.incarico = incarico
         self.inserimento = inserimento
         self.credits = credits
-        self.dateFetched = Date()
-        self.initials = PTSubject.initialsFromName(name)
-    }
-    
-    static func initialsFromName(_ subjectName: String) -> String {
-        var str = ""
-        let comps = subjectName.components(separatedBy: " ")
-        for sub in comps {
-            
-            let sub_up = sub.uppercased()
-            if sub_up == "I" || sub_up == "II" || sub_up == "III" || sub_up == "IV" || sub_up == "V" {
-                str.append(" "+sub_up)
-                continue
-            }
-            
-            if sub.characters.count < 4 { continue }
-            str.append(sub.characters.first!)
-        }
-        return str.uppercased()
-    }
-    
-    static func abbreviationFromName(_ subjectName: String) -> String {
-        
-        var strComps: [String] = []
-        let comps = subjectName.components(separatedBy: " ")
-        for sub in comps {
-            
-            let sub_up = sub.uppercased()
-            if sub_up == "I" || sub_up == "II" || sub_up == "III" || sub_up == "IV" || sub_up == "V" {
-                strComps.append(sub_up)
-                continue
-            }
-            
-            if sub.characters.count < 4 { continue }
-            strComps.append(abbreviateWord(sub, maxLength: 5).capitalized)
-        }
-        return strComps.joined(separator: " ")
-    }
-    
-    private static func abbreviateWord(_ word: String, maxLength: Int = 3) -> String {
-        
-        let wordLen = word.characters.count
-        
-        if maxLength >= wordLen {
-            return word
-        }
-        if maxLength <= 0 {
-            return ""
-        }
-        if maxLength == 1 {
-            return String(word.characters.first ?? Character(""))
-        }
-        
-        var res = ""
-        let chars = Array(word.characters)
-        
-        for i in 0..<(maxLength-1) {
-            
-            res.append(chars[i])
-        }
-        
-        res.append(".")
-        
-        return res
     }
 }
 
@@ -261,7 +173,7 @@ public enum PTTerm {
             self = .first
         case "2-2":
             self = .second
-        case "1-2":
+        case "1-2", "2-1":
             self = .both
         default:
             return nil
@@ -287,21 +199,19 @@ public struct PTSubjectInfo {
     let term: PTTerm?
 }
 
-public struct PTSubjectData: PTFetchedItem {
-    var dateFetched: Date!
+public struct PTSubjectData {
     
-    let subject: PTSubject!
+    let subject: PTSubject
     
-    var lecturers: [PTLecturer]! = []
-    var messages: [PTMessage]! = []
-    var documents: [PTMElement]! = []
+    var lecturers: [PTLecturer]
+    var messages: [PTMessage]
+    var documents: [PTMElement]
     var guide: PTSubjectGuide?
     var info: PTSubjectInfo?
     
     private(set) var isValid: Bool = true
     
-    init(dateFetched: Date, subject: PTSubject, lecturers: [PTLecturer], messages: [PTMessage], documents: [PTMElement], guide: PTSubjectGuide?, info: PTSubjectInfo?) {
-        self.dateFetched = dateFetched
+    init(subject: PTSubject, lecturers: [PTLecturer], messages: [PTMessage], documents: [PTMElement], guide: PTSubjectGuide?, info: PTSubjectInfo?) {
         self.subject = subject
         self.lecturers = lecturers
         self.messages = messages
@@ -320,107 +230,27 @@ public struct PTSubjectData: PTFetchedItem {
     }
     
     var numberOfFiles: Int {
-        return self.flatDocuments.flatMap({ $0 as? PTMFile }).count
+        return flatFiles.count
     }
     
     static var invalid: PTSubjectData {
         
         let subject = PTSubject(name: "", incarico: "", inserimento: "", credits: 0)
-        var data = PTSubjectData(dateFetched: Date(), subject: subject, lecturers: [], messages: [], documents: [], guide: nil, info: nil)
+        var data = PTSubjectData(subject: subject, lecturers: [], messages: [], documents: [], guide: nil, info: nil)
         data.isValid = false
         return data
     }
     
-    /*
-    lazy var latestChanges: [(Any, Date)] = {
-        
-        let flatFiles = self.flatDocuments.flatMap({ $0 as? PTMFile })
-        
-        var changes: [(Any, Date)] = []
-        
-        for file in flatFiles {
-            
-            guard let date = file.date else { continue }
-            
-            if date.timeIntervalSinceNow > -3600*24*7 {
-                changes.append((file, date))
-            }
-        }
-        
-        for mex in self.messages {
-            
-            if mex.date.timeIntervalSinceNow > -3600*24*7 {
-                changes.append((mex, mex.date))
-            }
-        }
-        
-        return changes
-    }()
-    
-    lazy var latestChangesString: String = {
-        
-        // TO/DO: Rewrite and get ready for localization
-        
-        let ordered = self.latestChanges.sorted(by: {
-            (changeA, changeB) in
-            return changeA.1.compare(changeB.1) == ComparisonResult.orderedAscending
-        })
-        
-        var str = ""
-        var nmex = 0
-        var nfiles = 0
-        
-        for (item, _) in ordered {
-            
-            if item is PTMFile {
-                
-                if (nfiles >= 4) {continue}
-                
-                let file = item as! PTMFile
-                
-                str.append("• File \"\(file.name)\" was added.\n")
-                
-                nfiles += 1
-                
-            } else if item is PTMessage {
-                // let mex = item as! PTMessage
-                nmex += 1
-            }
-        }
-        
-        if nmex == 0 && nfiles == 0 {
-            return "• Nothing new in the past 7 days."
-        }
-        
-        let plural = (nmex == 1 ? "" : "s")
-        let nfilesStr = (nmex == 0 ? "No" : "\(nmex)")
-        
-        return str+"• "+nfilesStr+" new message"+plural+" published."
-    }()
-    */
- 
     var flatDocuments: [PTMElement] {
-        var flatArray: [PTMElement] = []
-        for elem in self.documents {
-            flatArray += self.flatDocuments(forTreeWithRoot: elem)
-        }
-        return flatArray
+        
+        let folder = PTMFolder(description: "", identifier: "", identifierOfParent: "", children: documents)
+        return folder.descendantElements
     }
     
-    private func flatDocuments(forTreeWithRoot root: PTMElement) -> [PTMElement] {
+    var flatFiles: [PTMFile] {
         
-        var flatArray: [PTMElement] = [root]
-        
-        if let folder = root as? PTMFolder {
-            
-            let children = folder.children
-            
-            for child in children {
-                flatArray += flatDocuments(forTreeWithRoot: child)
-            }
-        }
-        
-        return flatArray
+        let folder = PTMFolder(description: "", identifier: "", identifierOfParent: "", children: documents)
+        return folder.descendantFiles
     }
 }
 
@@ -448,8 +278,7 @@ public enum PTLocale {
 }
 
 
-public struct PTLecture: PTFetchedItem {
-    var dateFetched: Date!
+public struct PTLecture {
     
     let subjectName: String
     let lecturerName: String?
@@ -471,35 +300,6 @@ public struct PTLecture: PTFetchedItem {
             return nil
         }
     }
-    
-    /*
-    var subtitle: String {
-        
-        var descr = ""
-        
-        if roomName != nil {
-            descr.append("\(~"Room"): \(roomName)\n")
-        }
-        
-        if lecturerName != nil {
-            descr.append("\(lecturerName!.capitalized)\n")
-        }
-        
-        if cohort != nil && courseIdentifier != nil {
-            descr.append("\(cohort!.from) - \(cohort!.to) - \(courseIdentifier!)\n")
-        }
-        
-        if detail != nil {
-            descr.append("\(detail)\n")
-        }
-        
-        while descr.hasSuffix("\n") {
-            descr = String(descr.characters.dropLast())
-        }
-        
-        return descr
-    }
-    */
 }
 
 public typealias PTFreeRoom = String
@@ -529,14 +329,13 @@ public func ==(lhs: PTRoom, rhs: PTRoom) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-protocol PTMElement: PTFetchedItem {
+protocol PTMElement {
     var description: String { get }
     var identifier: String { get }
     var identifierOfParent: String { get }
 }
 
 public struct PTMFile: PTMElement {
-    var dateFetched: Date!
     
     let description: String
     let identifier: String
@@ -560,7 +359,6 @@ public struct PTMFile: PTMElement {
 }
 
 public struct PTMFolder: PTMElement {
-    var dateFetched: Date!
     
     let description: String
     let identifier: String
@@ -569,13 +367,42 @@ public struct PTMFolder: PTMElement {
     var children: [PTMElement] = []
     
     var isEmpty: Bool { return children.isEmpty }
+    
+    var descendantElements: [PTMElement] {
+        
+        var flatArray: [PTMElement] = []
+        
+        for element in children {
+            
+            flatArray.append(element)
+            
+            if let folder = element as? PTMFolder {
+                
+                flatArray += folder.descendantElements
+            }
+        }
+        
+        return flatArray
+    }
+    
+    var descendantFiles: [PTMFile] {
+        
+        var flatArray: [PTMFile] = []
+        
+        for element in children {
+            
+            if let file = element as? PTMFile {
+                flatArray.append(file)
+            } else if let folder = element as? PTMFolder {
+                flatArray += folder.descendantFiles
+            }
+        }
+        
+        return flatArray
+    }
 }
 
-
-// PTStudentInfo + PTAccount substitute PTStudent!
-
-public struct PTStudentInfo: PTFetchedItem {
-    var dateFetched: Date!
+public struct PTStudentInfo {
     
     let firstName: String?
     let lastName: String?

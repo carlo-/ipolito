@@ -128,8 +128,7 @@ private func parsedPTMElementsFromRawFolder(_ rawFolder: [[String: AnyObject]]!)
             guard let rawChildren = rawElem["files"] as? [[String: AnyObject]]
             else { continue }
             
-            let folder = PTMFolder(dateFetched: Date.init(),
-                                   description: description,
+            let folder = PTMFolder(description: description,
                                    identifier: identifier,
                                    identifierOfParent: identifierOfParent,
                                    children: parsedPTMElementsFromRawFolder(rawChildren))
@@ -152,16 +151,15 @@ private func parsedPTMElementsFromRawFolder(_ rawFolder: [[String: AnyObject]]!)
             if let rawDate = rawElem["data_ins"] as? String {
                 
                 let formatter = DateFormatter()
-                formatter.timeZone = TimeZone.Turin //(name: "Europe/Rome")
+                formatter.timeZone = TimeZone.Turin
                 formatter.isLenient = true
                 formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
                     
                 date = formatter.date(from: rawDate)
             }
             
-            
-            let file = PTMFile(dateFetched: Date.init(),
-                               description: description,
+    
+            let file = PTMFile(description: description,
                                identifier: identifier,
                                identifierOfParent: identifierOfParent,
                                date: date,
@@ -318,7 +316,7 @@ class PTParser: NSObject {
                     else { continue }
                 
                 let formatter = DateFormatter()
-                formatter.timeZone = TimeZone.Turin // (name: "Europe/Rome")
+                formatter.timeZone = TimeZone.Turin
                 formatter.isLenient = true
                 formatter.dateFormat = "dd/MM/yyyy"
                 
@@ -335,8 +333,7 @@ class PTParser: NSObject {
                     grade = .Numerical(Int(rawGrade)!)
                 }
                 
-                let exam = PTExam(dateFetched: Date.init(),
-                                  name: subjectName, date: date, credits: credits, grade: grade)
+                let exam = PTExam(name: subjectName, date: date, credits: credits, grade: grade)
                 
                 exams.append(exam)
             }
@@ -370,7 +367,7 @@ class PTParser: NSObject {
                 
                 
                 let formatter = DateFormatter()
-                formatter.timeZone = TimeZone.Turin //(name: "Europe/Rome")
+                formatter.timeZone = TimeZone.Turin
                 formatter.isLenient = true
                 formatter.dateFormat = "dd-MM-yyyy"
                 
@@ -391,8 +388,7 @@ class PTParser: NSObject {
                 } else { grade = nil }
                 
                 
-                let tempGrade = PTTemporaryGrade(dateFetched: Date(),
-                                             subjectName: nameRawStr,
+                let tempGrade = PTTemporaryGrade(subjectName: nameRawStr,
                                              absent: (absentRawStr.uppercased() != "N"),
                                              subjectCode: codeRawStr,
                                              date: date,
@@ -446,15 +442,14 @@ class PTParser: NSObject {
                 else { continue }
                 
                 let formatter = DateFormatter()
-                formatter.timeZone = TimeZone.Turin //(name: "Europe/Rome")
+                formatter.timeZone = TimeZone.Turin
                 formatter.isLenient = true
                 formatter.dateFormat = "dd/MM/yyyy"
                 
                 guard let date = formatter.date(from: dateStr)
                 else { continue }
                 
-                let mex = PTMessage(dateFetched: Date.init(),
-                                    date: date, rawHtml: rawHTML)
+                let mex = PTMessage(date: date, rawHtml: rawHTML)
                 
                 messages.append(mex)
             }
@@ -539,7 +534,7 @@ class PTParser: NSObject {
                 else { continue }
                 
                 let formatter = DateFormatter()
-                formatter.timeZone = TimeZone.Turin // (name: "Europe/Rome")
+                formatter.timeZone = TimeZone.Turin
                 formatter.isLenient = true
                 formatter.dateFormat = "dd/MM/yyyy HH.mm.ss"
                 
@@ -555,16 +550,15 @@ class PTParser: NSObject {
                     cohort = nil
                 }
                 
-                let lecture = PTLecture(dateFetched: Date.init(),
-                                                 subjectName:       subjectName,
-                                                 lecturerName:      rawLecture["NOMINATIVO_AULA"]    as? String,
-                                                 roomName:          rawLecture["AULA"]              as? String,
-                                                 detail:            rawLecture["TIPOLOGIA_EVENTO"]  as? String,
-                                                 courseIdentifier:  rawLecture["NUMCOR"]            as? String,
-                                                 lectureIdentifier: rawLecture["ID_EVENTO"]         as? String,
-                                                 cohort:            cohort,
-                                                 date:              begDate,
-                                                 length:            endDate.timeIntervalSince(begDate))
+                let lecture = PTLecture(subjectName:       subjectName,
+                                        lecturerName:      rawLecture["NOMINATIVO_AULA"]    as? String,
+                                        roomName:          rawLecture["AULA"]              as? String,
+                                        detail:            rawLecture["TIPOLOGIA_EVENTO"]  as? String,
+                                        courseIdentifier:  rawLecture["NUMCOR"]            as? String,
+                                        lectureIdentifier: rawLecture["ID_EVENTO"]         as? String,
+                                        cohort:            cohort,
+                                        date:              begDate,
+                                        length:            endDate.timeIntervalSince(begDate))
                 
                 schedule.append(lecture)
             }
@@ -627,8 +621,7 @@ class PTParser: NSObject {
             academicMajor = obj.capitalized
         } else { academicMajor = nil }
         
-        return PTStudentInfo(dateFetched: Date.init(),
-                             firstName: firstName,
+        return PTStudentInfo(firstName: firstName,
                              lastName: lastName,
                              weightedAverage: weightedAverage,
                              cleanWeightedAverage: cleanWeightedAverage,

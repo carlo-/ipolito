@@ -116,8 +116,6 @@ private func performTestRequest(withRawParams rawParams: [PTRequestParameter: St
         
         if let apiRawContainer = testContainer.value(forKeyPath: apiTestKey!) {
             
-            // TODO: Implement network delays and errors
-            
             completion(apiRawContainer as AnyObject?, nil)
         } else {
             // Error! Bad parameters or not a testable key
@@ -388,7 +386,7 @@ class PTRequest: NSObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         dateFormatter.isLenient = false
-        dateFormatter.timeZone = TimeZone.Turin //(name: "Europe/Rome")
+        dateFormatter.timeZone = TimeZone.Turin
         
         let dateStr = dateFormatter.string(from: date)
         
@@ -416,7 +414,7 @@ class PTRequest: NSObject {
     class func fetchFreeRooms(date: Date = Date.init(), regID: String, loadTestData: Bool = false, completion: @escaping (_ freeRooms: [PTFreeRoom]?, _ error: PTRequestError?) -> Void) {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone.Turin // (name: "Europe/Rome")
+        dateFormatter.timeZone = TimeZone.Turin
         
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let dayStr = dateFormatter.string(from: date)
@@ -452,7 +450,6 @@ private func deviceModel() -> String {
     let machineMirror = Mirror(reflecting: systemInfo.machine)
     let identifier = machineMirror.children.reduce("") { identifier, element in
         
-        // Note: comma in the guard statement used to be a 'where' before Xcode 8 b6
         guard let value = element.value as? Int8, value != 0 else { return identifier }
         return identifier + String(UnicodeScalar(UInt8(value)))
     }
