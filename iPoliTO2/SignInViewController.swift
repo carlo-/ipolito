@@ -118,20 +118,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
         
         let alert = UIAlertController(title: ~"ls.generic.alert.error.title", message: nil, preferredStyle: .alert)
         
-        alert.message = {
-            switch (error) {
-            case .invalidCredentials:
-                return ~"ls.generic.ptRequestError.invalidCredentials"
-            case .notConnectedToInternet:
-                return ~"ls.generic.ptRequestError.notConnectedToInternet"
-            case .serverUnreachable:
-                return ~"ls.generic.ptRequestError.serverUnreachable"
-            case .timedOut:
-                return ~"ls.generic.ptRequestError.timedOut"
-            default:
-                return ~"ls.generic.ptRequestError.unknown"
-            }
-        }()
+        alert.message = error.localizedDescription
         
         alert.addAction(UIAlertAction(title: ~"ls.generic.alert.edit", style: .cancel, handler: {
             action in

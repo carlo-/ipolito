@@ -10,7 +10,6 @@ import Foundation
 
 public enum PTRequestError {
     case jsonSerializationFailed
-    case unknownStatusCode
     case unknownError
     case invalidCredentials
     case invalidRequestType
@@ -21,6 +20,56 @@ public enum PTRequestError {
     case serverUnreachable
     case timedOut
     case notConnectedToInternet
+    
+    var localizedDescription: String {
+        
+        switch (self) {
+        case .invalidCredentials:
+            return ~"ls.generic.ptRequestError.invalidCredentials"
+        case .notConnectedToInternet:
+            return ~"ls.generic.ptRequestError.notConnectedToInternet"
+        case .serverUnreachable:
+            return ~"ls.generic.ptRequestError.serverUnreachable"
+        case .timedOut:
+            return ~"ls.generic.ptRequestError.timedOut"
+        default:
+            return ~"ls.generic.ptRequestError.unknown"
+        }
+    }
+    
+    init?(fromResponseCode code: Int) {
+        
+        switch code {
+        case -3:
+            self = .invalidCredentials
+        case -6:
+            self = .missingParameters
+        case -10:
+            self = .invalidRequestType
+        case -13:
+            self = .cannotResolveURL
+        case -33:
+            self = .invalidInputJSON
+        case 0:
+            return nil
+        default:
+            self = .unknownError
+        }
+    }
+    
+    init(fromNSURLErrorCode code: Int) {
+        
+        switch code {
+        case NSURLErrorTimedOut:
+            self = .timedOut
+        case NSURLErrorNotConnectedToInternet:
+            self = .notConnectedToInternet
+        case NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorDNSLookupFailed:
+            self = .serverUnreachable
+        default:
+            self = .unknownError
+        }
+    }
 }
 
 private enum PTRequestParameter: String {
@@ -164,30 +213,15 @@ private func performRequest(withRawParams rawParams: [PTRequestParameter: String
                 
                 // print(container)
                 
-                var myError: PTRequestError? {
-                    
-                    if let statusCode = PTParser.statusCodeFromRawContainer(container) {
-                        
-                        switch statusCode {
-                        case -3:
-                            return .invalidCredentials
-                        case -6:
-                            return .missingParameters
-                        case -10:
-                            return .invalidRequestType
-                        case -13:
-                            return .cannotResolveURL
-                        case -33:
-                            return .invalidInputJSON
-                        case 0:
-                            return nil
-                        default:
-                            return .unknownStatusCode
-                        }
-                    } else { return .unknownError }
+                let ptError: PTRequestError?
+                
+                if let statusCode = PTParser.statusCodeFromRawContainer(container) {
+                    ptError = PTRequestError(fromResponseCode: statusCode)
+                } else {
+                    ptError = .unknownError
                 }
                 
-                completion(container, myError)
+                completion(container, ptError)
                 return
                 
             } else {
@@ -198,20 +232,14 @@ private func performRequest(withRawParams rawParams: [PTRequestParameter: String
             
         } else {
             
-            var myError: PTRequestError {
-                switch (error as! NSError).code {
-                case NSURLErrorTimedOut:
-                    return .timedOut
-                case NSURLErrorNotConnectedToInternet:
-                    return .notConnectedToInternet
-                case NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorDNSLookupFailed:
-                    return .serverUnreachable
-                default:
-                    return .unknownError
-                }
+            let ptError: PTRequestError
+            if let error = error as? NSError {
+                ptError = PTRequestError(fromNSURLErrorCode: error.code)
+            } else {
+                ptError = .unknownError
             }
             
-            completion(nil, myError)
+            completion(nil, ptError)
             return
         }
     })

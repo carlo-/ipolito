@@ -386,18 +386,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         let alert = UIAlertController(title: ~"ls.generic.alert.error.title", message: nil, preferredStyle: .alert)
         
-        alert.message = {
-            switch (error) {
-            case .notConnectedToInternet:
-                return ~"ls.generic.ptRequestError.notConnectedToInternet"
-            case .serverUnreachable:
-                return ~"ls.generic.ptRequestError.serverUnreachable"
-            case .timedOut:
-                return ~"ls.generic.ptRequestError.timedOut"
-            default:
-                return ~"ls.generic.ptRequestError.unknown"
-            }
-        }()
+        alert.message = error.localizedDescription
         
         alert.addAction(UIAlertAction(title: ~"ls.generic.alert.retry", style: .default, handler: {
             action in
