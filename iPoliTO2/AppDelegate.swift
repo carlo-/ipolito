@@ -276,7 +276,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         mapVC?.status = .error
         
         switch error {
-        case .InvalidCredentials:
+        case .invalidCredentials:
             // Presents login window
             presentSignInViewController()
         default:
@@ -388,11 +388,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         alert.message = {
             switch (error) {
-            case .NotConnectedToInternet:
+            case .notConnectedToInternet:
                 return ~"ls.generic.ptRequestError.notConnectedToInternet"
-            case .ServerUnreachable:
+            case .serverUnreachable:
                 return ~"ls.generic.ptRequestError.serverUnreachable"
-            case .TimedOut:
+            case .timedOut:
                 return ~"ls.generic.ptRequestError.timedOut"
             default:
                 return ~"ls.generic.ptRequestError.unknown"

@@ -9,53 +9,53 @@
 import Foundation
 
 public enum PTRequestError {
-    case JSONSerializationFailed
-    case UnknownStatusCode
-    case UnknownError
-    case InvalidCredentials
-    case InvalidRequestType
-    case InvalidToken
-    case InvalidInputJSON
-    case MissingParameters
-    case CannotResolveURL
-    case ServerUnreachable
-    case TimedOut
-    case NotConnectedToInternet
+    case jsonSerializationFailed
+    case unknownStatusCode
+    case unknownError
+    case invalidCredentials
+    case invalidRequestType
+    case invalidToken
+    case invalidInputJSON
+    case missingParameters
+    case cannotResolveURL
+    case serverUnreachable
+    case timedOut
+    case notConnectedToInternet
 }
 
 private enum PTRequestParameter: String {
-    case SessionToken =     "token"
-    case RegisteredID =     "regID"
-    case FileCode =         "code"
-    case Incarico =         "incarico"
-    case Inserimento =      "cod_ins"
-    case RefDate =          "data_rif"
-    case Matricola =        "username"
-    case Password =         "password"
-    case RoomType =         "local_type"
-    case Day =              "giorno"
-    case Time =             "ora"
-    case BooksPerPage =     "numrec"
-    case DeviceUUID =       "uuid"
-    case DevicePlatform =   "device_platform"
-    case DeviceVersion =    "device_version"
-    case DeviceModel =      "device_model"
-    case DeviceManufacturer="device_manufacturer"
+    case sessionToken =     "token"
+    case registeredID =     "regID"
+    case fileCode =         "code"
+    case incarico =         "incarico"
+    case inserimento =      "cod_ins"
+    case refDate =          "data_rif"
+    case matricola =        "username"
+    case password =         "password"
+    case roomType =         "local_type"
+    case day =              "giorno"
+    case time =             "ora"
+    case booksPerPage =     "numrec"
+    case deviceUUID =       "uuid"
+    case devicePlatform =   "device_platform"
+    case deviceVersion =    "device_version"
+    case deviceModel =      "device_model"
+    case deviceManufacturer="device_manufacturer"
 }
 
 private enum PTRequestAPI: String {
-    case Schedule =         "https://app.didattica.polito.it/orari_lezioni.php"
-    case StudentInfo =      "https://app.didattica.polito.it/studente.php"
-    case FileLink =         "https://app.didattica.polito.it/download.php"
-    case SubjectData =      "https://app.didattica.polito.it/materia_dettaglio.php"
-    case ExamSessions =     "https://app.didattica.polito.it/appelli.php"
-    case Rooms =            "https://app.didattica.polito.it/sedi.php"
-    case FreeRooms =        "https://app.didattica.polito.it/aule_libere.php"
-    case Library =          "https://app.didattica.polito.it/biblioteca.php"
-    case Login =            "https://app.didattica.polito.it/login.php"
-    case Logout =           "https://app.didattica.polito.it/logout.php"
-    case RegisterDevice =   "https://app.didattica.polito.it/register.php"
-    case TemporaryGrades =  "https://app.didattica.polito.it/valutazioni.php"
+    case schedule =         "https://app.didattica.polito.it/orari_lezioni.php"
+    case studentInfo =      "https://app.didattica.polito.it/studente.php"
+    case fileLink =         "https://app.didattica.polito.it/download.php"
+    case subjectData =      "https://app.didattica.polito.it/materia_dettaglio.php"
+    case examSessions =     "https://app.didattica.polito.it/appelli.php"
+    case rooms =            "https://app.didattica.polito.it/sedi.php"
+    case freeRooms =        "https://app.didattica.polito.it/aule_libere.php"
+    case library =          "https://app.didattica.polito.it/biblioteca.php"
+    case login =            "https://app.didattica.polito.it/login.php"
+    case logout =           "https://app.didattica.polito.it/logout.php"
+    case registerDevice =   "https://app.didattica.polito.it/register.php"
+    case temporaryGrades =  "https://app.didattica.polito.it/valutazioni.php"
 }
 
 private func performTestRequest(withRawParams rawParams: [PTRequestParameter: String], api: PTRequestAPI, completion: (_ container: AnyObject?, _ error: PTRequestError?) -> Void) {
@@ -63,43 +63,43 @@ private func performTestRequest(withRawParams rawParams: [PTRequestParameter: St
     let apiTestKey: String? = {
         
         switch api {
-        case .FileLink, .ExamSessions, .Rooms, .Library:
+        case .fileLink, .examSessions, .rooms, .library:
             return nil
-        case .Schedule:
+        case .schedule:
             return "schedule"
-        case .StudentInfo:
+        case .studentInfo:
             return "studentInfo"
-        case .SubjectData:
+        case .subjectData:
             
-            if let incarico = rawParams[.Incarico],
-               let inserim = rawParams[.Inserimento] {
+            if let incarico = rawParams[.incarico],
+               let inserim = rawParams[.inserimento] {
                 return "subjectData."+incarico+inserim
             } else {
                 return nil
             }
         
-        case .FreeRooms:
+        case .freeRooms:
             return "freeRooms"
-        case .TemporaryGrades:
+        case .temporaryGrades:
             return "temporaryGrades"
-        case .Login:
+        case .login:
             return "login"
-        case .Logout:
+        case .logout:
             return "logout"
-        case .RegisterDevice:
+        case .registerDevice:
             return "register"
         }
     }()
     
     guard apiTestKey != nil else {
         // Error! Bad parameters or not a testable key
-        completion(nil, .InvalidRequestType)
+        completion(nil, .invalidRequestType)
         return
     }
     
     guard let jsonURL = Bundle.main.url(forResource: "DemoData", withExtension: "json") else {
         // Error! No test data found
-        completion(nil, .JSONSerializationFailed)
+        completion(nil, .jsonSerializationFailed)
         return
     }
     
@@ -108,7 +108,7 @@ private func performTestRequest(withRawParams rawParams: [PTRequestParameter: St
         data = try Data(contentsOf: jsonURL)
     } catch _ {
         // Error! No test data found
-        completion(nil, .JSONSerializationFailed)
+        completion(nil, .jsonSerializationFailed)
         return
     }
     
@@ -119,13 +119,13 @@ private func performTestRequest(withRawParams rawParams: [PTRequestParameter: St
             completion(apiRawContainer as AnyObject?, nil)
         } else {
             // Error! Bad parameters or not a testable key
-            completion(nil, .InvalidRequestType)
+            completion(nil, .invalidRequestType)
             return
         }
     } else {
         
         // Error! JSON serialization failed
-        completion(nil, .InvalidRequestType)
+        completion(nil, .invalidRequestType)
         return
     }
 }
@@ -170,21 +170,21 @@ private func performRequest(withRawParams rawParams: [PTRequestParameter: String
                         
                         switch statusCode {
                         case -3:
-                            return .InvalidCredentials
+                            return .invalidCredentials
                         case -6:
-                            return .MissingParameters
+                            return .missingParameters
                         case -10:
-                            return .InvalidRequestType
+                            return .invalidRequestType
                         case -13:
-                            return .CannotResolveURL
+                            return .cannotResolveURL
                         case -33:
-                            return .InvalidInputJSON
+                            return .invalidInputJSON
                         case 0:
                             return nil
                         default:
-                            return .UnknownStatusCode
+                            return .unknownStatusCode
                         }
-                    } else { return .UnknownError }
+                    } else { return .unknownError }
                 }
                 
                 completion(container, myError)
@@ -192,7 +192,7 @@ private func performRequest(withRawParams rawParams: [PTRequestParameter: String
                 
             } else {
                 
-                completion(nil, .JSONSerializationFailed)
+                completion(nil, .jsonSerializationFailed)
                 return
             }
             
@@ -201,13 +201,13 @@ private func performRequest(withRawParams rawParams: [PTRequestParameter: String
             var myError: PTRequestError {
                 switch (error as! NSError).code {
                 case NSURLErrorTimedOut:
-                    return .TimedOut
+                    return .timedOut
                 case NSURLErrorNotConnectedToInternet:
-                    return .NotConnectedToInternet
+                    return .notConnectedToInternet
                 case NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorDNSLookupFailed:
-                    return .ServerUnreachable
+                    return .serverUnreachable
                 default:
-                    return .UnknownError
+                    return .unknownError
                 }
             }
             
@@ -224,10 +224,10 @@ class PTRequest: NSObject {
     
     class func fetchStudentInfo(token: String!, regID: String!, loadTestData: Bool = false, completion: @escaping (_ studentInfo: PTStudentInfo?, _ subjects: [PTSubject]?, _ passedExams: [PTExam]?, _ error: PTRequestError?) -> Void) {
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: regID,
-                                                    .SessionToken: token]
+        let params: [PTRequestParameter: String] = [.registeredID: regID,
+                                                    .sessionToken: token]
         
-        performRequest(withRawParams: params, api: .StudentInfo, loadTestData: loadTestData, completion: {
+        performRequest(withRawParams: params, api: .studentInfo, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             if error == nil && container != nil {
@@ -248,10 +248,10 @@ class PTRequest: NSObject {
     
     class func performLogin(account: PTAccount!, regID: String!, loadTestData: Bool = false, completion: @escaping (_ token: String?, _ studentInfo: PTStudentInfo?, _ error: PTRequestError?) -> Void) {
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: regID,
-                                                    .Matricola: account.studentID,
-                                                    .Password: account.password]
-        performRequest(withRawParams: params, api: .Login, loadTestData: loadTestData, completion: {
+        let params: [PTRequestParameter: String] = [.registeredID: regID,
+                                                    .matricola: account.studentID,
+                                                    .password: account.password]
+        performRequest(withRawParams: params, api: .login, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             if error == nil && container != nil {
@@ -270,10 +270,10 @@ class PTRequest: NSObject {
     
     class func performLogout(token: String!, regID: String!, loadTestData: Bool = false, completion: @escaping (_ error: PTRequestError?) -> Void) {
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: regID,
-                                                    .SessionToken: token]
+        let params: [PTRequestParameter: String] = [.registeredID: regID,
+                                                    .sessionToken: token]
         
-        performRequest(withRawParams: params, api: .Logout, loadTestData: loadTestData, completion: {
+        performRequest(withRawParams: params, api: .logout, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             completion(error)
@@ -283,14 +283,14 @@ class PTRequest: NSObject {
     
     class func registerDevice(uuid: UUID!, loadTestData: Bool = false, completion: @escaping (_ error: PTRequestError?) -> Void) {
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: uuid.uuidString,
-                                                    .DeviceUUID: uuid.uuidString,
-                                                    .DevicePlatform: "iOS",
-                                                    .DeviceVersion: ProcessInfo().operatingSystemVersionString,
-                                                    .DeviceModel: deviceModel(),
-                                                    .DeviceManufacturer: "Apple"]
+        let params: [PTRequestParameter: String] = [.registeredID: uuid.uuidString,
+                                                    .deviceUUID: uuid.uuidString,
+                                                    .devicePlatform: "iOS",
+                                                    .deviceVersion: ProcessInfo().operatingSystemVersionString,
+                                                    .deviceModel: deviceModel(),
+                                                    .deviceManufacturer: "Apple"]
         
-        performRequest(withRawParams: params, api: .RegisterDevice, loadTestData: loadTestData, completion: {
+        performRequest(withRawParams: params, api: .registerDevice, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             completion(error)
@@ -300,12 +300,12 @@ class PTRequest: NSObject {
     
     class func fetchSubjectData(subject: PTSubject!, token: String!, regID: String!, loadTestData: Bool = false, completion: @escaping (_ subjectData: PTSubjectData?, _ error: PTRequestError?) -> Void) {
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: regID,
-                                                    .SessionToken: token,
-                                                    .Incarico: subject.incarico,
-                                                    .Inserimento: subject.inserimento]
+        let params: [PTRequestParameter: String] = [.registeredID: regID,
+                                                    .sessionToken: token,
+                                                    .incarico: subject.incarico,
+                                                    .inserimento: subject.inserimento]
         
-        performRequest(withRawParams: params, api: .SubjectData, loadTestData: loadTestData, completion: {
+        performRequest(withRawParams: params, api: .subjectData, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             if error == nil && container != nil {
@@ -318,8 +318,7 @@ class PTRequest: NSObject {
                     let guide = PTParser.subjectGuideFromRawContainer(container!)
                     let info = PTParser.subjectInfoFromRawContainer(container!)
                     
-                    subjectData = PTSubjectData(dateFetched: Date.init(),
-                                                subject: subject,
+                    subjectData = PTSubjectData(subject: subject,
                                                 lecturers: [],
                                                 messages: messages,
                                                 documents: documents,
@@ -341,10 +340,10 @@ class PTRequest: NSObject {
     
     class func fetchTemporaryGrades(token: String, regID: String, loadTestData: Bool = false, completion: @escaping (_ temporaryGrades: [PTTemporaryGrade]?, _ error: PTRequestError?) -> Void) {
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: regID,
-                                                    .SessionToken: token]
+        let params: [PTRequestParameter: String] = [.registeredID: regID,
+                                                    .sessionToken: token]
         
-        performRequest(withRawParams: params, api: .TemporaryGrades, loadTestData: loadTestData, completion: {
+        performRequest(withRawParams: params, api: .temporaryGrades, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             if error == nil && container != nil {
@@ -361,11 +360,11 @@ class PTRequest: NSObject {
     
     class func fetchLinkForFile(token: String!, regID: String!, fileCode: String!, completion: @escaping (_ link: URL?, _ error: PTRequestError?) -> Void) {
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: regID,
-                                                    .SessionToken: token,
-                                                    .FileCode: fileCode]
+        let params: [PTRequestParameter: String] = [.registeredID: regID,
+                                                    .sessionToken: token,
+                                                    .fileCode: fileCode]
         
-        performRequest(withRawParams: params, api: .FileLink, completion: {
+        performRequest(withRawParams: params, api: .fileLink, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             if error == nil && container != nil {
@@ -390,11 +389,11 @@ class PTRequest: NSObject {
         
         let dateStr = dateFormatter.string(from: date)
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: regID,
-                                                    .SessionToken: token,
-                                                    .RefDate: dateStr]
+        let params: [PTRequestParameter: String] = [.registeredID: regID,
+                                                    .sessionToken: token,
+                                                    .refDate: dateStr]
         
-        performRequest(withRawParams: params, api: .Schedule, loadTestData: loadTestData, completion: {
+        performRequest(withRawParams: params, api: .schedule, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             if error == nil && container != nil {
@@ -422,9 +421,9 @@ class PTRequest: NSObject {
         dateFormatter.dateFormat = "HH:mm:ss"
         let timeStr = dateFormatter.string(from: date)
         
-        let params: [PTRequestParameter: String] = [.RegisteredID: regID, .Day: dayStr, .Time: timeStr]
+        let params: [PTRequestParameter: String] = [.registeredID: regID, .day: dayStr, .time: timeStr]
         
-        performRequest(withRawParams: params, api: .FreeRooms, loadTestData: loadTestData, completion: {
+        performRequest(withRawParams: params, api: .freeRooms, loadTestData: loadTestData, completion: {
             (container: AnyObject?, error: PTRequestError?) in
             
             if error == nil && container != nil {

@@ -200,7 +200,7 @@ class PTSession: NSObject {
         self.delegate?.sessionDidBeginRetrievingTemporaryGrades()
         
         guard let token = self.token else {
-            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .InvalidToken)
+            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .invalidToken)
             return
         }
         
@@ -222,7 +222,7 @@ class PTSession: NSObject {
                         if temporaryGrades != nil {
                             self.delegate?.sessionDidRetrieveTemporaryGrades(temporaryGrades!)
                         } else {
-                            self.delegate?.sessionDidFailRetrievingTemporaryGradesWithError(error: .JSONSerializationFailed)
+                            self.delegate?.sessionDidFailRetrievingTemporaryGradesWithError(error: .jsonSerializationFailed)
                         }
                         
                         
@@ -274,7 +274,7 @@ class PTSession: NSObject {
         self.delegate?.sessionDidBeginRetrievingSchedule()
         
         guard let token = self.token else {
-            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .InvalidToken)
+            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .invalidToken)
             return
         }
         
@@ -296,7 +296,7 @@ class PTSession: NSObject {
                         if schedule != nil {
                             self.delegate?.sessionDidRetrieveSchedule(schedule: schedule!)
                         } else {
-                            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .JSONSerializationFailed)
+                            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .jsonSerializationFailed)
                         }
                         
                     }
@@ -322,7 +322,7 @@ class PTSession: NSObject {
         self.delegate?.sessionDidBeginRetrievingSubjectData(subject: subject)
         
         guard let token = self.token else {
-            self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: .InvalidToken, subject: subject)
+            self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: .invalidToken, subject: subject)
             return
         }
         
@@ -344,7 +344,7 @@ class PTSession: NSObject {
                         if subjectData != nil {
                             self.delegate?.sessionDidRetrieveSubjectData(data: subjectData!, subject: subject)
                         } else {
-                            self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: .JSONSerializationFailed, subject: subject)
+                            self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: .jsonSerializationFailed, subject: subject)
                         }
                     }
                 })
@@ -374,7 +374,7 @@ class PTSession: NSObject {
                     
                     OperationQueue.main.addOperation({
                         self.isOpening = false
-                        self.delegate?.sessionDidFailOpeningWithError(error: .UnknownError)
+                        self.delegate?.sessionDidFailOpeningWithError(error: .unknownError)
                     })
                     
                 } else {

@@ -120,13 +120,13 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
         
         alert.message = {
             switch (error) {
-            case .InvalidCredentials:
+            case .invalidCredentials:
                 return ~"ls.generic.ptRequestError.invalidCredentials"
-            case .NotConnectedToInternet:
+            case .notConnectedToInternet:
                 return ~"ls.generic.ptRequestError.notConnectedToInternet"
-            case .ServerUnreachable:
+            case .serverUnreachable:
                 return ~"ls.generic.ptRequestError.serverUnreachable"
-            case .TimedOut:
+            case .timedOut:
                 return ~"ls.generic.ptRequestError.timedOut"
             default:
                 return ~"ls.generic.ptRequestError.unknown"

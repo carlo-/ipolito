@@ -9,18 +9,18 @@
 import Foundation
 
 public enum PTGrade {
-    case Honors
-    case Passed
-    case Numerical(Int)
+    case honors
+    case passed
+    case numerical(Int)
     
     var shortDescription: String {
         get {
             switch self {
-            case .Passed:
+            case .passed:
                 return ~"ls.ptGrade.passed.short"
-            case .Honors:
+            case .honors:
                 return "30L"
-            case .Numerical(let val):
+            case .numerical(let val):
                 return String(val)
             }
         }

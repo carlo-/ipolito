@@ -326,11 +326,11 @@ class PTParser: NSObject {
                 
                 let grade:PTGrade
                 if rawGrade.lowercased().contains("sup") {
-                    grade = .Passed
+                    grade = .passed
                 } else if rawGrade.lowercased().contains("l") {
-                    grade = .Honors
+                    grade = .honors
                 } else {
-                    grade = .Numerical(Int(rawGrade)!)
+                    grade = .numerical(Int(rawGrade)!)
                 }
                 
                 let exam = PTExam(name: subjectName, date: date, credits: credits, grade: grade)
@@ -379,11 +379,11 @@ class PTParser: NSObject {
                 if let gradeRawStr = rawGrade["VOTO_ESAME"]?.description {
                     
                     if gradeRawStr.lowercased().contains("sup") {
-                        grade = .Passed
+                        grade = .passed
                     } else if gradeRawStr.lowercased().contains("l") {
-                        grade = .Honors
+                        grade = .honors
                     } else {
-                        grade = .Numerical((gradeRawStr as NSString).integerValue)
+                        grade = .numerical((gradeRawStr as NSString).integerValue)
                     }
                 } else { grade = nil }
                 

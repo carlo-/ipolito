@@ -400,11 +400,11 @@ class PTGraphCell: UITableViewCell {
         for exam in exams {
             
             switch exam.grade {
-            case .Passed:
+            case .passed:
                 continue
-            case .Honors:
+            case .honors:
                 n30L += 1
-            case .Numerical(let numb):
+            case .numerical(let numb):
                 
                 if numb >= 18 && numb <= 20 {
                     n18_20 += 1
