@@ -11,6 +11,7 @@
 		232D44211D6BB69800BFA8A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232D44201D6BB69800BFA8A6 /* Constants.swift */; };
 		232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8311D4CD7340001C99C /* AppDelegate.swift */; };
 		232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */; };
+		233293381DA69B5800FB4B00 /* PDFViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233293361DA69B5800FB4B00 /* PDFViewerController.swift */; };
 		234762001D94A8CD004C5FB3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 234762021D94A8CD004C5FB3 /* Localizable.strings */; };
 		2352C07C1D96C5CE008DED0F /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2352C0751D96C551008DED0F /* Charts.framework */; };
 		2352C07D1D96C5CE008DED0F /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2352C0751D96C551008DED0F /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -101,6 +102,7 @@
 		230323611D877AC1003881E9 /* PTAccessoryViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTAccessoryViews.swift; sourceTree = "<group>"; };
 		232D44201D6BB69800BFA8A6 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		233293361DA69B5800FB4B00 /* PDFViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFViewerController.swift; sourceTree = "<group>"; };
 		234761F91D94A46B004C5FB3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Main.strings; sourceTree = "<group>"; };
 		234762011D94A8CD004C5FB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		234762061D958068004C5FB3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				236690FD1D834643000BC822 /* DocumentsViewController.swift */,
 				236CDB521D9D9EAC00A036BC /* SubjectInfoViewController.swift */,
 				23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */,
+				233293361DA69B5800FB4B00 /* PDFViewerController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				233293381DA69B5800FB4B00 /* PDFViewerController.swift in Sources */,
 				2399D8501D4CEDAA0001C99C /* CareerViewController.swift in Sources */,
 				232D44211D6BB69800BFA8A6 /* Constants.swift in Sources */,
 				2399D8361D4CD7340001C99C /* SubjectsViewController.swift in Sources */,

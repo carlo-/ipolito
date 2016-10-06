@@ -32,6 +32,29 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         tableView.tableFooterView = UIView()
     }
     
+    func presentPDFViewer(title: String, path: String) {
+        
+        let id = PDFViewerController.parentIdentifier
+        
+        guard let viewerNavController = storyboard?.instantiateViewController(withIdentifier: id) as? UINavigationController,
+              let viewer = viewerNavController.topViewController as? PDFViewerController else {
+            return
+        }
+        
+        viewer.configure(title: title, filePath: path, canShare: true)
+ 
+        present(viewerNavController, animated: true, completion: nil)
+    }
+    
+    func presentOpenIn(path: String) {
+        
+        documentInteractionController = UIDocumentInteractionController()
+        documentInteractionController?.url = URL(fileURLWithPath: path)
+        documentInteractionController?.uti = "public.filename-extension"
+        
+        documentInteractionController?.presentOpenInMenu(from: view.bounds, in: view, animated: true)
+    }
+    
     func fileTransferDidChangeStatus(_ transfer: PTFileTransfer) {
         
         if transfer.status == .Completed {
@@ -213,11 +236,11 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             
             if let path = downloadManager.absolutePath(forDownloadedFileNamed: fileName, checkValidity: true) {
                 
-                documentInteractionController = UIDocumentInteractionController()
-                documentInteractionController?.url = URL(fileURLWithPath: path)
-                documentInteractionController?.uti = "public.filename-extension"
-                
-                documentInteractionController?.presentOpenInMenu(from: view.bounds, in: view, animated: true)
+                if PDFViewerController.canHandleFile(atPath: path) {
+                    presentPDFViewer(title: fileName, path: path)
+                } else {
+                    presentOpenIn(path: path)
+                }
                 
             } else {
                 
