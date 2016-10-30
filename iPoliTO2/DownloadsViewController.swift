@@ -236,7 +236,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             
             if let path = downloadManager.absolutePath(forDownloadedFileNamed: fileName, checkValidity: true) {
                 
-                if PDFViewerController.canHandleFile(atPath: path) {
+                if PDFViewerController.canOpenFile(atPath: path) {
                     presentPDFViewer(title: fileName, path: path)
                 } else {
                     presentOpenIn(path: path)
