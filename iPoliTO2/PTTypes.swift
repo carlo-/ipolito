@@ -278,7 +278,7 @@ public enum PTLocale {
 }
 
 
-public struct PTLecture {
+public struct PTLecture: Hashable {
     
     let subjectName: String
     let lecturerName: String?
@@ -300,6 +300,14 @@ public struct PTLecture {
             return nil
         }
     }
+    
+    public var hashValue: Int {
+        let concat = "\(date.hashValue)\(length)\(subjectName)\(roomName ?? "")\(lectureIdentifier ?? "")\(detail ?? "")"
+        return concat.hashValue
+    }
+}
+public func ==(lhs: PTLecture, rhs: PTLecture) -> Bool {
+    return lhs.hashValue == rhs.hashValue
 }
 
 public typealias PTFreeRoom = String

@@ -20,8 +20,10 @@ class HomeViewController: UITableViewController {
         didSet {
             recomputeScheduleByWeekday()
             tableView.reloadData()
+            scrollToMostRelevantRow()
         }
     }
+    
     var status: PTViewControllerStatus = .loggedOut {
         didSet {
             statusDidChange()
@@ -95,12 +97,6 @@ class HomeViewController: UITableViewController {
         }
     }
     
-    
-    /// Scrolls to the current lecture if possible, otherwise scrolls to the next lecture.
-    func scrollToMostRelevantRow() {
-        // TODO: Implement this method
-    }
-    
     func recomputeScheduleByWeekday() {
         
         let sortedSchedule = schedule.sorted { (lectureA, lectureB) -> Bool in
@@ -128,6 +124,114 @@ class HomeViewController: UITableViewController {
     
     // Required to unwind from settings programmatically
     @IBAction func unwindFromSettings(_ segue: UIStoryboardSegue) {}
+    
+    
+    
+    // MARK: -
+    
+    /// Scrolls to the top of the table
+    func scrollToFirstRow() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+    
+    /// Scrolls to the current lecture if possible, otherwise scrolls to the next lecture.
+    func scrollToMostRelevantRow() {
+        
+        let now = Date()
+        let weekday = italianWeekday(fromDate: now)
+        
+        if weekday > 4 {
+            // It's the weekend!
+            scrollToFirstRow()
+            return
+        }
+        
+        var relevantLecture: PTLecture? = nil
+        
+        if let lecture = currentLecture() {
+            relevantLecture = lecture
+        } else if let lecture = nextLecture() {
+            relevantLecture = lecture
+        }
+        
+        if let relevantLecture = relevantLecture,
+            let indexPath = indexPath(ofLecture: relevantLecture) {
+            
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            
+        } else {
+            scrollToFirstRow()
+        }
+    }
+    
+    /// Returns the current lecture, if any, otherwise nil
+    func currentLecture() -> PTLecture? {
+        
+        let now = Date()
+        let weekday = italianWeekday(fromDate: now)
+        if weekday > 4 {
+            // It's the weekend!
+            return nil
+        }
+        
+        let todaysSchedule = scheduleByWeekday[weekday] ?? []
+        
+        for lecture in todaysSchedule {
+            
+            let interval = now.timeIntervalSince(lecture.date)
+            if interval < 0 {
+                continue
+            } else if interval < lecture.length {
+                return lecture
+            }
+        }
+        return nil
+    }
+    
+    /// Returns the next lecture, if any, otherwise nil
+    func nextLecture() -> PTLecture? {
+        
+        let now = Date()
+        let weekday = italianWeekday(fromDate: now)
+        if weekday > 4 {
+            // It's the weekend!
+            return nil
+        }
+        
+        for i in weekday...4 {
+            
+            let todaysSchedule = scheduleByWeekday[i] ?? []
+            
+            for lecture in todaysSchedule {
+                
+                let interval = now.timeIntervalSince(lecture.date)
+                if interval > lecture.length {
+                    return lecture
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    /// Returns the IndexPath of the specified lecture, if found in the table, otherwise nil
+    func indexPath(ofLecture lecture: PTLecture) -> IndexPath? {
+        
+        for s in 0...4 {
+            
+            let todaysSchedule = scheduleByWeekday[s] ?? []
+            
+            for r in 0..<todaysSchedule.count {
+                
+                if lecture == todaysSchedule[r] {
+                    return IndexPath(row: r, section: s)
+                }
+            }
+        }
+        
+        return nil
+    }
     
     
     
