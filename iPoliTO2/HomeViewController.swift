@@ -242,6 +242,25 @@ class HomeViewController: UITableViewController {
         return 7
     }
     
+    
+    func titleForHeader(withDate date: Date) -> String {
+        
+        let formatter = DateFormatter()
+        formatter.doesRelativeDateFormatting = false
+        formatter.timeStyle = .none
+        
+        if let relative = formatter.relativeDateString(from: date) {
+            
+            formatter.dateStyle = .long
+            return "\(relative.capitalized) (\(formatter.string(from: date).capitalized))"
+            
+        } else {
+            
+            formatter.dateStyle = .full
+            return formatter.string(from: date).capitalized
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         let todaysSchedule = scheduleByWeekday[section] ?? []
@@ -257,14 +276,7 @@ class HomeViewController: UITableViewController {
             return nil
         }
         
-        let formatter = DateFormatter()
-        // formatter.timeZone = TimeZone.Turin
-        formatter.timeStyle = .none
-        formatter.dateStyle = .full
-        formatter.doesRelativeDateFormatting = true
-        
-        let title = formatter.string(from: today).capitalized
-        
+        let title = titleForHeader(withDate: today)
         
         let bottomSpacing: CGFloat = 5
         let labelHeight: CGFloat = 28

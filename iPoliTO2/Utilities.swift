@@ -8,6 +8,35 @@
 
 import UIKit
 
+extension DateFormatter {
+    
+    func relativeDateString(from date: Date) -> String? {
+        
+        let _doesRelativeDateFormatting = doesRelativeDateFormatting
+        let _timeStyle = timeStyle
+        let _dateStyle = dateStyle
+        
+        timeStyle = .none
+        dateStyle = .long
+        
+        doesRelativeDateFormatting = false
+        let absForm = string(from: date)
+        
+        doesRelativeDateFormatting = true
+        let relForm = string(from: date)
+        
+        doesRelativeDateFormatting = _doesRelativeDateFormatting
+        timeStyle = _timeStyle
+        dateStyle = _dateStyle
+        
+        if absForm.uppercased() == relForm.uppercased() {
+            return nil
+        } else {
+            return relForm
+        }
+    }
+}
+
 public prefix func ~ (key: String) -> String {
     return NSLocalizedString(key, comment: "No Comment")
 }
