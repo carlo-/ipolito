@@ -206,7 +206,7 @@ class HomeViewController: UITableViewController {
             for lecture in todaysSchedule {
                 
                 let interval = now.timeIntervalSince(lecture.date)
-                if interval > lecture.length {
+                if interval < 0 {
                     return lecture
                 }
             }
