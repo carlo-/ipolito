@@ -283,10 +283,12 @@ public struct PTLecture: Hashable {
     let subjectName: String
     let lecturerName: String?
     let roomName: String?
-    let detail: String?
+    let eventType: String?
     
     let courseIdentifier: String?
     let lectureIdentifier: String?
+    
+    let eventDescription: String?
     
     let cohort: (from: String, to: String)?
     
@@ -302,7 +304,7 @@ public struct PTLecture: Hashable {
     }
     
     public var hashValue: Int {
-        let concat = "\(date.hashValue)\(length)\(subjectName)\(roomName ?? "")\(lectureIdentifier ?? "")\(detail ?? "")"
+        let concat = "\(date.hashValue)\(length)\(subjectName)\(roomName ?? "")\(lectureIdentifier ?? "")\(eventType ?? "")\(eventDescription ?? "")"
         return concat.hashValue
     }
 }

@@ -31,7 +31,18 @@ class PTLectureView: UIView {
                 lecturerLabel.text = lecture.lecturerName?.capitalized
                 timeLabel.text = getNiceTimeIntervalString(fromLecture: lecture)
                 roomLabel.text = lecture.roomName
-                detailsLabel.text = lecture.cohortDesctiption
+                
+                var details: [String] = []
+                
+                if let cohort = lecture.cohortDesctiption {
+                    details.append(cohort)
+                }
+                
+                if let descr = lecture.eventDescription {
+                    details.append(descr)
+                }
+                
+                detailsLabel.text = details.joined(separator: " | ")
             }
         }
     }

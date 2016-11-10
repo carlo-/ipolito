@@ -552,10 +552,11 @@ class PTParser: NSObject {
                 
                 let lecture = PTLecture(subjectName:       subjectName,
                                         lecturerName:      rawLecture["NOMINATIVO_AULA"]    as? String,
-                                        roomName:          rawLecture["AULA"]              as? String,
-                                        detail:            rawLecture["TIPOLOGIA_EVENTO"]  as? String,
-                                        courseIdentifier:  rawLecture["NUMCOR"]            as? String,
-                                        lectureIdentifier: rawLecture["ID_EVENTO"]         as? String,
+                                        roomName:          rawLecture["AULA"]               as? String,
+                                        eventType:         rawLecture["TIPOLOGIA_EVENTO"]   as? String,
+                                        courseIdentifier:  rawLecture["NUMCOR"]             as? String,
+                                        lectureIdentifier: rawLecture["ID_EVENTO"]          as? String,
+                                        eventDescription:  rawLecture["DESCRIZIONE_EVENTO"] as? String,
                                         cohort:            cohort,
                                         date:              begDate,
                                         length:            endDate.timeIntervalSince(begDate))
