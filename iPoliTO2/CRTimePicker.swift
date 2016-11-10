@@ -278,7 +278,7 @@ private class CRTimePickerScrollView: UIScrollView {
         // Else we are in the central portion
     }
     
-    private override func layoutSubviews() {
+    fileprivate override func layoutSubviews() {
         super.layoutSubviews()
         
         recenterIfNecessary()
@@ -331,7 +331,7 @@ private class CRTimePickerContentView: UIView {
     }
     
     
-    private override func draw(_ rect: CGRect) {
+    fileprivate override func draw(_ rect: CGRect) {
         
         let intervals = CRTimePickerContentView.intervals
         
