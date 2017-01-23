@@ -256,6 +256,7 @@ class PTSubjectCell: UITableViewCell {
     @IBOutlet var mainLabel: UILabel!
     @IBOutlet var subtitleLabel: UILabel!
     @IBOutlet var messagesLabel: UILabel!
+    @IBOutlet var messagesIcon: UIImageView!
     @IBOutlet var messagesIconWidth: NSLayoutConstraint!
     
     func configure(forSubject subject: PTSubject, unreadMessages: Int = 0) {
@@ -275,5 +276,7 @@ class PTSubjectCell: UITableViewCell {
         }
         
         subtitleLabel.text = subtitle+subject.inserimento+" - \(subject.credits) "+(~"ls.generic.credits")
+        
+        messagesIcon.tintColorDidChange()
     }
 }

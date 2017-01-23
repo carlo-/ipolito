@@ -10,6 +10,105 @@ import UIKit
 import MapKit
 
 
+class PTLectureCell: CRTableViewCell {
+    
+    static let identifier = "PTLectureCell_id"
+    
+    @IBOutlet var myChildView: UIView? {
+        didSet { childView = myChildView }
+    }
+    
+    @IBOutlet var subjectLabel: UILabel!
+    @IBOutlet var lecturerLabel: UILabel!
+    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var roomLabel: UILabel!
+    @IBOutlet var detailsLabel: UILabel!
+    @IBOutlet var mapSnapshotView: UIImageView!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    
+    static let height: CGFloat = 80
+    static let expandedHeight: CGFloat = 222
+    static let snapshotHeight: CGFloat = 155
+    static let horizontalMarginsWidth: CGFloat = 18
+    
+    var isExpanded: Bool = false
+    
+    var indexPath: IndexPath!
+    
+    var mapSelectionHandler: ((IndexPath) -> Void)?
+    
+    var lecture: PTLecture! {
+        didSet { configure(forLecture: lecture) }
+    }
+    
+    
+    override func draw(_ rect: CGRect) {
+        
+        if (mapSnapshotView.gestureRecognizers ?? []).isEmpty == true {
+            
+            let gestureRecog = UITapGestureRecognizer(target: self, action: #selector(mapSnapshotViewPressed))
+            
+            gestureRecog.numberOfTapsRequired = 1
+            gestureRecog.numberOfTouchesRequired = 1
+            
+            mapSnapshotView.isUserInteractionEnabled = true
+            mapSnapshotView.addGestureRecognizer(gestureRecog)
+        }
+        
+        mapSnapshotView.isHidden = !isExpanded
+        
+        cornerRadius = 14
+        borderWidth = 0.5
+        borderColor = UIColor(red:0.47, green:0.47, blue:0.47, alpha:0.5).cgColor
+        
+        super.draw(rect)
+    }
+    
+    
+    func configure(forLecture lecture: PTLecture) {
+        
+        subjectLabel.text = lecture.subjectName
+        lecturerLabel.text = lecture.lecturerName?.capitalized
+        timeLabel.text = getNiceTimeIntervalString(fromLecture: lecture)
+        roomLabel.text = lecture.roomName
+        
+        var details: [String] = []
+        
+        if let cohort = lecture.cohortDesctiption {
+            details.append(cohort)
+        }
+        
+        if let descr = lecture.eventDescription {
+            details.append(descr)
+        }
+        
+        detailsLabel.text = details.joined(separator: " | ")
+    }
+    
+    
+    func mapSnapshotViewPressed(_ gestureRecognizer: UIGestureRecognizer) {
+        mapSelectionHandler?(indexPath)
+    }
+    
+    
+    private func getNiceTimeIntervalString(fromLecture lecture:PTLecture) -> String {
+        
+        let begDate = lecture.date
+        let endDate = lecture.date.addingTimeInterval(lecture.length)
+        
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.Turin
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        
+        return formatter.string(from: begDate) + "~" + formatter.string(from: endDate)
+    }
+}
+
+
+
+// MARK: -
+
 class HomeViewController: UITableViewController {
 
     var allRooms: [PTRoom] {
@@ -25,9 +124,7 @@ class HomeViewController: UITableViewController {
     }
     
     var status: PTViewControllerStatus = .loggedOut {
-        didSet {
-            statusDidChange()
-        }
+        didSet { statusDidChange() }
     }
     
     // Mon = 0, Tue = 1, ...
@@ -36,23 +133,10 @@ class HomeViewController: UITableViewController {
     var expandedIndexPath: IndexPath? = nil
     
     var cachedMapSnapshotsLandscape: [PTRoom: UIImage] = [:]
+    
     var cachedMapSnapshotsPortrait: [PTRoom: UIImage] = [:]
     
     
-    func cachedMapSnapshot(forRoom room: PTRoom) -> UIImage? {
-        
-        if UIApplication.shared.statusBarOrientation.isLandscape {
-            return cachedMapSnapshotsLandscape[room]
-        } else {
-            return cachedMapSnapshotsPortrait[room]
-        }
-    }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     func statusDidChange() {
         
         let isTableEmpty = schedule.isEmpty
@@ -90,44 +174,259 @@ class HomeViewController: UITableViewController {
             }
         }
     }
+}
+
+
+
+// MARK: TableView Methods
+
+extension HomeViewController {
     
-    func handleTabBarItemSelection(wasAlreadySelected: Bool) {
-        if wasAlreadySelected {
-            scrollToMostRelevantRow()
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // Seven days in a week
+        return 7
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        let todaysSchedule = scheduleByWeekday[section] ?? []
+        return todaysSchedule.isEmpty ? 0 : (28+5)
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let todaysSchedule = scheduleByWeekday[section] ?? []
+        if todaysSchedule.isEmpty {
+            return nil
+        }
+        guard let today = todaysSchedule.first?.date else {
+            return nil
+        }
+        
+        let title = titleForHeader(withDate: today)
+        
+        let bottomSpacing: CGFloat = 5
+        let labelHeight: CGFloat = 28
+        
+        let totalHeight = bottomSpacing + labelHeight
+        let tableWidth = tableView.frame.width
+        
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: totalHeight))
+        
+        let label = UILabel(frame: CGRect(x: 16, y: 0, width: tableWidth-16, height: labelHeight))
+        label.text = title
+        label.font = UIFont.systemFont(ofSize: 17, weight: UIFontWeightSemibold)
+        label.backgroundColor = UIColor.clear
+        
+        let cal = Calendar.current
+        // cal.timeZone = TimeZone.Turin
+        
+        label.textColor = cal.isDateInToday(today) ? UIColor.black : UIColor.gray
+        
+        let labelBackgroundView = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: labelHeight))
+        labelBackgroundView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
+        
+        let space = UIView(frame: CGRect(x: 0, y: labelHeight, width: tableWidth, height: bottomSpacing))
+        space.backgroundColor = UIColor.clear
+        
+        container.addSubview(labelBackgroundView)
+        container.addSubview(label)
+        container.addSubview(space)
+        
+        return container
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let todaysSchedule = scheduleByWeekday[section] ?? []
+        
+        // Empty day => No section => No footer for that section (i.e. footer of 0 height)
+        return todaysSchedule.isEmpty ? 0 : 5
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let v = UIView()
+        v.backgroundColor = UIColor.clear
+        return v
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let todaysSchedule = scheduleByWeekday[section] ?? []
+        return todaysSchedule.count
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if expandedIndexPath == indexPath {
+            return PTLectureCell.expandedHeight
+        } else {
+            return PTLectureCell.height
         }
     }
     
-    func recomputeScheduleByWeekday() {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let sortedSchedule = schedule.sorted { (lectureA, lectureB) -> Bool in
-            
-            return lectureA.date.compare(lectureB.date) == .orderedAscending
-        }
-        
-        
-        
-        scheduleByWeekday.removeAll()
-        
-        for lecture in sortedSchedule {
-            
-            let date = lecture.date
-            let weekday = italianWeekday(fromDate: date)
-            var todaysSchedule = scheduleByWeekday[weekday] ?? []
-            
-            todaysSchedule.append(lecture)
-            
-            scheduleByWeekday[weekday] = todaysSchedule
-        }
-        
-        
+        return tableView.dequeueReusableCell(withIdentifier: PTLectureCell.identifier, for: indexPath)
     }
     
-    // Required to unwind from settings programmatically
-    @IBAction func unwindFromSettings(_ segue: UIStoryboardSegue) {}
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        let cell = cell as! PTLectureCell
+        
+        
+        let todaysSchedule = scheduleByWeekday[indexPath.section] ?? []
+        let lecture = todaysSchedule[indexPath.row]
+        
+        cell.lecture = lecture
+        cell.indexPath = indexPath
+        cell.mapSelectionHandler = handleLectureMapSelection
+        cell.isExpanded = (expandedIndexPath == indexPath)
+        cell.activityIndicator.stopAnimating()
+        
+        
+        if cell.isExpanded, let roomName = lecture.roomName, let room = room(answearingName: roomName) {
+            
+            if let snapshot = cachedMapSnapshot(forRoom: room) {
+                
+                cell.activityIndicator.stopAnimating()
+                cell.mapSnapshotView.image = snapshot
+            } else {
+                
+                cell.activityIndicator.startAnimating()
+                cell.mapSnapshotView.image = nil
+                let snapshotSize = estimateSnapshotSize()
+                reloadMapSnapshot(forRoom: room, size: snapshotSize, indexPath: indexPath)
+            }
+        }
+    }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // Checks if the selected row can be expanded
+        if room(forIndexPath: indexPath) != nil {
+            
+            var indexPathsToReload = [indexPath]
+            
+            // Checks if the selected row is not already expanded
+            if expandedIndexPath != indexPath {
+                
+                // Compresses the currently expanded cell if it exists
+                if expandedIndexPath != nil {
+                    indexPathsToReload.append(expandedIndexPath!)
+                }
+                
+                expandedIndexPath = indexPath
+                
+            } else {
+                
+                // Cell was already expanded => Compresses
+                expandedIndexPath = nil
+            }
+            
+            tableView.reloadRows(at: indexPathsToReload, with: .fade)
+            
+        } else {
+            
+            // Cell cannot be expanded (i.e. map is not available for this room)
+            
+            // Compresses the currently expanded cell if it exists
+            if let currentlyExpandedIndexPath = expandedIndexPath {
+                
+                self.expandedIndexPath = nil
+                tableView.reloadRows(at: [currentlyExpandedIndexPath], with: .fade)
+                
+            }
+            
+            showMapNotAvailableAlert()
+        }
+    }
+}
+
+
+
+// MARK: TableView Utilities
+
+extension HomeViewController {
     
+    func handleLectureMapSelection(indexPath: IndexPath) {
+        
+        if let room = room(forIndexPath: indexPath) {
+            showRoomInMapViewController(room: room)
+        }
+    }
     
-    // MARK: -
+    func titleForHeader(withDate date: Date) -> String {
+        
+        let formatter = DateFormatter()
+        formatter.doesRelativeDateFormatting = false
+        formatter.timeStyle = .none
+        
+        if let relative = formatter.relativeDateString(from: date) {
+            
+            formatter.dateStyle = .long
+            return "\(relative.capitalized) (\(formatter.string(from: date).capitalized))"
+            
+        } else {
+            
+            formatter.dateStyle = .full
+            return formatter.string(from: date).capitalized
+        }
+    }
+    
+    func room(forIndexPath indexPath: IndexPath) -> PTRoom? {
+        
+        let todaysSchedule = scheduleByWeekday[indexPath.section] ?? []
+        
+        guard todaysSchedule.count > indexPath.row else { return nil; }
+        
+        let lecture = todaysSchedule[indexPath.row]
+        
+        guard let roomName = lecture.roomName else { return nil; }
+        
+        return room(answearingName: roomName)
+    }
+    
+    func room(answearingName roomName: String) -> PTRoom? {
+        
+        let queryComps = roomName.lowercased().components(separatedBy: " ")
+        
+        for room in allRooms {
+            
+            let thisComps = room.localizedName.lowercased().components(separatedBy: " ")
+            
+            var found = true
+            
+            for comp in queryComps {
+                
+                if !(thisComps.contains(comp)) {
+                    found = false
+                    break
+                }
+            }
+            
+            if found {
+                return room
+            }
+        }
+        return nil
+    }
+    
+    /// Returns the IndexPath of the specified lecture, if found in the table, otherwise nil
+    func indexPath(ofLecture lecture: PTLecture) -> IndexPath? {
+        
+        for s in 0...4 {
+            
+            let todaysSchedule = scheduleByWeekday[s] ?? []
+            
+            for r in 0..<todaysSchedule.count {
+                
+                if lecture == todaysSchedule[r] {
+                    return IndexPath(row: r, section: s)
+                }
+            }
+        }
+        
+        return nil
+    }
     
     /// Scrolls to the top of the table
     func scrollToFirstRow() {
@@ -217,254 +516,34 @@ class HomeViewController: UITableViewController {
         
         return nil
     }
-    
-    /// Returns the IndexPath of the specified lecture, if found in the table, otherwise nil
-    func indexPath(ofLecture lecture: PTLecture) -> IndexPath? {
-        
-        for s in 0...4 {
-            
-            let todaysSchedule = scheduleByWeekday[s] ?? []
-            
-            for r in 0..<todaysSchedule.count {
-                
-                if lecture == todaysSchedule[r] {
-                    return IndexPath(row: r, section: s)
-                }
-            }
-        }
-        
-        return nil
-    }
-    
-    
-    
-    // MARK: TableView Methods
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // Seven days in a week
-        return 7
-    }
-    
-    
-    func titleForHeader(withDate date: Date) -> String {
-        
-        let formatter = DateFormatter()
-        formatter.doesRelativeDateFormatting = false
-        formatter.timeStyle = .none
-        
-        if let relative = formatter.relativeDateString(from: date) {
-            
-            formatter.dateStyle = .long
-            return "\(relative.capitalized) (\(formatter.string(from: date).capitalized))"
-            
-        } else {
-            
-            formatter.dateStyle = .full
-            return formatter.string(from: date).capitalized
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
-        let todaysSchedule = scheduleByWeekday[section] ?? []
-        return todaysSchedule.isEmpty ? 0 : (28+5)
-    }
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let todaysSchedule = scheduleByWeekday[section] ?? []
-        if todaysSchedule.isEmpty {
-            return nil
-        }
-        guard let today = todaysSchedule.first?.date else {
-            return nil
-        }
-        
-        let title = titleForHeader(withDate: today)
-        
-        let bottomSpacing: CGFloat = 5
-        let labelHeight: CGFloat = 28
-        
-        let totalHeight = bottomSpacing + labelHeight
-        let tableWidth = tableView.frame.width
-        
-        let container = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: totalHeight))
-        
-        let label = UILabel(frame: CGRect(x: 16, y: 0, width: tableWidth-16, height: labelHeight))
-        label.text = title
-        label.font = UIFont.systemFont(ofSize: 17, weight: UIFontWeightSemibold)
-        label.backgroundColor = UIColor.clear
-        
-        let cal = Calendar.current
-        // cal.timeZone = TimeZone.Turin
-        
-        label.textColor = cal.isDateInToday(today) ? UIColor.black : UIColor.gray
-        
-        let labelBackgroundView = UIView(frame: CGRect(x: 0, y: 0, width: tableWidth, height: labelHeight))
-        labelBackgroundView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
-        
-        let space = UIView(frame: CGRect(x: 0, y: labelHeight, width: tableWidth, height: bottomSpacing))
-        space.backgroundColor = UIColor.clear
-        
-        container.addSubview(labelBackgroundView)
-        container.addSubview(label)
-        container.addSubview(space)
-        
-        return container
-    }
- 
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let todaysSchedule = scheduleByWeekday[section] ?? []
-        
-        // Empty day => No section => No footer for that section (i.e. footer of 0 height)
-        return todaysSchedule.isEmpty ? 0 : 5
-    }
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView()
-        v.backgroundColor = UIColor.clear
-        return v
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let todaysSchedule = scheduleByWeekday[section] ?? []
-        return todaysSchedule.count
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        if expandedIndexPath == indexPath {
-            return PTLectureView.expandedHeight
-        } else {
-            return PTLectureView.height
-        }
-    }
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        return CRRoundedCell(indexPath: indexPath)
-    }
-    
-    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        // Prevents selection
-        return nil
-    }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        guard let cell = cell as? CRRoundedCell else {
-            return
-        }
-        
-        cell.selectionHandler = handleRoundedCellSelection
-        
-        let nibViews = Bundle.main.loadNibNamed("PTLectureView", owner: self, options: nil)
-        
-        guard let lectureView = nibViews?.filter( { $0 is PTLectureView }).first as? PTLectureView else {
-            return
-        }
-        
-        let todaysSchedule = scheduleByWeekday[indexPath.section] ?? []
-        
-        let lecture = todaysSchedule[indexPath.row]
-        
-        lectureView.lecture = lecture
-        lectureView.mapSelectionHandler = handleLectureMapSelection
-        
-        lectureView.expanded = (expandedIndexPath == indexPath)
-        lectureView.activityIndicator.stopAnimating()
-        
-        if let roomName = lecture.roomName {
-            
-            let room = roomAnswearingName(roomName)
-            lectureView.room = room
-            
-            if let room = room, lectureView.expanded {
-                
-                if let snapshot = cachedMapSnapshot(forRoom: room) {
+}
 
-                    lectureView.activityIndicator.stopAnimating()
-                    lectureView.mapSnapshotView.image = snapshot
-                } else {
-                    
-                    lectureView.activityIndicator.startAnimating()
-                    lectureView.mapSnapshotView.image = nil
-                    let snapshotSize = estimateSnapshotSize()
-                    reloadMapSnapshot(forRoom: room, size: snapshotSize, indexPath: indexPath)
-                }
-            }
-        }
+
+
+// MARK: Map Methods
+
+extension HomeViewController {
+    
+    func cachedMapSnapshot(forRoom room: PTRoom) -> UIImage? {
         
-        cell.childView = lectureView
+        if UIApplication.shared.statusBarOrientation.isLandscape {
+            return cachedMapSnapshotsLandscape[room]
+        } else {
+            return cachedMapSnapshotsPortrait[room]
+        }
     }
     
     func estimateSnapshotSize() -> CGSize {
         
-        let snapshotHeight = PTLectureView.snapshotHeight
-        
+        let snapshotHeight = PTLectureCell.snapshotHeight
+        let cellMargins = PTLectureCell.horizontalMarginsWidth
         let tableWidth = tableView.frame.width
-        let cellMargins = CRRoundedCell.defaultHorizontalMarginsWidth
+        
         let cellWidth = tableWidth - cellMargins
         
         return CGSize(width: cellWidth, height: snapshotHeight)
     }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        
-        tableView.reloadData()
-    }
-    
-    func handleRoundedCellSelection(_ cell: CRRoundedCell, _ indexPath: IndexPath) {
-        
-        guard let lectureView = cell.childView as? PTLectureView else {
-            return
-        }
-        
-        // Checks if the selected row can be expanded
-        if lectureView.canExpand() {
-            
-            var indexPathsToReload = [indexPath]
-            
-            // Checks if the selected row is not already expanded
-            if expandedIndexPath != indexPath {
-                
-                // Compresses the currently expanded cell if it exists
-                if expandedIndexPath != nil {
-                    indexPathsToReload.append(expandedIndexPath!)
-                }
-                
-                expandedIndexPath = indexPath
-                
-            } else {
-                
-                // Cell was already expanded => Compresses
-                expandedIndexPath = nil
-            }
-            
-            tableView.reloadRows(at: indexPathsToReload, with: .fade)
-            
-        } else {
-            
-            // Cell cannot be expanded (i.e. map is not available for this room)
-            
-            // Compresses the currently expanded cell if it exists
-            if let currentlyExpandedIndexPath = expandedIndexPath {
-                
-                self.expandedIndexPath = nil
-                tableView.reloadRows(at: [currentlyExpandedIndexPath], with: .fade)
-                
-            }
-            
-            showMapNotAvailableAlert()
-        }
-    }
-    
-    func handleLectureMapSelection(room: PTRoom) {
-        showRoomInMapViewController(room: room)
-    }
-    
-    
-    
-    // MARK: Map Methods
-    
+
     func reloadMapSnapshot(forRoom room: PTRoom, size: CGSize, indexPath: IndexPath) {
         
         let coordinates = CLLocationCoordinate2D(latitude: room.latitude, longitude: room.longitude)
@@ -531,40 +610,49 @@ class HomeViewController: UITableViewController {
     
     func showRoomInMapViewController(room: PTRoom) {
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return; }
         appDelegate.showMapViewController(withHighlightedRoom: room)
-    }
-    
-    
-    
-    // MARK: Utilities
-    
-    func roomAnswearingName(_ roomName: String) -> PTRoom? {
-        
-        let queryComps = roomName.lowercased().components(separatedBy: " ")
-        
-        for room in allRooms {
-            
-            let thisComps = room.localizedName.lowercased().components(separatedBy: " ")
-            
-            var found = true
-            
-            for comp in queryComps {
-                
-                if !(thisComps.contains(comp)) {
-                    found = false
-                    break
-                }
-            }
-            
-            if found {
-                return room
-            }
-        }
-        return nil
     }
 }
 
+
+
+// MARK: Misc. Methods
+
+extension HomeViewController {
+    
+    func handleTabBarItemSelection(wasAlreadySelected: Bool) {
+        if wasAlreadySelected {
+            scrollToMostRelevantRow()
+        }
+    }
+    
+    func recomputeScheduleByWeekday() {
+        
+        let sortedSchedule = schedule.sorted { (lectureA, lectureB) -> Bool in
+            
+            return lectureA.date.compare(lectureB.date) == .orderedAscending
+        }
+        
+        scheduleByWeekday.removeAll()
+        
+        for lecture in sortedSchedule {
+            
+            let date = lecture.date
+            let weekday = italianWeekday(fromDate: date)
+            var todaysSchedule = scheduleByWeekday[weekday] ?? []
+            
+            todaysSchedule.append(lecture)
+            
+            scheduleByWeekday[weekday] = todaysSchedule
+        }
+    }
+    
+    // Required to unwind from settings programmatically
+    @IBAction func unwindFromSettings(_ segue: UIStoryboardSegue) {}
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.reloadData()
+    }
+}
