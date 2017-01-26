@@ -1442,7 +1442,7 @@
                             <tableViewSection headerTitle="About" footerTitle="iPoliTO is an open-source project developed by Carlo Rapisarda, Computer Eng. student at Politecnico di Torino" id="F5F-hH-WN8">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="bxt-6t-0bP">
-                                        <rect key="frame" x="0.0" y="294" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="295" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxt-6t-0bP" id="69J-kp-PIR">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
@@ -1470,14 +1470,14 @@
                                 <string key="footerTitle">Are you having issues with the app and want to report a bug, or simply suggest a feature? You can get in touch with me by tapping the button above.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="rau-35-gvp">
-                                        <rect key="frame" x="0.0" y="452" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="453" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rau-35-gvp" id="3bQ-Ab-fm2">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send Feedback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVv-d5-Nw9">
-                                                    <rect key="frame" x="128" y="14.5" width="119" height="20.5"/>
+                                                    <rect key="frame" x="128" y="14" width="119" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1495,7 +1495,7 @@
                             <tableViewSection headerTitle="Spread the word" footerTitle="If you like iPoliTO and find it useful, write a review on the App Store and spread the word with your friends!" id="kGO-u5-WYM">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="yqe-po-5Uv">
-                                        <rect key="frame" x="0.0" y="609" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="611" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yqe-po-5Uv" id="Tbg-Am-y9o">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
@@ -1516,7 +1516,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="qlr-HU-mGv">
-                                        <rect key="frame" x="0.0" y="659" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="661" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qlr-HU-mGv" id="XM3-fu-vwd">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
@@ -1540,7 +1540,7 @@
                             </tableViewSection>
                             <tableViewSection id="hg2-hQ-iJl">
                                 <string key="footerTitle">© 2016 Carlo Rapisarda
-v2.1 (2300)</string>
+v2.2 (2480)</string>
                                 <cells/>
                             </tableViewSection>
                         </sections>

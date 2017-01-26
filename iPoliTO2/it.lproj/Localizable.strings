@@ -35,8 +35,8 @@
 
 // MARK: AppDelegate
 
-"ls.appDelegate.justUpdatedAlert.title" = "Novità della versione 2.1";
-"ls.appDelegate.justUpdatedAlert.body" = "- Diversi bug risolti\n- Aggiunta la possibilità di leggere le guide delle materie\n- Da ora i nuovi avvisi saranno evidenziati in giallo";
+"ls.appDelegate.justUpdatedAlert.title" = "Novità della versione 2.2";
+"ls.appDelegate.justUpdatedAlert.body" = "- Aggiunta la possibilità di visualizzare PDF\n- Diversi bug risolti";
 
 "ls.appDelegate.justDownloadedAlert.title" = "Benvenuto";
 "ls.appDelegate.justDownloadedAlert.body" = "Grazie per aver scaricato iPoliTO!";

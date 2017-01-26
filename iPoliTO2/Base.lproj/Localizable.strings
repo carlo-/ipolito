@@ -35,8 +35,8 @@
 
 // MARK: AppDelegate
 
-"ls.appDelegate.justUpdatedAlert.title" = "What's new in v2.1";
-"ls.appDelegate.justUpdatedAlert.body" = "- Several bugs have been fixed\n- Subjects Guides are now available\n- New messages are now shown in yellow to help you track updates";
+"ls.appDelegate.justUpdatedAlert.title" = "What's new in v2.2";
+"ls.appDelegate.justUpdatedAlert.body" = "- Added PDF Viewer\n- Several bugs have been fixed";
 
 "ls.appDelegate.justDownloadedAlert.title" = "Welcome";
 "ls.appDelegate.justDownloadedAlert.body" = "Thank you for downloading iPoliTO!";
