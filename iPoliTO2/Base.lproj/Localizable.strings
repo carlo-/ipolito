@@ -35,8 +35,8 @@
 
 // MARK: AppDelegate
 
-"ls.appDelegate.justUpdatedAlert.title" = "What's new in v2.2";
-"ls.appDelegate.justUpdatedAlert.body" = "- Added PDF Viewer\n- Several bugs have been fixed";
+"ls.appDelegate.justUpdatedAlert.title" = "What's new in v2.2.1";
+"ls.appDelegate.justUpdatedAlert.body" = "- \n- ";
 
 "ls.appDelegate.justDownloadedAlert.title" = "Welcome";
 "ls.appDelegate.justDownloadedAlert.body" = "Thank you for downloading iPoliTO!";
@@ -119,7 +119,8 @@
 "ls.documentsVC.downloadAlert.body1" = "You chose";
 
 "ls.documentsVC.alreadyDownloadedAlert.title" = "File already downloaded!";
-"ls.documentsVC.alreadyDownloadedAlert.body" = "A file with that name already exists. Do you want to overwrite it?";
+"ls.documentsVC.alreadyDownloadedAlert.overwrite" = "Overwrite";
+"ls.documentsVC.alreadyDownloadedAlert.show" = "Show";
 
 
 
@@ -140,6 +141,9 @@
 
 "ls.downloadsVC.downloadedOn" = "Downloaded on";
 "ls.downloadsVC.noDownloads" = "Nothing to see here!";
+
+"ls.downloadsVC.clearAllAlert.title" = "Do you wish to delete all files?";
+"ls.downloadsVC.clearAllAlert.body" = "Any download in progress will also be cancelled.";
 
 
 

@@ -10,6 +10,13 @@ import Foundation
 
 fileprivate let downloadedFilesArchiveKey: String = "downloadedFiles"
 
+fileprivate extension PTMFile {
+    
+    var nameOnDisk: String {
+        return name.replacingOccurrences(of: " ", with: "-")
+    }
+}
+
 enum PTFileTransferStatus {
     case Downloading
     case Cancelled
@@ -353,11 +360,11 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     
     // MARK: Other methods
     
-    /// Checks whether or not a file with the same name is already in the downloads folder
-    func needsToOverwrite(byDownloadingFile file: PTMFile) -> Bool {
+    /// Checks if file has been already downloaded; if yes, returns the corresponding PTDownloadedFile
+    func checkIfAlreadyDownloaded(file: PTMFile) -> PTDownloadedFile? {
         
-        let fileName = file.name.replacingOccurrences(of: " ", with: "-")
-        return absolutePath(forDownloadedFileNamed: fileName, checkValidity: true) != nil
+        let fileName = file.nameOnDisk
+        return downloadedFiles.first(where: { $0.fileName == fileName })
     }
     
     /// Returns the absolute path for the specified fileName in the downloads folder.
@@ -402,7 +409,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         ongoingTasks.removeValue(forKey: downloadTask)
         
         // Removes whitespace from the filename
-        let fileName = transfer.file.name.replacingOccurrences(of: " ", with: "-")
+        let fileName = transfer.file.nameOnDisk
         
         // Deletes any file with the same name
         delete(downloadedFileNamed: fileName)

@@ -35,8 +35,8 @@
 
 // MARK: AppDelegate
 
-"ls.appDelegate.justUpdatedAlert.title" = "Novità della versione 2.2";
-"ls.appDelegate.justUpdatedAlert.body" = "- Aggiunta la possibilità di visualizzare PDF\n- Diversi bug risolti";
+"ls.appDelegate.justUpdatedAlert.title" = "Novità della versione 2.2.1";
+"ls.appDelegate.justUpdatedAlert.body" = "- \n- ";
 
 "ls.appDelegate.justDownloadedAlert.title" = "Benvenuto";
 "ls.appDelegate.justDownloadedAlert.body" = "Grazie per aver scaricato iPoliTO!";
@@ -119,7 +119,8 @@
 "ls.documentsVC.downloadAlert.body1" = "Hai scelto";
 
 "ls.documentsVC.alreadyDownloadedAlert.title" = "File già scaricato!";
-"ls.documentsVC.alreadyDownloadedAlert.body" = "Un file con quel nome è già stato scaricato. Vuoi sovrascriverlo?";
+"ls.documentsVC.alreadyDownloadedAlert.overwrite" = "Sovrascrivi";
+"ls.documentsVC.alreadyDownloadedAlert.show" = "Mostra";
 
 
 
@@ -140,6 +141,9 @@
 
 "ls.downloadsVC.downloadedOn" = "Scaricato il";
 "ls.downloadsVC.noDownloads" = "Nessun download!";
+
+"ls.downloadsVC.clearAllAlert.title" = "Vuoi eliminare tutti i file presenti?";
+"ls.downloadsVC.clearAllAlert.body" = "Eventuali trasferimenti in corso verranno annullati.";
 
 
 

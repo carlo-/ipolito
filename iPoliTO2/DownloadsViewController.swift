@@ -11,6 +11,8 @@ import UIKit
 
 class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate {
     
+    @IBOutlet var clearAllButton: UIBarButtonItem!
+    
     var downloadManager: PTDownloadManager {
         return PTDownloadManager.shared
     }
@@ -21,6 +23,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         return downloadManager.downloadedFiles
     }
     var documentInteractionController: UIDocumentInteractionController?
+    var highlightedDownloadedFile: PTDownloadedFile?
     
     
     override func viewDidLoad() {
@@ -30,6 +33,33 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         
         // Removes annoying row separators after the last cell
         tableView.tableFooterView = UIView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if highlightedDownloadedFile != nil, let indexPath = indexPath(forDownloadedFile: highlightedDownloadedFile!) {
+            highlightRow(atIndexPath: indexPath)
+        }
+        highlightedDownloadedFile = nil
+    }
+    
+    
+    func highlightRow(atIndexPath indexPath: IndexPath) {
+        
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+        
+        unowned let unownedSelf = self
+        delay(1) {
+            unownedSelf.tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    
+    func indexPath(forDownloadedFile downloadedFile: PTDownloadedFile) -> IndexPath? {
+        
+        guard let row = downloadedFiles.index(of: downloadedFile) else { return nil; }
+        return IndexPath(row: row, section: 1)
     }
     
     func presentPDFViewer(title: String, path: String) {
@@ -82,8 +112,10 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         
         if transfersQueue.isEmpty && downloadedFiles.isEmpty {
             tableView.backgroundView = NoDownloadsBackgroundView(frame: tableView.bounds)
+            clearAllButton.isEnabled = false
         } else {
             tableView.backgroundView = nil
+            clearAllButton.isEnabled = true
         }
         
         switch section {
@@ -269,6 +301,22 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func clearPressed(_ sender: UIBarButtonItem) {
+        
+        let title = ~"ls.downloadsVC.clearAllAlert.title"
+        let message = ~"ls.downloadsVC.clearAllAlert.body"
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.confirm", style: .destructive, handler: { _ in
+            PTDownloadManager.clearAll()
+            self.tableView.reloadData()
+        }))
+        
+        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.cancel", style: .cancel, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 class PTFileTransferCell: UITableViewCell {

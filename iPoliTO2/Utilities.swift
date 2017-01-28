@@ -41,6 +41,11 @@ public prefix func ~ (key: String) -> String {
     return NSLocalizedString(key, comment: "No Comment")
 }
 
+func delay(_ delay:Double, closure:@escaping ()->()) {
+    let when = DispatchTime.now() + delay
+    DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
+}
+
 enum PTViewControllerStatus {
     case offline
     case fetching

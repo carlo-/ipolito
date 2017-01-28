@@ -16,6 +16,8 @@ class DocumentsViewController: UITableViewController {
     private var subject: PTSubject!
     private var rootController: DocumentsViewController!
     
+    private var highlightedDownloadedFile: PTDownloadedFile?
+    
     func configure(forSubject subject: PTSubject, withDocuments documents: [PTMElement]) {
         
         self.title = subject.name
@@ -49,6 +51,17 @@ class DocumentsViewController: UITableViewController {
         navigationItem.rightBarButtonItem?.isEnabled = !cannotShowDownloads
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if segue.identifier == "ShowDownloads_segue",
+           let navVC = segue.destination as? UINavigationController,
+           let dlVC = navVC.topViewController as? DownloadsViewController {
+            
+            dlVC.highlightedDownloadedFile = highlightedDownloadedFile
+            highlightedDownloadedFile = nil
+        }
+    }
     
     
     func didSelectFolder(_ folder: PTMFolder) {
@@ -94,19 +107,26 @@ class DocumentsViewController: UITableViewController {
     
     func downloadFile(_ file: PTMFile) {
         
-        
-        if PTDownloadManager.shared.needsToOverwrite(byDownloadingFile: file) {
+        if let downloadedFile = PTDownloadManager.shared.checkIfAlreadyDownloaded(file: file) {
             
             let alertTitle = ~"ls.documentsVC.alreadyDownloadedAlert.title"
-            let alertMessage = ~"ls.documentsVC.alreadyDownloadedAlert.body"
             
-            let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+            let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
             
             let alertCancel = ~"ls.generic.alert.cancel"
-            let alertConfirm = ~"ls.generic.alert.confirm"
+            let alertOverwrite = ~"ls.documentsVC.alreadyDownloadedAlert.overwrite"
+            let alertShow = ~"ls.documentsVC.alreadyDownloadedAlert.show"
             
             alert.addAction(UIAlertAction(title: alertCancel, style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: alertConfirm, style: .destructive, handler: {
+            
+            alert.addAction(UIAlertAction(title: alertShow, style: .default, handler: {
+                action in
+                
+                self.highlightedDownloadedFile = downloadedFile
+                self.performSegue(withIdentifier: "ShowDownloads_segue", sender: self)
+            }))
+            
+            alert.addAction(UIAlertAction(title: alertOverwrite, style: .destructive, handler: {
                 action in
                 
                 PTDownloadManager.shared.enqueueForDownload(file: file, ofSubject: self.subject)
