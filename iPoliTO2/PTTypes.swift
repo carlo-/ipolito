@@ -366,6 +366,41 @@ public struct PTMFile: PTMElement {
         }
     }
     
+    var formattedSize: String? {
+        
+        guard let size = size else { return nil; }
+        let sizeKB = Double(size)
+        
+        var unit: String = ""
+        var val: Double = 0.0
+        
+        switch size {
+        case 0..<1100:
+            val = sizeKB
+            unit = "KB"
+        case 1100..<1100000:
+            val = sizeKB / 1000.0
+            unit = "MB"
+        default:
+            val = sizeKB / (1000.0 * 1000.0)
+            unit = "GB"
+        }
+        
+        let formatter = NumberFormatter()
+        formatter.allowsFloats = true
+        formatter.formattingContext = .standalone
+        formatter.groupingSeparator = ""
+        formatter.maximumFractionDigits = 1
+        formatter.minimumFractionDigits = 0
+        formatter.minimumIntegerDigits = 1
+        formatter.numberStyle = .decimal
+        
+        if let formattedVal = formatter.string(from: NSNumber(floatLiteral: val)) {
+            return formattedVal + unit
+        } else {
+            return nil
+        }
+    }
 }
 
 public struct PTMFolder: PTMElement {

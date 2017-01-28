@@ -260,8 +260,8 @@ class PTFileCell: UITableViewCell {
             iconView.image = UIImage.iPoliTO.icon(forFileWithExtension: ext)
         }
         
-        if let size = file.size {
-            arr.append("\(size)KB")
+        if let size = file.formattedSize {
+            arr.append(size)
         }
         
         let subtitle = arr.joined(separator: " - ")
