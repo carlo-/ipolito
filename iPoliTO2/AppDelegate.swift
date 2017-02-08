@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 enum ControllerIndex: Int {
     case home = 0
@@ -47,14 +48,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     var isFirstTimeWithThisApp: Bool {
         return releaseVersionOfLastExecution == nil
     }
+    var isBackgroundFetching: Bool {
+        return UIApplication.shared.applicationState == .background
+    }
     
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
+        
+        application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
         
         migrateFromOlderReleaseIfNeeded()
         
         window?.makeKeyAndVisible()
         tabBarController?.delegate = self
+        
+        askAuthForNotificationsIfNeeded()
         
         if isFirstTimeWithThisApp {
             firstTimeWithThisApp()
@@ -68,6 +76,109 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func applicationWillEnterForeground(_ application: UIApplication) {
         
         refreshSessionDataIfNeeded()
+    }
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+        print("performFetchWithCompletionHandler")
+        
+        login()
+        
+        OperationQueue().addOperation {
+            Thread.sleep(forTimeInterval: 10)
+            print("Done background fetching.")
+            self.sendLocalNotification(title: "Updated!", body: "The data is now up to date.")
+            completionHandler(.newData)
+        }
+    }
+    
+    func askAuthForNotifications() {
+        
+        if #available(iOS 10.0, *) {
+            
+            let center = UNUserNotificationCenter.current()
+            
+            let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+            
+            center.requestAuthorization(options: options, completionHandler: {
+                granted, error in
+                
+                if !granted {
+                    // Not authorized
+                }
+            })
+            
+        } else {
+            
+            // Fallback on earlier versions
+            
+        }
+    }
+    
+    func askAuthForNotificationsIfNeeded() {
+        
+        canDeliverNotifications({ authStatus in
+            if authStatus == nil {
+                self.askAuthForNotifications()
+            }
+        })
+    }
+    
+    func canDeliverNotifications(_ completion: @escaping (Bool?) -> Void) {
+        
+        if #available(iOS 10.0, *) {
+            
+            let center = UNUserNotificationCenter.current()
+            
+            center.getNotificationSettings {
+                settings in
+                
+                switch settings.authorizationStatus {
+                case .authorized:
+                    completion(true)
+                case .denied:
+                    completion(false)
+                case .notDetermined:
+                    completion(nil)
+                }
+            }
+            
+        } else {
+            
+            // Fallback on earlier versions
+            
+        }
+    }
+    
+    func sendLocalNotification(title: String, body: String) {
+        
+        let notifID = (title+body+"\(Date().timeIntervalSinceReferenceDate)").hashValue
+        let identifier = "com.crapisarda.iPoliTO.notif.\(notifID)"
+        
+        if #available(iOS 10.0, *) {
+            
+            let center = UNUserNotificationCenter.current()
+            
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = body
+            content.sound = UNNotificationSound.default()
+            
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
+            
+            center.add(request, withCompletionHandler: nil)
+            
+        } else {
+            
+            // Fallback on earlier versions
+            
+            let notif = UILocalNotification()
+            notif.fireDate = Date()
+            notif.alertTitle = title
+            notif.alertBody = body
+            UIApplication.shared.scheduleLocalNotification(notif)
+        }
+        
     }
     
     func refreshSessionDataIfNeeded() {
@@ -101,8 +212,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             session?.open()
         } else {
             
-            // User has to login
-            presentSignInViewController()
+            if !isBackgroundFetching {
+                
+                // User has to login
+                presentSignInViewController()
+            }
         }
     }
     
