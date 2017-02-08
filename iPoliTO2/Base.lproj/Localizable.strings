@@ -28,6 +28,10 @@
 "ls.generic.status.loading" = "Loading...";
 "ls.generic.status.offline" = "Offline";
 "ls.generic.status.couldNotRetrieve" = "Unable to retrieve the data!";
+"ls.generic.status.lastUpdate" = "Last update at";
+
+"ls.generic.refreshControl" = "Pull to refresh";
+"ls.generic.refresh" = "Refresh";
 
 "ls.generic.credits" = "ECTS";
 
@@ -49,6 +53,8 @@
 
 // MARK: HomeViewController
 
+"ls.homeVC.title" = "Home";
+
 "ls.homeVC.status.loading" = "Loading schedule...";
 "ls.homeVC.status.updating" = "Updating schedule...";
 "ls.homeVC.status.noLectures" = "No lectures this week!";
@@ -58,6 +64,8 @@
 
 
 // MARK: SubjectsViewController
+
+"ls.subjectsVC.title" = "Subjects";
 
 "ls.subjectsVC.status.loading" = "Loading data of subjects...";
 "ls.subjectsVC.status.noSubjects" = "No subjects on your course load!";
@@ -73,6 +81,8 @@
 
 
 // MARK: CareerViewController
+
+"ls.careerVC.title" = "Career";
 
 "ls.careerVC.status.loading" = "Loading temporary grades...";
 "ls.careerVC.status.emptyCareer" = "No exams on your career!";

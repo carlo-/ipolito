@@ -11,10 +11,12 @@ import UIKit
 class PTSimpleTableBackgroundView: UIView {
     
     private let label: UILabel
+    private var button: UIButton?
     
-    init(frame: CGRect, title: String) {
+    init(frame: CGRect, title: String, button: UIButton? = nil) {
         
         label = UILabel()
+        self.button = button
         
         super.init(frame: frame)
         
@@ -26,6 +28,14 @@ class PTSimpleTableBackgroundView: UIView {
         label.sizeToFit()
         
         addSubview(label)
+        
+        button?.titleLabel?.font = .boldSystemFont(ofSize: 15.0)
+        button?.setTitleColor(.lightGray, for: .normal)
+        button?.sizeToFit()
+        
+        if button != nil {
+            addSubview(button!)
+        }
     }
     
     private override init(frame: CGRect) {
@@ -41,6 +51,13 @@ class PTSimpleTableBackgroundView: UIView {
         super.draw(rect)
         
         label.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
+        
+        if let button = button {
+            
+            let buttonY = label.frame.maxY + 0.0
+            button.center = CGPoint(x: frame.width/2.0, y: frame.height/2.0)
+            button.frame = CGRect(x: button.frame.origin.x, y: buttonY, width: button.frame.width, height: button.frame.height)
+        }
     }
     
 }

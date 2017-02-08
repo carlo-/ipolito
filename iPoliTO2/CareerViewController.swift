@@ -34,31 +34,51 @@ class CareerViewController: UITableViewController {
         
         // Removes annoying row separators after the last cell
         tableView.tableFooterView = UIView()
+        
+        setupRefreshControl()
     }
     
     func statusDidChange() {
+        
+        if status != .fetching && status != .logginIn {
+            refreshControl?.endRefreshing()
+        }
         
         let isTableEmpty = temporaryGrades.isEmpty && passedExams.isEmpty
         
         if isTableEmpty {
             
+            tableView.isScrollEnabled = false
             navigationItem.titleView = nil
             
+            let refreshButton = UIButton(type: .system)
+            refreshButton.addTarget(self, action: #selector(refreshButtonPressed), for: .touchUpInside)
+            
             switch status {
+                
             case .logginIn:
                 tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.loggingIn")
+                
             case .offline:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.offline")
+                refreshButton.setTitle(~"ls.generic.alert.retry", for: .normal)
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.offline", button: refreshButton)
+                
             case .error:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.couldNotRetrieve")
+                refreshButton.setTitle(~"ls.generic.alert.retry", for: .normal)
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.couldNotRetrieve", button: refreshButton)
+                
             case .ready:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.careerVC.status.emptyCareer")
+                refreshButton.setTitle(~"ls.generic.refresh", for: .normal)
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.careerVC.status.emptyCareer", button: refreshButton)
+                navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.careerVC.title")
+                
             default:
                 tableView.backgroundView = nil
             }
             
         } else {
             
+            tableView.isScrollEnabled = true
             tableView.backgroundView = nil
             
             switch status {
@@ -67,12 +87,31 @@ class CareerViewController: UITableViewController {
             case .fetching:
                 navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.careerVC.status.loading")
             case .offline:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.offline")
+                navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.generic.status.offline")
             default:
-                navigationItem.titleView = nil
+                navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.careerVC.title")
             }
             
         }
+    }
+    
+    func setupRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refreshControlActuated), for: .valueChanged)
+    }
+    
+    @objc
+    func refreshControlActuated() {
+        if PTSession.shared.isBusy {
+            refreshControl?.endRefreshing()
+        } else {
+            (UIApplication.shared.delegate as! AppDelegate).login()
+        }
+    }
+    
+    @objc
+    func refreshButtonPressed() {
+        (UIApplication.shared.delegate as! AppDelegate).login()
     }
     
     func handleTabBarItemSelection(wasAlreadySelected: Bool) {

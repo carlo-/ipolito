@@ -139,27 +139,45 @@ class HomeViewController: UITableViewController {
     
     func statusDidChange() {
         
+        if status != .fetching && status != .logginIn {
+            refreshControl?.endRefreshing()
+        }
+        
         let isTableEmpty = schedule.isEmpty
         
         if isTableEmpty {
             
+            tableView.isScrollEnabled = false
             navigationItem.titleView = nil
             
+            let refreshButton = UIButton(type: .system)
+            refreshButton.addTarget(self, action: #selector(refreshButtonPressed), for: .touchUpInside)
+            
             switch status {
+                
             case .logginIn:
                 tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.loggingIn")
+                
             case .fetching:
                 tableView.backgroundView = PTLoadingTableBackgroundView(frame: view.bounds, title: ~"ls.homeVC.status.loading")
+                
             case .offline:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.offline")
+                refreshButton.setTitle(~"ls.generic.alert.retry", for: .normal)
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.offline", button: refreshButton)
+                
             case .error:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.couldNotRetrieve")
+                refreshButton.setTitle(~"ls.generic.alert.retry", for: .normal)
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.generic.status.couldNotRetrieve", button: refreshButton)
+                
             default:
-                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.homeVC.status.noLectures")
+                refreshButton.setTitle(~"ls.generic.refresh", for: .normal)
+                tableView.backgroundView = PTSimpleTableBackgroundView(frame: view.bounds, title: ~"ls.homeVC.status.noLectures", button: refreshButton)
+                navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.homeVC.title")
             }
             
         } else {
             
+            tableView.isScrollEnabled = true
             tableView.backgroundView = nil
             
             switch status {
@@ -168,11 +186,36 @@ class HomeViewController: UITableViewController {
             case .fetching:
                 navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.homeVC.status.updating")
             case .offline:
-                navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.offline")
+                navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.generic.status.offline")
             default:
-                navigationItem.titleView = nil
+                navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.homeVC.title")
             }
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupRefreshControl()
+    }
+    
+    func setupRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refreshControlActuated), for: .valueChanged)
+    }
+    
+    @objc
+    func refreshControlActuated() {
+        if PTSession.shared.isBusy {
+            refreshControl?.endRefreshing()
+        } else {
+            (UIApplication.shared.delegate as! AppDelegate).login()
+        }
+    }
+    
+    @objc
+    func refreshButtonPressed() {
+        (UIApplication.shared.delegate as! AppDelegate).login()
     }
 }
 

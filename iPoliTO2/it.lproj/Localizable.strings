@@ -28,6 +28,10 @@
 "ls.generic.status.loading" = "Caricamento...";
 "ls.generic.status.offline" = "Offline";
 "ls.generic.status.couldNotRetrieve" = "Impossibile scaricare i dati!";
+"ls.generic.status.lastUpdate" = "Ultimo aggiornamento";
+
+"ls.generic.refreshControl" = "Aggiorna";
+"ls.generic.refresh" = "Ricarica";
 
 "ls.generic.credits" = "CFU";
 
@@ -49,6 +53,8 @@
 
 // MARK: HomeViewController
 
+"ls.homeVC.title" = "Home";
+
 "ls.homeVC.status.loading" = "Carico orario...";
 "ls.homeVC.status.updating" = "Aggiorno orario...";
 "ls.homeVC.status.noLectures" = "Nessuna lezione questa settimana!";
@@ -58,6 +64,8 @@
 
 
 // MARK: SubjectsViewController
+
+"ls.subjectsVC.title" = "Carico Didattico";
 
 "ls.subjectsVC.status.loading" = "Carico avvisi e materiale...";
 "ls.subjectsVC.status.noSubjects" = "Nessuna materia trovata!";
@@ -73,6 +81,8 @@
 
 
 // MARK: CareerViewController
+
+"ls.careerVC.title" = "Libretto";
 
 "ls.careerVC.status.loading" = "Carico valutazioni prov...";
 "ls.careerVC.status.emptyCareer" = "Nessun esame passato!";

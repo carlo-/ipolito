@@ -77,6 +77,12 @@ class PTSession: NSObject {
     private(set) var isOpening: Bool = false
     private(set) var isClosing: Bool = false
     
+    private(set) var pendingRequests: UInt = 0
+    
+    var isBusy: Bool {
+        return (pendingRequests > 0)
+    }
+    
     var token: String?
     
     lazy var registeredID: String = {
@@ -130,6 +136,7 @@ class PTSession: NSObject {
     func open() {
         
         isOpening = true
+        pendingRequests += 1
         self.delegate?.sessionDidBeginOpening()
         
         OperationQueue().addOperation({
@@ -149,6 +156,7 @@ class PTSession: NSObject {
     func close() {
         
         isClosing = true
+        pendingRequests += 1
         self.delegate?.sessionDidBeginClosing()
         
         // We don't really care about telling the server (given the way PoliTO's APIs work)
@@ -158,6 +166,7 @@ class PTSession: NSObject {
         
         self.dateOpened = nil
         self.isClosing = false
+        pendingRequests -= 1
         self.delegate?.sessionDidFinishClosing()
         return
         
@@ -180,6 +189,7 @@ class PTSession: NSObject {
                     if error != nil {
                         
                         self.isClosing = false
+                        self.pendingRequests -= 1
                         self.delegate?.sessionDidFailClosingWithError(error: error!)
                     } else {
                         
@@ -187,6 +197,7 @@ class PTSession: NSObject {
                         
                         self.dateOpened = nil
                         self.isClosing = false
+                        self.pendingRequests -= 1
                         self.delegate?.sessionDidFinishClosing()
                     }
                 })
@@ -197,9 +208,11 @@ class PTSession: NSObject {
     
     func requestTemporaryGrades() {
         
+        pendingRequests += 1
         self.delegate?.sessionDidBeginRetrievingTemporaryGrades()
         
         guard let token = self.token else {
+            pendingRequests -= 1
             self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .invalidToken)
             return
         }
@@ -213,11 +226,14 @@ class PTSession: NSObject {
                     
                     if let error = error {
                         
+                        self.pendingRequests -= 1
                         self.delegate?.sessionDidFailRetrievingTemporaryGradesWithError(error: error)
                         
                     } else {
                         
                         self.temporaryGrades = temporaryGrades
+                        
+                        self.pendingRequests -= 1
                         
                         if temporaryGrades != nil {
                             self.delegate?.sessionDidRetrieveTemporaryGrades(temporaryGrades!)
@@ -236,9 +252,11 @@ class PTSession: NSObject {
     
     func requestFreeRooms(forDate date: Date? = nil, completion: @escaping (([PTFreeRoom]?, PTRequestError?) -> Void)) {
         
+        pendingRequests += 1
         PTRequest.fetchFreeRooms(date: date ?? Date(), regID: registeredID, loadTestData: shouldLoadTestData, completion: {
             (freeRooms: [PTFreeRoom]?, error: PTRequestError?) in
             
+            self.pendingRequests -= 1
             completion(freeRooms, error)
         })
     }
@@ -271,9 +289,11 @@ class PTSession: NSObject {
     
     func requestSchedule(date: Date = Date.init()) {
         
+        pendingRequests += 1
         self.delegate?.sessionDidBeginRetrievingSchedule()
         
         guard let token = self.token else {
+            pendingRequests -= 1
             self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .invalidToken)
             return
         }
@@ -287,11 +307,13 @@ class PTSession: NSObject {
                 
                     if error != nil {
                         
+                        self.pendingRequests -= 1
                         self.delegate?.sessionDidFailRetrievingScheduleWithError(error: error!)
                         
                     } else {
                         
                         self.schedule = schedule
+                        self.pendingRequests -= 1
                         
                         if schedule != nil {
                             self.delegate?.sessionDidRetrieveSchedule(schedule: schedule!)
@@ -319,9 +341,12 @@ class PTSession: NSObject {
     
     func requestDataForSubject(_ subject: PTSubject) {
         
+        pendingRequests += 1
         self.delegate?.sessionDidBeginRetrievingSubjectData(subject: subject)
         
         guard let token = self.token else {
+            
+            pendingRequests -= 1
             self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: .invalidToken, subject: subject)
             return
         }
@@ -334,6 +359,8 @@ class PTSession: NSObject {
                 OperationQueue.main.addOperation({
                     
                     self.dataOfSubjects[subject] = subjectData ?? PTSubjectData.invalid
+                    
+                    self.pendingRequests -= 1
                     
                     if error != nil {
                         
@@ -367,6 +394,7 @@ class PTSession: NSObject {
                     
                     OperationQueue.main.addOperation({
                         self.isOpening = false
+                        self.pendingRequests -= 1
                         self.delegate?.sessionDidFailOpeningWithError(error: error!)
                     })
                     
@@ -374,6 +402,7 @@ class PTSession: NSObject {
                     
                     OperationQueue.main.addOperation({
                         self.isOpening = false
+                        self.pendingRequests -= 1
                         self.delegate?.sessionDidFailOpeningWithError(error: .unknownError)
                     })
                     
@@ -411,6 +440,7 @@ class PTSession: NSObject {
                     
                     self.dateOpened = Date()
                     self.isOpening = false
+                    self.pendingRequests -= 1
                     self.delegate?.sessionDidFinishOpening()
                 })
             }
@@ -437,5 +467,21 @@ class PTSession: NSObject {
         }
         
         PTSession.reset()
+    }
+}
+
+extension PTSession {
+    
+    func lastUpdateTitleView(title: String) -> UIView? {
+        
+        guard let lastUpdateDate = self.dateOpened else { return nil; }
+        
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.Turin
+        formatter.dateFormat = "HH:mm"
+        
+        let subtitle = ~"ls.generic.status.lastUpdate"+" "+formatter.string(from: lastUpdateDate)
+        
+        return PTDualTitleView(withTitle: title, subtitle: subtitle)
     }
 }
