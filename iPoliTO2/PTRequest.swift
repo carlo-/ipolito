@@ -107,7 +107,7 @@ private enum PTRequestAPI: String {
     case temporaryGrades =  "https://app.didattica.polito.it/valutazioni.php"
 }
 
-private func performTestRequest(withRawParams rawParams: [PTRequestParameter: String], api: PTRequestAPI, completion: (_ container: AnyObject?, _ error: PTRequestError?) -> Void) {
+private func performTestRequest(withRawParams rawParams: [PTRequestParameter: String], api: PTRequestAPI, completion: @escaping (_ container: AnyObject?, _ error: PTRequestError?) -> Void) {
     
     let apiTestKey: String? = {
         
@@ -161,21 +161,28 @@ private func performTestRequest(withRawParams rawParams: [PTRequestParameter: St
         return
     }
     
-    if let testContainer = PTParser.rawContainerFromJSON(data) {
+    OperationQueue().addOperation {
         
-        if let apiRawContainer = testContainer.value(forKeyPath: apiTestKey!) {
+        let randDelay = Double(arc4random()%2000)/1000.0
+        Thread.sleep(forTimeInterval: randDelay)
+        
+        OperationQueue.main.addOperation {
             
-            completion(apiRawContainer as AnyObject?, nil)
-        } else {
-            // Error! Bad parameters or not a testable key
-            completion(nil, .invalidRequestType)
-            return
+            if let testContainer = PTParser.rawContainerFromJSON(data) {
+                
+                if let apiRawContainer = testContainer.value(forKeyPath: apiTestKey!) {
+                    
+                    completion(apiRawContainer as AnyObject?, nil)
+                } else {
+                    // Error! Bad parameters or not a testable key
+                    completion(nil, .invalidRequestType)
+                }
+            } else {
+                
+                // Error! JSON serialization failed
+                completion(nil, .invalidRequestType)
+            }
         }
-    } else {
-        
-        // Error! JSON serialization failed
-        completion(nil, .invalidRequestType)
-        return
     }
 }
 
