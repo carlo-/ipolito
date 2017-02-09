@@ -46,6 +46,27 @@ func delay(_ delay:Double, closure:@escaping ()->()) {
     DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
 }
 
+extension NSString {
+    
+    var unsignedValue: UInt {
+        return UInt(integerValue)
+    }
+}
+
+extension Sequence where Iterator.Element == (key: String, value: AnyObject) {
+    
+    func descriptiveCopy() -> [String: NSString?] {
+        
+        var newDict: [String: NSString] = [:]
+        
+        for (key, val) in self {
+            newDict[key] = val.description as NSString?
+        }
+        
+        return newDict
+    }
+}
+
 enum PTViewControllerStatus {
     case offline
     case fetching

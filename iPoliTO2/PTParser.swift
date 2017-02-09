@@ -575,62 +575,39 @@ class PTParser: NSObject {
     class func studentInfoFromRawContainer(_ container:AnyObject) -> PTStudentInfo? {
         
         guard container.value(forKeyPath: "data") is NSDictionary,
-              container.value(forKeyPath: "data.anagrafica") is NSDictionary else {
+              let rawDict = container.value(forKeyPath: "data.anagrafica") as? [String: AnyObject] else {
             return nil
         }
         
-        let firstName:String?
-        if let obj = container.value(forKeyPath: "data.anagrafica.nome") as? String {
-            firstName = obj.capitalized
-        } else { firstName = nil }
+        let infoDict = rawDict.descriptiveCopy()
         
-        let lastName:String?
-        if let obj = container.value(forKeyPath: "data.anagrafica.cognome") as? String {
-            lastName = obj.capitalized
-        } else { lastName = nil }
         
-        var weightedAverage:Double?
-        if let obj = (container.value(forKeyPath: "data.anagrafica.media_complessiva") as AnyObject?)?.description,
-            let val = Double(obj) {
-            weightedAverage = val/100.0
-        } else if let obj = (container.value(forKeyPath: "data.anagrafica.media_compl_30") as AnyObject?)?.description {
-            weightedAverage = Double(obj)
-        } else { weightedAverage = nil }
+        var studentInfo = PTStudentInfo()
         
-        let cleanWeightedAverage:Double?
-        if let obj = (container.value(forKeyPath: "data.anagrafica.media_depu_30") as AnyObject?)?.description {
-            cleanWeightedAverage = Double(obj)
-        } else { cleanWeightedAverage = nil }
+        studentInfo.firstName = infoDict["nome"]??.capitalized
         
-        let graduationMark:Double?
-        if let obj = (container.value(forKeyPath: "data.anagrafica.media_compl_110") as AnyObject?)?.description {
-            graduationMark = Double(obj)
-        } else { graduationMark = nil }
+        studentInfo.lastName = infoDict["cognome"]??.capitalized
         
-        let cleanGraduationMark:Double?
-        if let obj = (container.value(forKeyPath: "data.anagrafica.media_depu_110") as AnyObject?)?.description {
-            cleanGraduationMark = Double(obj)
-        } else { cleanGraduationMark = nil }
+        studentInfo.academicMajor = infoDict["nome_corso_laurea"]??.capitalized
         
-        let obtainedCredits:UInt?
-        if let obj = (container.value(forKeyPath: "data.anagrafica.crediti_tot_sostenuti") as AnyObject?)?.description {
-            obtainedCredits = UInt(obj)
-        } else { obtainedCredits = nil }
+        studentInfo.cleanWeightedAverage = infoDict["media_depu_30"]??.doubleValue
         
-        let academicMajor:String?
-        if let obj = container.value(forKeyPath: "data.anagrafica.nome_corso_laurea") as? String {
-            academicMajor = obj.capitalized
-        } else { academicMajor = nil }
+        studentInfo.graduationMark = infoDict["media_compl_110"]??.doubleValue
         
-        return PTStudentInfo(firstName: firstName,
-                             lastName: lastName,
-                             weightedAverage: weightedAverage,
-                             cleanWeightedAverage: cleanWeightedAverage,
-                             graduationMark: graduationMark,
-                             cleanGraduationMark: cleanGraduationMark,
-                             obtainedCredits: obtainedCredits,
-                             academicMajor: academicMajor)
+        studentInfo.cleanGraduationMark = infoDict["media_depu_110"]??.doubleValue
+        
+        studentInfo.obtainedCredits = infoDict["crediti_tot_sostenuti"]??.unsignedValue
+        
+        studentInfo.totalCredits = infoDict["crediti_totali"]??.unsignedValue
+        
+        if let val = infoDict["media_complessiva"]??.doubleValue {
+            studentInfo.weightedAverage = val/100.0
+        } else {
+            studentInfo.weightedAverage = infoDict["media_compl_30"]??.doubleValue
+        }
+        
+        
+        return studentInfo
     }
 
 }
-

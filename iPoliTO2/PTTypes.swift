@@ -449,8 +449,8 @@ public struct PTMFolder: PTMElement {
 
 public struct PTStudentInfo {
     
-    let firstName: String?
-    let lastName: String?
+    var firstName: String?
+    var lastName: String?
     
     var fullName: String? {
         
@@ -461,14 +461,17 @@ public struct PTStudentInfo {
         }
     }
     
-    let weightedAverage: Double?
-    let cleanWeightedAverage: Double?
-    let graduationMark: Double?
-    let cleanGraduationMark: Double?
+    var weightedAverage: Double?
+    var cleanWeightedAverage: Double?
+    var graduationMark: Double?
+    var cleanGraduationMark: Double?
     
-    let obtainedCredits: UInt?
+    var obtainedCredits: UInt?
     
-    let academicMajor: String?
+    /// Total credits of the program
+    var totalCredits: UInt?
+    
+    var academicMajor: String?
 }
 
 public struct PTAccount {

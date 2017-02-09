@@ -265,9 +265,10 @@ class PTCareerDetailsCell: UITableViewCell {
     
     @IBOutlet var weightedAvgLabel: UILabel!
     @IBOutlet var cleanAvgLabel: UILabel!
+    @IBOutlet var creditsLabel: UILabel!
     
     static let identifier = "PTCareerDetailsCell_id"
-    static let height: CGFloat = 63
+    static let height: CGFloat = 76
     
     func configure(withStudentInfo studentInfo: PTStudentInfo?) {
         
@@ -302,15 +303,27 @@ class PTCareerDetailsCell: UITableViewCell {
             cleanGraduationMarkStr = formatter.string(from: NSNumber(floatLiteral: cleanGraduationMark))
         }
         
+        var totalCreditsStr: String? = nil
+        if let totalCreditsVal = studentInfo?.totalCredits {
+            totalCreditsStr = String(totalCreditsVal)
+        }
+        
+        var obtainedCreditsStr: String? = nil
+        if let obtainedCreditsVal = studentInfo?.obtainedCredits {
+            obtainedCreditsStr = String(obtainedCreditsVal)
+        }
+        
         
         let weightedAvgAttrib = NSAttributedString(string: weightedAvgStr ?? "??", attributes: blackAttributes)
         let cleanAvgAttrib = NSAttributedString(string: cleanAvgStr ?? "??", attributes: blackAttributes)
         let graduationMarkAttrib = NSAttributedString(string: graduationMarkStr ?? "??", attributes: blackAttributes)
         let cleanGraduationMarkAttrib = NSAttributedString(string: cleanGraduationMarkStr ?? "??", attributes: blackAttributes)
+        let obtainedCreditsAttrib = NSAttributedString(string: obtainedCreditsStr ?? "??", attributes: blackAttributes)
         
         let maximumAverage = NSAttributedString(string: "/30", attributes: grayAttributes)
         let maximumGradMark = NSAttributedString(string: "/110", attributes: grayAttributes)
         let spacesAttrib = NSAttributedString(string: "    ", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 17.0)])
+        let totalCreditsAttrib = NSAttributedString(string: "/"+(totalCreditsStr ?? "??"), attributes: grayAttributes)
         
         
         let weightedAvgLabelText = NSMutableAttributedString()
@@ -327,9 +340,14 @@ class PTCareerDetailsCell: UITableViewCell {
         cleanAvgLabelText.append(cleanGraduationMarkAttrib)
         cleanAvgLabelText.append(maximumGradMark)
         
+        let creditsLabelText = NSMutableAttributedString()
+        creditsLabelText.append(obtainedCreditsAttrib)
+        creditsLabelText.append(totalCreditsAttrib)
+        
         
         weightedAvgLabel.attributedText = weightedAvgLabelText
         cleanAvgLabel.attributedText = cleanAvgLabelText
+        creditsLabel.attributedText = creditsLabelText
     }
 }
 
