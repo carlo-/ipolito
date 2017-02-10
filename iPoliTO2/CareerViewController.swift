@@ -19,6 +19,7 @@ class CareerViewController: UITableViewController {
     }
     var passedExams: [PTExam] = [] {
         didSet {
+            reloadSpecialCells()
             tableView.reloadData()
         }
     }
@@ -28,6 +29,18 @@ class CareerViewController: UITableViewController {
         }
     }
     
+    var canShowCareerDetails: Bool {
+        // Needs at least 1 exam
+        return passedExams.count > 0
+    }
+    
+    var canShowGraph: Bool {
+        // Needs at least 1 numerical grade
+        return passedExams.contains(where: { $0.grade != .passed })
+    }
+    
+    var graphCell: PTGraphCell?
+    var detailsCell: PTCareerDetailsCell?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,6 +127,21 @@ class CareerViewController: UITableViewController {
         (UIApplication.shared.delegate as! AppDelegate).login()
     }
     
+    private func reloadSpecialCells() {
+        
+        if detailsCell == nil {
+            detailsCell = tableView.dequeueReusableCell(withIdentifier: PTCareerDetailsCell.identifier) as? PTCareerDetailsCell
+        }
+        
+        if graphCell == nil {
+            graphCell = tableView.dequeueReusableCell(withIdentifier: PTGraphCell.identifier) as? PTGraphCell
+            graphCell?.setupChart()
+        }
+        
+        detailsCell?.configure(withStudentInfo: PTSession.shared.studentInfo)
+        graphCell?.configure(withExams: passedExams)
+    }
+    
     func handleTabBarItemSelection(wasAlreadySelected: Bool) {
         if wasAlreadySelected {
             tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: true)
@@ -147,14 +175,6 @@ class CareerViewController: UITableViewController {
             
             (cell as? PTGradeCell)?.setExam(passedExams[row])
             
-        case 2:
-            
-            (cell as? PTCareerDetailsCell)?.configure(withStudentInfo: PTSession.shared.studentInfo)
-            
-        case 3:
-            
-            (cell as? PTGraphCell)?.configure(withExams: passedExams)
-            
         default:
             return
         }
@@ -170,9 +190,9 @@ class CareerViewController: UITableViewController {
         case 1:
             return tableView.dequeueReusableCell(withIdentifier: PTGradeCell.identifier, for: indexPath)
         case 2:
-            return tableView.dequeueReusableCell(withIdentifier: PTCareerDetailsCell.identifier, for: indexPath)
+            return detailsCell!
         default:
-            return tableView.dequeueReusableCell(withIdentifier: PTGraphCell.identifier, for: indexPath)
+            return graphCell!
         }
     }
     
@@ -188,9 +208,9 @@ class CareerViewController: UITableViewController {
         case 1:
             return passedExams.count > 0 ? ~"ls.careerVC.section.grades" : nil
         case 2:
-            return passedExams.count > 0 ? ~"ls.careerVC.section.details" : nil
+            return canShowCareerDetails ? ~"ls.careerVC.section.details" : nil
         case 3:
-            return passedExams.count > 0 ? ~"ls.careerVC.section.overview" : nil
+            return canShowGraph ? ~"ls.careerVC.section.overview" : nil
         default:
             return nil
         }
@@ -204,9 +224,9 @@ class CareerViewController: UITableViewController {
         case 1:
             return passedExams.count
         case 2:
-            return passedExams.count > 0 ? 1 : 0
+            return canShowCareerDetails ? 1 : 0
         case 3:
-            return passedExams.count > 0 ? 1 : 0
+            return canShowGraph ? 1 : 0
         default:
             return 0
         }
@@ -423,6 +443,10 @@ class PTGraphCell: UITableViewCell {
     private var pieChartData: PieChartData?
     
     override func draw(_ rect: CGRect) {
+        pieChart?.frame = CGRect(origin: rect.origin, size: CGSize(width: rect.width, height: (rect.height - 10)))
+    }
+    
+    func setupChart() {
         
         if pieChart == nil {
             
@@ -442,11 +466,11 @@ class PTGraphCell: UITableViewCell {
         if let data = pieChartData {
             pieChart?.data = data
         }
-        
-        pieChart?.frame = CGRect(origin: rect.origin, size: CGSize(width: rect.width, height: (rect.height - 10)))
     }
     
     func configure(withExams exams: [PTExam]) {
+        
+        guard !(exams.isEmpty) else { return; }
         
         var n18_20 = 0.0
         var n21_23 = 0.0
@@ -499,6 +523,8 @@ class PTGraphCell: UITableViewCell {
             colors.append(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1))
         }
         
+        guard !(entries.isEmpty) else { return; }
+        
         let set = PieChartDataSet(values: entries, label: nil)
         set.colors = colors
         
@@ -511,6 +537,4 @@ class PTGraphCell: UITableViewCell {
         pieChartData = data
         pieChart?.data = data
     }
-    
-    
 }

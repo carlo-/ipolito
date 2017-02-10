@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum PTGrade {
+public enum PTGrade: Equatable {
     case honors
     case passed
     case numerical(Int)
@@ -24,6 +24,19 @@ public enum PTGrade {
                 return String(val)
             }
         }
+    }
+}
+public func ==(lhs: PTGrade, rhs: PTGrade) -> Bool {
+    
+    switch (lhs, rhs) {
+    case (.passed, .passed):
+        return true
+    case (.honors, .honors):
+        return true
+    case (.numerical(let lhs_n), .numerical(let rhs_n)):
+        return lhs_n == rhs_n
+    default:
+        return false
     }
 }
 
