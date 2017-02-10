@@ -445,6 +445,58 @@ class PTRequest: NSObject {
         
     }
     
+    class func fetchScheduleNew(date: Date = Date.init(), token: String, regID: String, loadTestData: Bool = false, completion: @escaping (_ schedule: [PTLecture]?, _ error: PTRequestError?) -> Void) {
+        
+        if loadTestData {
+            fetchSchedule(date: date, token: token, regID: regID, loadTestData: true, completion: completion)
+            return
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        dateFormatter.isLenient = false
+        dateFormatter.timeZone = TimeZone.Turin
+        
+        let dateStr = dateFormatter.string(from: date)
+        
+        let params: [PTRequestParameter: String] = [.registeredID: regID,
+                                                    .sessionToken: token,
+                                                    .refDate: dateStr]
+        
+        var xmlURL: URL? = nil
+        var errorFetchingURL: PTRequestError? = nil
+        
+        let sem = DispatchSemaphore(value: 0)
+        
+        performRequest(withRawParams: params, api: .schedule, loadTestData: loadTestData, completion: {
+            (container: AnyObject?, error: PTRequestError?) in
+            
+            if error == nil && container != nil {
+                xmlURL = PTParser.scheduleURLFromRawContainer(container!)
+            }
+            
+            errorFetchingURL = error
+            
+            sem.signal()
+        })
+        sem.wait()
+        
+        if errorFetchingURL != nil {
+            
+            completion(nil, errorFetchingURL)
+            
+        } else {
+            
+            guard xmlURL != nil, let xmlString = try? String(contentsOf: xmlURL!, encoding: .utf8) else {
+                completion(nil, .unknownError)
+                return
+            }
+            
+            let schedule = PTParser.scheduleFromXmlString(xmlString)
+            completion(schedule, nil)
+        }
+    }
+    
     class func fetchFreeRooms(date: Date = Date.init(), regID: String, loadTestData: Bool = false, completion: @escaping (_ freeRooms: [PTFreeRoom]?, _ error: PTRequestError?) -> Void) {
         
         let dateFormatter = DateFormatter()

@@ -3,3 +3,4 @@
 //
 
 #import "KeychainWrapper.h"
+#import "XMLDictionary.h"

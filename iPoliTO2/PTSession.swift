@@ -300,31 +300,55 @@ class PTSession: NSObject {
         
         OperationQueue().addOperation({
             
+            let sem = DispatchSemaphore(value: 0)
+            var _schedule: [PTLecture]? = nil
+            var _error: PTRequestError? = nil
+            
+            
+            // Try with the regular method (APIs only)
             PTRequest.fetchSchedule(date: date, token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
                 (schedule: [PTLecture]?, error: PTRequestError?) in
                 
-                OperationQueue.main.addOperation({
-                
-                    if error != nil {
-                        
-                        self.pendingRequests -= 1
-                        self.delegate?.sessionDidFailRetrievingScheduleWithError(error: error!)
-                        
-                    } else {
-                        
-                        self.schedule = schedule
-                        self.pendingRequests -= 1
-                        
-                        if schedule != nil {
-                            self.delegate?.sessionDidRetrieveSchedule(schedule: schedule!)
-                        } else {
-                            self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .jsonSerializationFailed)
-                        }
-                        
-                    }
-                })
+                _schedule = schedule; _error = error
+                sem.signal()
             })
+            sem.wait()
             
+            
+            // Try with the new method (APIs + xml)
+            if _schedule == nil {
+                _error = nil
+                
+                PTRequest.fetchScheduleNew(date: date, token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
+                    (schedule: [PTLecture]?, error: PTRequestError?) in
+                    
+                    _schedule = schedule; _error = error
+                    sem.signal()
+                })
+                sem.wait()
+            }
+            
+            
+            OperationQueue.main.addOperation({
+                
+                if _error != nil {
+                    
+                    self.pendingRequests -= 1
+                    self.delegate?.sessionDidFailRetrievingScheduleWithError(error: _error!)
+                    
+                } else {
+                    
+                    self.schedule = _schedule
+                    self.pendingRequests -= 1
+                    
+                    if _schedule != nil {
+                        self.delegate?.sessionDidRetrieveSchedule(schedule: _schedule!)
+                    } else {
+                        self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .jsonSerializationFailed)
+                    }
+                    
+                }
+            })
         })
     }
     

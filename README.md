@@ -34,6 +34,7 @@ iPoliTO is released under the GPL license. See `LICENSE.txt` for more informatio
 The following dependencies are bundled with iPoliTO, but are under terms of a separate license:
 * [Charts](https://github.com/danielgindi/Charts) by [danielgindi](https://github.com/danielgindi)
 * [KeychainWrapper](http://www.raywenderlich.com/wp-content/uploads/2014/12/KeychainWrapper.zip) modified version by Tim Mitra, originally from [Apple](https://developer.apple.com/library/ios/samplecode/GenericKeychain/Listings/Classes_KeychainItemWrapper_m.html#//apple_ref/doc/uid/DTS40007797-Classes_KeychainItemWrapper_m-DontLinkElementID_10)
+* [XMLDictionary](https://github.com/nicklockwood/XMLDictionary) by [Nick Lockwood](https://github.com/nicklockwood)
 
 ## Disclaimer
 

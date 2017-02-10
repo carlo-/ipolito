@@ -520,55 +520,80 @@ class PTParser: NSObject {
     }
     
     
+    class func scheduleURLFromRawContainer(_ container:AnyObject) -> URL? {
+        
+        guard container.value(forKeyPath: "data") is NSDictionary,
+              container.value(forKeyPath: "data.url_orari") is NSDictionary,
+              let urlStr = container.value(forKeyPath: "data.url_orari.v_original_url") as? String else {
+            return nil
+        }
+        return URL(string: urlStr)
+    }
+    
+    
     class func scheduleFromRawContainer(_ container:AnyObject) -> [PTLecture]? {
         
         if let rawSchedule = rawScheduleFromRawContainer(container) as? [[String: AnyObject]] {
-            
-            var schedule: [PTLecture] = []
-            
-            for rawLecture in rawSchedule {
-                
-                guard let begDateString = rawLecture["ORA_INIZIO"] as? String,
-                      let endDateString = rawLecture["ORA_FINE"]   as? String,
-                      let subjectName =   rawLecture["TITOLO_MATERIA"] as? String
-                else { continue }
-                
-                let formatter = DateFormatter()
-                formatter.timeZone = TimeZone.Turin
-                formatter.isLenient = true
-                formatter.dateFormat = "dd/MM/yyyy HH.mm.ss"
-                
-                guard let begDate = formatter.date(from: begDateString),
-                      let endDate = formatter.date(from: endDateString)
-                else { continue }
-                
-                let cohort: (String, String)?
-                if let cohortFrom = rawLecture["ALFA_INI"] as? String,
-                   let cohortTo = rawLecture["ALFA_FIN"] as? String {
-                    cohort = (cohortFrom, cohortTo)
-                } else {
-                    cohort = nil
-                }
-                
-                let lecture = PTLecture(subjectName:       subjectName,
-                                        lecturerName:      rawLecture["NOMINATIVO_AULA"]    as? String,
-                                        roomName:          rawLecture["AULA"]               as? String,
-                                        eventType:         rawLecture["TIPOLOGIA_EVENTO"]   as? String,
-                                        courseIdentifier:  rawLecture["NUMCOR"]             as? String,
-                                        lectureIdentifier: rawLecture["ID_EVENTO"]          as? String,
-                                        eventDescription:  rawLecture["DESCRIZIONE_EVENTO"] as? String,
-                                        cohort:            cohort,
-                                        date:              begDate,
-                                        length:            endDate.timeIntervalSince(begDate))
-                
-                schedule.append(lecture)
-            }
-            
-            return schedule
-            
+            return scheduleFromRawSchedule(rawSchedule)
         } else {
             return nil
         }
+    }
+    
+    private class func scheduleFromRawSchedule(_ rawSchedule: [[String: AnyObject]]) -> [PTLecture]? {
+        
+        var schedule: [PTLecture] = []
+        
+        for rawLecture in rawSchedule {
+            
+            guard let begDateString = rawLecture["ORA_INIZIO"] as? String,
+                let endDateString = rawLecture["ORA_FINE"]   as? String,
+                let subjectName =   rawLecture["TITOLO_MATERIA"] as? String
+                else { continue }
+            
+            let formatter = DateFormatter()
+            formatter.timeZone = TimeZone.Turin
+            formatter.isLenient = true
+            formatter.dateFormat = "dd/MM/yyyy HH.mm.ss"
+            
+            guard let begDate = formatter.date(from: begDateString),
+                let endDate = formatter.date(from: endDateString)
+                else { continue }
+            
+            let cohort: (String, String)?
+            if let cohortFrom = rawLecture["ALFA_INI"] as? String,
+                let cohortTo = rawLecture["ALFA_FIN"] as? String {
+                cohort = (cohortFrom, cohortTo)
+            } else {
+                cohort = nil
+            }
+            
+            let lecture = PTLecture(subjectName:       subjectName,
+                                    lecturerName:      rawLecture["NOMINATIVO_AULA"]    as? String,
+                                    roomName:          rawLecture["AULA"]               as? String,
+                                    eventType:         rawLecture["TIPOLOGIA_EVENTO"]   as? String,
+                                    courseIdentifier:  rawLecture["NUMCOR"]             as? String,
+                                    lectureIdentifier: rawLecture["ID_EVENTO"]          as? String,
+                                    eventDescription:  rawLecture["DESCRIZIONE_EVENTO"] as? String,
+                                    cohort:            cohort,
+                                    date:              begDate,
+                                    length:            endDate.timeIntervalSince(begDate))
+            
+            schedule.append(lecture)
+        }
+        
+        return schedule
+    }
+    
+    
+    class func scheduleFromXmlString(_ xmlString: String) -> [PTLecture]? {
+        
+        if let dict = NSDictionary(xmlString: xmlString),
+           let rawSchedule = dict.value(forKey: "BLOCCO_ORARIO_STUDENTE") as? [[String: AnyObject]] {
+            
+            return scheduleFromRawSchedule(rawSchedule)
+        }
+        return nil
     }
     
     
