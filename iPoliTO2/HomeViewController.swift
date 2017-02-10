@@ -476,8 +476,16 @@ extension HomeViewController {
         
         if schedule.isEmpty { return; }
         
-        let indexPath = IndexPath(row: 0, section: 0)
-        self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        // Looks for the first non-empty section
+        for s in 0...4 {
+            if !((scheduleByWeekday[s] ?? []).isEmpty) {
+                
+                // Scrolls to the first row of that section
+                let indexPath = IndexPath(row: 0, section: s)
+                self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                return;
+            }
+        }
     }
     
     /// Scrolls to the current lecture if possible, otherwise scrolls to the next lecture.
