@@ -384,7 +384,7 @@ class PTParser: NSObject {
                     
                     if gradeRawStr.lowercased().contains("sup") {
                         grade = .passed
-                    } else if gradeRawStr.lowercased().contains("l") {
+                    } else if gradeRawStr.lowercased().contains("l") || (gradeRawStr as NSString).integerValue > 30 {
                         grade = .honors
                     } else {
                         grade = .numerical((gradeRawStr as NSString).integerValue)
