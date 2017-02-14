@@ -39,7 +39,7 @@
 
 // MARK: AppDelegate
 
-"ls.appDelegate.justUpdatedAlert.title" = "Novità della versione 2.2.1";
+"ls.appDelegate.justUpdatedAlert.title" = "Novità della versione 2.3";
 "ls.appDelegate.justUpdatedAlert.body" = "- \n- ";
 
 "ls.appDelegate.justDownloadedAlert.title" = "Benvenuto";
