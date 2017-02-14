@@ -46,6 +46,16 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     
     private var roomToFocus: PTRoom?
     
+    private var freeRoomsLoadedDateDescription: String? {
+        
+        guard let date = freeRoomsLoadedDate else { return nil; }
+        
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.Turin
+        formatter.dateFormat = "HH:mm"
+        
+        return ~"ls.mapVC.showingFreeRoomsFor"+" "+formatter.string(from: date)
+    }
     
     
     // MARK: View Lifecycle
@@ -97,15 +107,13 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         case .logginIn:
             navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.loggingIn")
         case .ready:
-            navigationItem.titleView = nil
-            if isViewLoaded {
-                reloadFreeRoomsIfNeeded()
-            }
+            navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: freeRoomsLoadedDateDescription ?? "")
+            if isViewLoaded { reloadFreeRoomsIfNeeded() }
         case .loggedOut:
             navigationItem.titleView = nil
             freeRoomsLoadedDate = nil
         default:
-            navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: ~"ls.generic.status.offline")
+            navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.generic.status.offline", subtitle: freeRoomsLoadedDateDescription ?? "")
         }
     }
     
@@ -144,13 +152,6 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         isDownloadingFreeRooms = true
         
-        let formatter = DateFormatter()
-        formatter.timeZone = TimeZone.Turin
-        formatter.dateFormat = "HH:mm"
-        
-        let subtitle = ~"ls.mapVC.showingFreeRoomsFor"+" "+formatter.string(from: date ?? Date())
-        
-        
         navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.mapVC.status.loading")
         
         PTSession.shared.requestFreeRooms(forDate: date, completion: {
@@ -170,7 +171,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
                     self.freeRoomsLoadedDate = date ?? Date()
                     self.freeRooms = freeRooms ?? []
                     self.reloadRoomAnnotations()
-                    self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: subtitle)
+                    self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: self.freeRoomsLoadedDateDescription ?? "")
                 }
                 
                 self.isDownloadingFreeRooms = false
