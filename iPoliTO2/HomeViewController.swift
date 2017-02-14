@@ -672,7 +672,7 @@ extension HomeViewController {
 
 extension HomeViewController {
     
-    func handleTabBarItemSelection(wasAlreadySelected: Bool) {
+    func handleTabBarItemSelection(wasAlreadySelected: Bool, poppingFromNavigationStack: Bool) {
         if wasAlreadySelected {
             scrollToMostRelevantRow()
         }

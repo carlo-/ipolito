@@ -133,6 +133,10 @@ private func parsedPTMElementsFromRawFolder(_ rawFolder: [[String: AnyObject]]!)
                                    identifierOfParent: identifierOfParent,
                                    children: parsedPTMElementsFromRawFolder(rawChildren))
             
+            for child in folder.children {
+                child.parent = folder
+            }
+            
             elements.append(folder)
             
         } else if rawType.lowercased() == "file" {

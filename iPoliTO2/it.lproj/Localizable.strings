@@ -78,6 +78,8 @@
 "ls.subjectsVC.noFilesOrMessagesAlert.body" = "Questo corso non ha alcun messaggio né file.";
 "ls.subjectsVC.invalidSubjectDataAlert.body" = "Non è stato possibile scaricare i dati per questa materia.";
 
+"ls.subjectsVC.searchBarPlaceholder" = "Cerca un file";
+
 
 
 // MARK: CareerViewController

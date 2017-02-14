@@ -26,7 +26,7 @@ class DocumentsViewController: UITableViewController {
         self.subject = subject
     }
     
-    private func configure(forFolder folder: PTMFolder, andRootController rootController: DocumentsViewController) {
+    func configure(forFolder folder: PTMFolder, andRootController rootController: DocumentsViewController) {
         
         self.title = folder.description
         self.content = folder.children
@@ -63,6 +63,23 @@ class DocumentsViewController: UITableViewController {
         }
     }
     
+    private func highlightRow(atIndexPath indexPath: IndexPath) {
+        
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+        
+        unowned let unownedSelf = self
+        delay(1) {
+            unownedSelf.tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    func highlightRow(ofElement element: PTMElement) {
+        
+        if let i = content.index(where: { $0.identifier == element.identifier }) {
+            
+            highlightRow(atIndexPath: IndexPath(row: i, section: 0))
+        }
+    }
     
     func didSelectFolder(_ folder: PTMFolder) {
         

@@ -352,23 +352,54 @@ public func ==(lhs: PTRoom, rhs: PTRoom) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-protocol PTMElement {
-    var description: String { get }
-    var identifier: String { get }
-    var identifierOfParent: String { get }
-}
-
-public struct PTMFile: PTMElement {
-    
+public class PTMElement {
     let description: String
     let identifier: String
     let identifierOfParent: String
+    weak var parent: PTMElement?
+    
+    init(description: String, identifier: String, identifierOfParent: String) {
+        self.description = description
+        self.identifier = identifier
+        self.identifierOfParent = identifierOfParent
+    }
+    
+    var ancestors: [PTMElement] {
+        
+        guard let p = parent else { return [] }
+        return [p] + p.ancestors
+    }
+    
+    var path: String {
+        
+        let revAncestors = ancestors.reversed()
+
+        let names = revAncestors.map({ $0.description })
+        
+        if names.isEmpty {
+            return "/"
+        } else {
+            return "/" + names.joined(separator: "/") + "/"
+        }
+    }
+}
+
+public class PTMFile: PTMElement {
     
     let date: Date?
     let contentType: String?
     let name: String
-    
     let size: Int?
+    
+    init(description: String, identifier: String, identifierOfParent: String, date: Date? = nil, contentType: String? = nil, name: String, size: Int? = nil) {
+        
+        self.date = date
+        self.contentType = contentType
+        self.name = name
+        self.size = size
+        
+        super.init(description: description, identifier: identifier, identifierOfParent: identifierOfParent)
+    }
     
     var `extension`: String? {
     
@@ -416,17 +447,30 @@ public struct PTMFile: PTMElement {
     }
 }
 
-public struct PTMFolder: PTMElement {
+public class PTMFolder: PTMElement {
     
-    let description: String
-    let identifier: String
-    let identifierOfParent: String
+    private var _descendantElements: [PTMElement]?
+    private var _descendantFiles: [PTMFile]?
     
-    var children: [PTMElement] = []
+    var children: [PTMElement] = [] {
+        didSet {
+            _descendantElements = nil
+            _descendantFiles = nil
+        }
+    }
+    
+    init(description: String, identifier: String, identifierOfParent: String, children: [PTMElement]) {
+        self.children = children
+        super.init(description: description, identifier: identifier, identifierOfParent: identifierOfParent)
+    }
     
     var isEmpty: Bool { return children.isEmpty }
     
     var descendantElements: [PTMElement] {
+        
+        if _descendantElements != nil {
+            return _descendantElements!
+        }
         
         var flatArray: [PTMElement] = []
         
@@ -440,10 +484,15 @@ public struct PTMFolder: PTMElement {
             }
         }
         
+        _descendantElements = flatArray
         return flatArray
     }
     
     var descendantFiles: [PTMFile] {
+        
+        if _descendantFiles != nil {
+            return _descendantFiles!
+        }
         
         var flatArray: [PTMFile] = []
         
@@ -456,6 +505,7 @@ public struct PTMFolder: PTMElement {
             }
         }
         
+        _descendantFiles = flatArray
         return flatArray
     }
 }

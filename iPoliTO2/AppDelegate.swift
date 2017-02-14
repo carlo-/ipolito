@@ -111,6 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     private var previousSelection: ControllerIndex = .home
+    private var poppingFromNavigationStack: Bool = false
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         
         guard let index = ControllerIndex(rawValue: tabBarController.selectedIndex) else {
@@ -119,9 +120,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         switch index {
         case .home:
-            homeVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .home)
+            homeVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .home, poppingFromNavigationStack: poppingFromNavigationStack)
         case .subjects:
-            subjectsVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .subjects)
+            subjectsVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .subjects, poppingFromNavigationStack: poppingFromNavigationStack)
         case .career:
             careerVC?.handleTabBarItemSelection(wasAlreadySelected: previousSelection == .career)
         case .map:
@@ -130,6 +131,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        
+        if let navVC = viewController as? UINavigationController {
+            poppingFromNavigationStack = (navVC.viewControllers.count > 1)
+        } else {
+            poppingFromNavigationStack = false
+        }
         
         if let previousSelection = ControllerIndex(rawValue: tabBarController.selectedIndex) {
             self.previousSelection = previousSelection

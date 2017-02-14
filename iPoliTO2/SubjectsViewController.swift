@@ -10,6 +10,14 @@ import UIKit
 
 class SubjectsViewController: UITableViewController {
     
+    fileprivate var searchController = UISearchController(searchResultsController: nil)
+    fileprivate var searchBar: UISearchBar { return searchController.searchBar }
+    fileprivate var searchBarText: String { return searchBar.text ?? "" }
+    fileprivate var searchResults: [SearchResult] = []
+    fileprivate var isShowingSearchResults: Bool {
+        return searchController.isActive
+    }
+    
     var subjects: [PTSubject] = [] {
         didSet {
             self.tableView.reloadData()
@@ -34,6 +42,7 @@ class SubjectsViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         
         setupRefreshControl()
+        setupSearchController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +60,8 @@ class SubjectsViewController: UITableViewController {
     
     func statusDidChange() {
         
+        searchBar.isUserInteractionEnabled = false
+        
         if status != .fetching && status != .logginIn {
             refreshControl?.endRefreshing()
         }
@@ -59,6 +70,7 @@ class SubjectsViewController: UITableViewController {
         
         if isTableEmpty {
             
+            setSearchBarVisible(false)
             tableView.isScrollEnabled = false
             navigationItem.titleView = nil
             
@@ -89,6 +101,7 @@ class SubjectsViewController: UITableViewController {
             
         } else {
             
+            setSearchBarVisible(true)
             tableView.isScrollEnabled = true
             tableView.backgroundView = nil
             
@@ -100,6 +113,7 @@ class SubjectsViewController: UITableViewController {
             case .offline:
                 navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.generic.status.offline")
             default:
+                searchBar.isUserInteractionEnabled = true
                 navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.subjectsVC.title")
             }
         }
@@ -110,9 +124,18 @@ class SubjectsViewController: UITableViewController {
         refreshControl?.addTarget(self, action: #selector(refreshControlActuated), for: .valueChanged)
     }
     
+    func setRefreshControlEnabled(_ enabled: Bool) {
+        
+        if enabled && refreshControl == nil {
+            setupRefreshControl()
+        } else if !enabled {
+            refreshControl = nil
+        }
+    }
+    
     @objc
     func refreshControlActuated() {
-        if PTSession.shared.isBusy {
+        if PTSession.shared.isBusy || isShowingSearchResults {
             refreshControl?.endRefreshing()
         } else {
             (UIApplication.shared.delegate as! AppDelegate).login()
@@ -135,8 +158,13 @@ class SubjectsViewController: UITableViewController {
         parent?.tabBarItem.badgeValue = total > 0 ? String(total) : nil
     }
     
-    func handleTabBarItemSelection(wasAlreadySelected: Bool) {
-        return
+    func handleTabBarItemSelection(wasAlreadySelected: Bool, poppingFromNavigationStack: Bool) {
+        
+        if (wasAlreadySelected && !poppingFromNavigationStack)
+        || (searchBarText.isEmpty) {
+            
+            dismissSearchBar()
+        }
     }
     
     func showMessages(forSubject subject: PTSubject) {
@@ -251,11 +279,21 @@ class SubjectsViewController: UITableViewController {
     // MARK: TableView delegate methods
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return PTSubjectCell.height
+        
+        if isShowingSearchResults {
+            return 44.0
+        } else {
+            return PTSubjectCell.height
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subjects.count
+        
+        if isShowingSearchResults {
+            return searchResults.count
+        } else {
+            return subjects.count
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -264,25 +302,267 @@ class SubjectsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        return tableView.dequeueReusableCell(withIdentifier: PTSubjectCell.identifier)!
+        if isShowingSearchResults {
+            return tableView.dequeueReusableCell(withIdentifier: "searchResultCell_id")!
+        } else {
+            return tableView.dequeueReusableCell(withIdentifier: PTSubjectCell.identifier)!
+        }
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        guard let cell = cell as? PTSubjectCell else { return }
-        
-        let subject = subjects[indexPath.row]
-        
-        cell.configure(forSubject: subject, unreadMessages: dataOfSubjects[subject]?.numberOfUnreadMessages ?? 0)
+        if isShowingSearchResults {
+            
+            let result = searchResults[indexPath.row]
+            
+            cell.textLabel?.text = result.file.description
+            cell.detailTextLabel?.text = result.subject.name + result.file.path
+            
+            cell.textLabel?.textColor = UIColor.iPoliTO.darkGray
+            cell.detailTextLabel?.font = .systemFont(ofSize: 11)
+            cell.detailTextLabel?.textColor = .lightGray
+            
+        } else {
+            
+            guard let cell = cell as? PTSubjectCell else { return; }
+            
+            let subject = subjects[indexPath.row]
+            
+            cell.configure(forSubject: subject, unreadMessages: dataOfSubjects[subject]?.numberOfUnreadMessages ?? 0)
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let subject = subjects[indexPath.row]
+        if isShowingSearchResults {
+            
+            let result = searchResults[indexPath.row]
+            showFileInItsLocation(file: result.file, subject: result.subject)
+            
+        } else {
+            
+            let subject = subjects[indexPath.row]
+            
+            presentOptions(forSubject: subject)
+        }
+    }
+}
+
+
+extension SubjectsViewController {
+    
+    func showFileInItsLocation(file: PTMFile, subject: PTSubject) {
         
-        presentOptions(forSubject: subject)
+        searchBar.resignFirstResponder()
+        
+        let stack = getDVControllersStack(forElement: file, subject: subject)
+        let completeStack: [UIViewController] = [self] + stack
+        navigationController?.setViewControllers(completeStack, animated: true)
+        
+        delay(0.3) {
+            
+            if let topController = completeStack.last as? DocumentsViewController {
+                topController.highlightRow(ofElement: file)
+            }
+        }
+    }
+    
+    private func getDVControllersStack(forElement elem: PTMElement, subject: PTSubject) -> [DocumentsViewController] {
+        
+        if let parent = elem.parent {
+            
+            let currentStack = getDVControllersStack(forElement: parent, subject: subject)
+            let rootController = currentStack.first
+            
+            if let enclosingFolder = parent as? PTMFolder {
+                
+                if let childController = storyboard?.instantiateViewController(withIdentifier: DocumentsViewController.identifier) as? DocumentsViewController {
+                    
+                    childController.configure(forFolder: enclosingFolder, andRootController: rootController ?? childController)
+                    return currentStack + [childController]
+                }
+            }
+            
+            return currentStack
+            
+        } else {
+            
+            if let childController = storyboard?.instantiateViewController(withIdentifier: DocumentsViewController.identifier) as? DocumentsViewController,
+               let documents = dataOfSubjects[subject]?.documents {
+                
+                childController.configure(forSubject: subject, withDocuments: documents)
+                
+                return [childController]
+                
+            } else {
+                return []
+            }
+        }
+    }
+}
+
+
+extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDelegate {
+    
+    func reloadTable(animated: Bool = false) {
+        
+        if animated {
+            
+            UIView.transition(with: tableView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                self.tableView.reloadData()
+            }, completion: nil)
+            
+        } else {
+            
+            tableView.reloadData()
+        }
+    }
+    
+    fileprivate struct SearchResult {
+        let file: PTMFile
+        let subject: PTSubject
+        let score: Double
+    }
+    
+    fileprivate func setSearchBarVisible(_ enabled: Bool) {
+        
+        if enabled && tableView.tableHeaderView == nil {
+            tableView.tableHeaderView = searchBar
+        } else if !enabled {
+            tableView.tableHeaderView = nil
+        }
+    }
+    
+    fileprivate func setupSearchController() {
+        
+        tableView.keyboardDismissMode = .onDrag
+        
+        searchController.searchResultsUpdater = self
+        searchController.delegate = self
+        searchController.dimsBackgroundDuringPresentation = false
+        
+        let searchBar = searchController.searchBar
+        searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
+        searchBar.placeholder = ~"ls.subjectsVC.searchBarPlaceholder"
+        
+        tableView.tableHeaderView = searchBar
+        
+        self.definesPresentationContext = true
+        
+        let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: .normal)
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        tableView.setContentOffset(CGPoint(x: 0, y: -64+44), animated: false)
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        setRefreshControlEnabled(true)
+        tableView.tableFooterView = UIView()
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+    }
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        setRefreshControlEnabled(false)
+        tableView.tableFooterView = nil
+    }
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+    }
+    
+    func dismissSearchBar(force: Bool = false) {
+        if force || searchController.isActive {
+            searchController.isActive = false
+        }
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        let query = searchBarText
+        
+        searchResults = evaluateQuery(query)
+        
+        searchResults.sort(by: {
+        
+            if $0.score == $1.score {
+                return $0.file.description < $1.file.description
+            } else {
+                return $0.score > $1.score
+            }
+        })
+        
+        if query.isEmpty {
+            reloadTable(animated: true)
+        } else {
+            reloadTable(animated: false)
+        }
+    }
+    
+    private func evaluateQuery(_ query: String) -> [SearchResult] {
+        
+        let queryLC = query.lowercased()
+        let queryComps = queryLC.components(separatedBy: " ")
+        
+        var results: [SearchResult] = []
+        
+        for s in subjects {
+            
+            guard let someFiles = dataOfSubjects[s]?.flatFiles else { continue; }
+            
+            results += someFiles.flatMap({ file in
+                
+                let descrLC = file.description.lowercased()
+                
+                let score = evaluateScore(forQueryComponents: queryComps, onTarget: descrLC, strictly: true)
+                
+                if score > 0.0 || queryLC.isEmpty {
+                    return SearchResult(file: file, subject: s, score: score)
+                } else {
+                    return nil
+                }
+            })
+        }
+        
+        return results
+    }
+    
+    private func evaluateScore(forQueryComponents queryComps: [String], onTarget target: String, strictly: Bool) -> Double {
+        
+        var score: Double = 0.0
+        
+        let targetComps = target.components(separatedBy: " ")
+        
+        for qComp in queryComps {
+            
+            if qComp.isEmpty { continue; }
+            
+            if target.contains(qComp) {
+                
+                let qCompLen = Double(qComp.characters.count)
+                
+                for tComp in targetComps {
+                    
+                    if tComp.contains(qComp) {
+                        
+                        let tCompLen = Double(tComp.characters.count)
+                        
+                        score += qCompLen/tCompLen
+                        
+                    }
+                }
+                
+            } else if strictly {
+                // Target must contain all query comps
+                return 0.0
+            }
+        }
+        
+        let normalized = score/Double(targetComps.count)
+        return normalized
     }
 }
 
