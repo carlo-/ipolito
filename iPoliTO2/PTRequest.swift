@@ -166,22 +166,19 @@ private func performTestRequest(withRawParams rawParams: [PTRequestParameter: St
         let randDelay = Double(arc4random()%2000)/1000.0
         Thread.sleep(forTimeInterval: randDelay)
         
-        OperationQueue.main.addOperation {
+        if let testContainer = PTParser.rawContainerFromJSON(data) {
             
-            if let testContainer = PTParser.rawContainerFromJSON(data) {
+            if let apiRawContainer = testContainer.value(forKeyPath: apiTestKey!) {
                 
-                if let apiRawContainer = testContainer.value(forKeyPath: apiTestKey!) {
-                    
-                    completion(apiRawContainer as AnyObject?, nil)
-                } else {
-                    // Error! Bad parameters or not a testable key
-                    completion(nil, .invalidRequestType)
-                }
+                completion(apiRawContainer as AnyObject?, nil)
             } else {
-                
-                // Error! JSON serialization failed
+                // Error! Bad parameters or not a testable key
                 completion(nil, .invalidRequestType)
             }
+        } else {
+            
+            // Error! JSON serialization failed
+            completion(nil, .invalidRequestType)
         }
     }
 }
