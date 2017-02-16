@@ -10,30 +10,45 @@ import UIKit
 
 class SubjectsViewController: UITableViewController {
     
+    fileprivate let latestUploadsLimit: Int = 5
+    
     fileprivate var searchController = UISearchController(searchResultsController: nil)
     fileprivate var searchBar: UISearchBar { return searchController.searchBar }
     fileprivate var searchBarText: String { return searchBar.text ?? "" }
+    fileprivate let searchOperationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+    
     fileprivate var searchResults: [SearchResult] = []
-    fileprivate var isShowingSearchResults: Bool {
+    fileprivate var latestUploadsResults: [SearchResult] = []
+    fileprivate var allFilesResults: [SearchResult] = []
+    
+    fileprivate var isSearchBarActive: Bool {
         return searchController.isActive
     }
     
+    fileprivate var isShowingSearchResults: Bool {
+        return isSearchBarActive && !searchBarText.isEmpty
+    }
+    
+    fileprivate var isShowingLatestUploads: Bool {
+        return isSearchBarActive && searchBarText.isEmpty
+    }
+    
     var subjects: [PTSubject] = [] {
-        didSet {
-            self.tableView.reloadData()
-        }
+        didSet { tableView.reloadData() }
     }
+    
     var dataOfSubjects: [PTSubject: PTSubjectData] = [:] {
-        didSet {
-            self.tableView.reloadData()
-            recomputeBadge()
-        }
+        didSet { dataOfSubjectsDidChange() }
     }
+    
     var status: PTViewControllerStatus = .loggedOut {
-        didSet {
-            statusDidChange()
-        }
+        didSet { statusDidChange() }
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,8 +65,8 @@ class SubjectsViewController: UITableViewController {
         
         navigationItem.rightBarButtonItem?.isEnabled = !(DownloadsViewController.hasContentToShow)
         
-        self.tableView.reloadData()
-        recomputeBadge()
+        tableView.reloadData()
+        updateTabBarBadge()
     }
     
     func statusDidChange() {
@@ -115,6 +130,22 @@ class SubjectsViewController: UITableViewController {
         }
     }
     
+    func dataOfSubjectsDidChange() {
+        
+        updateAllFilesResults()
+        updateLatestUploadsResults()
+        updateTabBarBadge()
+        
+        tableView.reloadData()
+    }
+    
+    func handleTabBarItemSelection(wasAlreadySelected: Bool, poppingFromNavigationStack: Bool) {
+        
+        if (wasAlreadySelected && !poppingFromNavigationStack) {
+            dismissSearchBar()
+        }
+    }
+    
     func setupRefreshControl() {
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(refreshControlActuated), for: .valueChanged)
@@ -143,7 +174,7 @@ class SubjectsViewController: UITableViewController {
         (UIApplication.shared.delegate as! AppDelegate).login()
     }
     
-    func recomputeBadge() {
+    func updateTabBarBadge() {
         var total = 0
         for (_, data) in dataOfSubjects {
             total += data.numberOfUnreadMessages
@@ -153,16 +184,14 @@ class SubjectsViewController: UITableViewController {
         }
         parent?.tabBarItem.badgeValue = total > 0 ? String(total) : nil
     }
-    
-    func handleTabBarItemSelection(wasAlreadySelected: Bool, poppingFromNavigationStack: Bool) {
-        
-        if (wasAlreadySelected && !poppingFromNavigationStack)
-        || (searchBarText.isEmpty) {
-            
-            dismissSearchBar()
-        }
-    }
-    
+}
+
+
+
+// MARK: - Tap on subject cell
+
+extension SubjectsViewController {
+
     func showMessages(forSubject subject: PTSubject) {
         
         let id = MessagesViewController.identifier
@@ -270,13 +299,28 @@ class SubjectsViewController: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+}
+
+
+
+// MARK: - General TableView methods
+
+extension SubjectsViewController {
     
-    
-    // MARK: TableView delegate methods
+    func reloadTable(animated: Bool = false) {
+        
+        if animated {
+            
+            UIView.transition(with: tableView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                self.tableView.reloadData()
+            }, completion: nil)
+            
+        } else { tableView.reloadData() }
+    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if isShowingSearchResults {
+        if isSearchBarActive {
             return 44.0
         } else {
             return PTSubjectCell.height
@@ -286,19 +330,35 @@ class SubjectsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if isShowingSearchResults {
-            return searchResults.count
+            return (section == 0 ? searchResults.count : 0)
+        } else if isShowingLatestUploads {
+            return (section == 0 ? latestUploadsResults.count : allFilesResults.count)
         } else {
-            return subjects.count
+            return (section == 0 ? subjects.count : 0)
         }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        
+        if isSearchBarActive {
+            return 2
+        } else {
+            return 1
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if isShowingLatestUploads {
+            return (section == 0 ? ~"ls.subjectsVC.latestUploads" : ~"ls.subjectsVC.allFiles")
+        } else {
+            return nil
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if isShowingSearchResults {
+        if isSearchBarActive {
             return tableView.dequeueReusableCell(withIdentifier: "searchResultCell_id")!
         } else {
             return tableView.dequeueReusableCell(withIdentifier: PTSubjectCell.identifier)!
@@ -307,23 +367,41 @@ class SubjectsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if isShowingSearchResults {
-            
-            let result = searchResults[indexPath.row]
-            
-            cell.textLabel?.text = result.file.description
-            cell.detailTextLabel?.text = result.subject.name + result.file.path
+        if isSearchBarActive {
             
             cell.textLabel?.textColor = UIColor.iPoliTO.darkGray
             cell.detailTextLabel?.font = .systemFont(ofSize: 11)
             cell.detailTextLabel?.textColor = .lightGray
             
-        } else {
+            if isShowingSearchResults {
+                // Showing search results
+                
+                let result = searchResults[indexPath.row]
+                cell.textLabel?.text = result.file.description
+                cell.detailTextLabel?.text = result.subject.name + result.file.path
+                
+            } else if isShowingLatestUploads && indexPath.section == 0 {
+                // Showing latest uploads
+                
+                let formatter = DateFormatter()
+                formatter.dateStyle = .medium
+                formatter.timeStyle = .short
+                
+                let result = latestUploadsResults[indexPath.row]
+                cell.textLabel?.text = result.file.description
+                cell.detailTextLabel?.text = formatter.string(from: result.file.date!) + " - " + result.subject.name
+                
+            } else if isShowingLatestUploads && indexPath.section == 1 {
+                // Showing all files
+                
+                let result = allFilesResults[indexPath.row]
+                cell.textLabel?.text = result.file.description
+                cell.detailTextLabel?.text = result.subject.name + result.file.path
+            }
             
-            guard let cell = cell as? PTSubjectCell else { return; }
+        } else if let cell = cell as? PTSubjectCell {
             
             let subject = subjects[indexPath.row]
-            
             cell.configure(forSubject: subject, unreadMessages: dataOfSubjects[subject]?.numberOfUnreadMessages ?? 0)
         }
     }
@@ -332,20 +410,40 @@ class SubjectsViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if isShowingSearchResults {
+        if isSearchBarActive {
             
-            let result = searchResults[indexPath.row]
+            let result: SearchResult
+            
+            if isShowingSearchResults {
+                // Showing search results
+                
+                result = searchResults[indexPath.row]
+                
+            } else if isShowingLatestUploads && indexPath.section == 0 {
+                // Showing latest uploads
+                
+                result = latestUploadsResults[indexPath.row]
+                
+            } else if isShowingLatestUploads && indexPath.section == 1 {
+                // Showing all files
+                
+                result = allFilesResults[indexPath.row]
+                
+            } else { return; }
+            
             showFileInItsLocation(file: result.file, subject: result.subject)
             
         } else {
             
             let subject = subjects[indexPath.row]
-            
             presentOptions(forSubject: subject)
         }
     }
 }
 
+
+
+// MARK: Tap on search result
 
 extension SubjectsViewController {
     
@@ -400,26 +498,39 @@ extension SubjectsViewController {
 }
 
 
+
+// MARK: - Search related methods
+
 extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDelegate {
-    
-    func reloadTable(animated: Bool = false) {
-        
-        if animated {
-            
-            UIView.transition(with: tableView, duration: 0.25, options: .transitionCrossDissolve, animations: {
-                self.tableView.reloadData()
-            }, completion: nil)
-            
-        } else {
-            
-            tableView.reloadData()
-        }
-    }
     
     fileprivate struct SearchResult {
         let file: PTMFile
         let subject: PTSubject
         let score: Double
+    }
+    
+    func updateAllFilesResults() {
+        
+        var _allFiles: [SearchResult] = []
+        
+        for s in subjects {
+            guard let someFiles = dataOfSubjects[s]?.flatFiles else { continue; }
+            _allFiles += someFiles.map({ SearchResult(file: $0, subject: s, score: 0.0) })
+        }
+        
+        allFilesResults = _allFiles.sorted(by: { $0.file.description < $1.file.description })
+    }
+    
+    func updateLatestUploadsResults() {
+        
+        // Filter out files with nil date
+        var allFilesWithDate = allFilesResults.filter({ $0.file.date != nil })
+        
+        // Sort by date
+        allFilesWithDate.sort(by: { $0.file.date! > $1.file.date! })
+        
+        // Grab the first elements up to the limit
+        latestUploadsResults = Array(allFilesWithDate.prefix(latestUploadsLimit))
     }
     
     fileprivate func setSearchBarVisible(_ enabled: Bool) {
@@ -478,24 +589,42 @@ extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDel
     
     func updateSearchResults(for searchController: UISearchController) {
         
+        searchOperationQueue.cancelAllOperations()
+        
         let query = searchBarText
         
-        searchResults = evaluateQuery(query)
-        
-        searchResults.sort(by: {
-        
-            if $0.score == $1.score {
-                return $0.file.description < $1.file.description
-            } else {
-                return $0.score > $1.score
-            }
-        })
-        
         if query.isEmpty {
+            searchResults.removeAll()
             reloadTable(animated: true)
-        } else {
-            reloadTable(animated: false)
+            return;
         }
+        
+        let searchOperation = BlockOperation()
+        
+        searchOperation.addExecutionBlock { [unowned self, unowned searchOperation] in
+            
+            var results = self.evaluateQuery(query)
+            
+            if searchOperation.isCancelled { return; }
+            
+            results.sort(by: {
+                
+                if $0.score == $1.score {
+                    return $0.file.description < $1.file.description
+                } else {
+                    return $0.score > $1.score
+                }
+            })
+            
+            if searchOperation.isCancelled { return; }
+            
+            OperationQueue.main.addOperation {
+                self.searchResults = results
+                self.reloadTable(animated: false)
+            }
+        }
+        
+        searchOperationQueue.addOperation(searchOperation)
     }
     
     private func evaluateQuery(_ query: String) -> [SearchResult] {
@@ -503,25 +632,23 @@ extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDel
         let queryLC = query.lowercased()
         let queryComps = queryLC.components(separatedBy: " ")
         
-        var results: [SearchResult] = []
+        if queryLC.isEmpty { return [] }
         
-        for s in subjects {
+        let results: [SearchResult] = allFilesResults.flatMap({ result in
             
-            guard let someFiles = dataOfSubjects[s]?.flatFiles else { continue; }
+            let file = result.file
+            let subject = result.subject
             
-            results += someFiles.flatMap({ file in
-                
-                let descrLC = file.description.lowercased()
-                
-                let score = evaluateScore(forQueryComponents: queryComps, onTarget: descrLC, strictly: true)
-                
-                if score > 0.0 || queryLC.isEmpty {
-                    return SearchResult(file: file, subject: s, score: score)
-                } else {
-                    return nil
-                }
-            })
-        }
+            let descrLC = file.description.lowercased()
+            
+            let score = evaluateScore(forQueryComponents: queryComps, onTarget: descrLC, strictly: true)
+            
+            if score > 0.0 {
+                return SearchResult(file: file, subject: subject, score: score)
+            } else {
+                return nil
+            }
+        })
         
         return results
     }
@@ -562,6 +689,9 @@ extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDel
     }
 }
 
+
+
+// MARK: -
 
 class PTSubjectCell: UITableViewCell {
     
