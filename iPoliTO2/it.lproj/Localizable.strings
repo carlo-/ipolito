@@ -31,7 +31,7 @@
 "ls.generic.status.lastUpdate" = "Ultimo aggiornamento";
 
 "ls.generic.refreshControl" = "Aggiorna";
-"ls.generic.refresh" = "Ricarica";
+"ls.generic.refresh" = "Aggiorna";
 
 "ls.generic.credits" = "CFU";
 
@@ -79,6 +79,8 @@
 "ls.subjectsVC.invalidSubjectDataAlert.body" = "Non è stato possibile scaricare i dati per questa materia.";
 
 "ls.subjectsVC.searchBarPlaceholder" = "Cerca un file";
+"ls.subjectsVC.latestUploads" = "Ultimi caricamenti";
+"ls.subjectsVC.allFiles" = "Tutti i file";
 
 
 

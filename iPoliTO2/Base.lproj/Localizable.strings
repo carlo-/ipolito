@@ -79,6 +79,8 @@
 "ls.subjectsVC.invalidSubjectDataAlert.body" = "Something went wrong when trying to retrieve data for this subject.";
 
 "ls.subjectsVC.searchBarPlaceholder" = "Search for a file";
+"ls.subjectsVC.latestUploads" = "Latest uploads";
+"ls.subjectsVC.allFiles" = "All files";
 
 
 
