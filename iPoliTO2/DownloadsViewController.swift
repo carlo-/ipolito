@@ -13,6 +13,11 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
     
     @IBOutlet var clearAllButton: UIBarButtonItem!
     
+    class var hasContentToShow: Bool {
+        let manager = PTDownloadManager.shared
+        return manager.queue.isEmpty && manager.downloadedFiles.isEmpty
+    }
+    
     var downloadManager: PTDownloadManager {
         return PTDownloadManager.shared
     }

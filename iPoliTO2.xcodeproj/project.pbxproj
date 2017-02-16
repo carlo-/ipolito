@@ -35,7 +35,6 @@
 		2399D8521D4CEDC40001C99C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8511D4CEDC40001C99C /* MapViewController.swift */; };
 		2399D8541D4CEDDB0001C99C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8531D4CEDDB0001C99C /* SettingsViewController.swift */; };
 		2399D8581D4CF5520001C99C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2399D8571D4CF5520001C99C /* MapKit.framework */; };
-		2399D86F1D4D00C10001C99C /* MyCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8591D4CF79C0001C99C /* MyCredentials.swift */; };
 		239CCE1E1D6DF2DE00BDF6E7 /* DemoData.json in Resources */ = {isa = PBXBuildFile; fileRef = 239CCE1D1D6DF2DE00BDF6E7 /* DemoData.json */; };
 		23AA447C1D8C807D00BF882E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23AA447B1D8C807D00BF882E /* Settings.bundle */; };
 		23B67D501D5338A5009CB44B /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */; };
@@ -461,7 +460,6 @@
 				232D44211D6BB69800BFA8A6 /* Constants.swift in Sources */,
 				2399D8361D4CD7340001C99C /* SubjectsViewController.swift in Sources */,
 				23B67D501D5338A5009CB44B /* DownloadsViewController.swift in Sources */,
-				2399D86F1D4D00C10001C99C /* MyCredentials.swift in Sources */,
 				232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */,
 				236690FC1D8345C4000BC822 /* MessagesViewController.swift in Sources */,
 				2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */,
