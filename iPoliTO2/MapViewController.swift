@@ -92,6 +92,8 @@ class MapViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        dismissSearchBar()
+        
         reloadFreeRoomsIfNeeded()
         
         focusOnRoom(roomToFocus, animated: true)
@@ -115,9 +117,9 @@ class MapViewController: UIViewController {
     
     func handleTabBarItemSelection(wasAlreadySelected: Bool) {
         
-        dismissSearchBar()
-        
         if wasAlreadySelected {
+            
+            dismissSearchBar()
             focusOnRoom(nil, animated: true)
         }
     }
@@ -134,6 +136,9 @@ class MapViewController: UIViewController {
 extension MapViewController {
     
     func shouldFocus(onRoom room: PTRoom?) {
+        
+        // Dismiss search bar if needed
+        dismissSearchBar()
         roomToFocus = room
     }
     
