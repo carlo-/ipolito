@@ -9,23 +9,20 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, CLLocationManagerDelegate {
+class MapViewController: UIViewController {
 
-    @IBOutlet private var searchResultsTable: UITableView!
-    @IBOutlet private var mapView: MKMapView!
+    @IBOutlet fileprivate var searchResultsTable: UITableView!
+    @IBOutlet fileprivate var mapView: MKMapView!
     
-    private var locationManager = CLLocationManager()
-    private var searchController = UISearchController(searchResultsController: nil)
-    private var searchBar: UISearchBar { return searchController.searchBar }
-    private var timePicker: CRTimePicker?
+    fileprivate var locationManager = CLLocationManager()
     
-    var status: PTViewControllerStatus = .loggedOut {
-        didSet {
-            statusDidChange()
-        }
-    }
+    fileprivate var searchController = UISearchController(searchResultsController: nil)
+    fileprivate var searchBar: UISearchBar { return searchController.searchBar }
+    fileprivate var searchBarText: String { return searchBar.text ?? "" }
     
-    private lazy var allRooms: [PTRoom] = {
+    fileprivate var timePicker: CRTimePicker?
+    
+    fileprivate lazy var allRooms: [PTRoom] = {
         
         if let plistPath = Bundle.main.path(forResource: "Rooms", ofType: "plist"),
            let dict = NSDictionary(contentsOfFile: plistPath) {
@@ -36,17 +33,16 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         }
     }()
     
-    private var filteredRooms: [PTRoom] = []
+    fileprivate var filteredRooms: [PTRoom] = []
+    fileprivate var roomsToShow: [PTRoom] = []
+    fileprivate var roomToFocus: PTRoom?
     
-    private var freeRoomsLoadedDate: Date? = nil
-    private var freeRooms: [PTFreeRoom] = []
-    private var freeRoomsAnnotations: [MKAnnotation] = []
+    fileprivate(set) var isDownloadingFreeRooms: Bool = false
+    fileprivate var freeRoomsLoadedDate: Date? = nil
+    fileprivate var freeRoomsAnnotations: [MKAnnotation] = []
+    fileprivate var freeRooms: [PTFreeRoom] = []
     
-    private var roomsToShow: [PTRoom] = []
-    
-    private var roomToFocus: PTRoom?
-    
-    private var freeRoomsLoadedDateDescription: String? {
+    fileprivate var freeRoomsLoadedDateDescription: String? {
         
         guard let date = freeRoomsLoadedDate else { return nil; }
         
@@ -57,13 +53,17 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         return ~"ls.mapVC.showingFreeRoomsFor"+" "+formatter.string(from: date)
     }
     
-    
-    // MARK: View Lifecycle
+    var status: PTViewControllerStatus = .loggedOut {
+        didSet {
+            statusDidChange()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         searchController.searchResultsUpdater = self
+        searchController.delegate = self
         searchController.dimsBackgroundDuringPresentation = false
         
         let searchBar = searchController.searchBar
@@ -97,10 +97,6 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         focusOnRoom(roomToFocus, animated: true)
     }
     
-    deinit {
-        searchController.view.removeFromSuperview()
-    }
-    
     func statusDidChange() {
         
         switch status {
@@ -118,19 +114,31 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     }
     
     func handleTabBarItemSelection(wasAlreadySelected: Bool) {
+        
+        dismissSearchBar()
+        
         if wasAlreadySelected {
             focusOnRoom(nil, animated: true)
         }
     }
     
-    // MARK: Room Managing Methods
+    deinit {
+        searchController.view.removeFromSuperview()
+    }
+}
+
+
+
+// MARK: - Room Managing methods
+
+extension MapViewController {
     
     func shouldFocus(onRoom room: PTRoom?) {
         roomToFocus = room
     }
     
     /// Reloads free rooms if lastest data is nil or not from today
-    private func reloadFreeRoomsIfNeeded() {
+    fileprivate func reloadFreeRoomsIfNeeded() {
         
         if status != .ready {
             return
@@ -143,8 +151,8 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         downloadFreeRooms()
     }
     
-    private(set) var isDownloadingFreeRooms: Bool = false
-    private func downloadFreeRooms(forDate date: Date? = nil) {
+    
+    fileprivate func downloadFreeRooms(forDate date: Date? = nil) {
         
         if isDownloadingFreeRooms {
             return
@@ -179,7 +187,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         })
     }
     
-    private func isRoomFree(_ room: PTRoom) -> Bool {
+    fileprivate func isRoomFree(_ room: PTRoom) -> Bool {
         
         guard freeRooms.count > 0, let roomName = room.name[.Italian]?.lowercased() else {
             return false
@@ -196,7 +204,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     }
     
     @discardableResult
-    private func reloadRoomAnnotations() -> [MKPointAnnotation] {
+    fileprivate func reloadRoomAnnotations() -> [MKPointAnnotation] {
         
         removeAllAnnotations()
         
@@ -224,30 +232,33 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         return annotations
     }
     
-    private func showAllRooms() {
+    fileprivate func showAllRooms() {
         
         roomsToShow = allRooms
         reloadRoomAnnotations()
     }
+}
     
+
+
+// MARK: - Time Picker methods
     
+extension MapViewController {
     
-    // MARK: Time Picker Methods
-    
-    private func presentTimePickerButton() -> UIBarButtonItem {
+    fileprivate func presentTimePickerButton() -> UIBarButtonItem {
         let image = #imageLiteral(resourceName: "clock")
         return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(presentTimePicker))
     }
     
-    private func dismissTimePickerButton() -> UIBarButtonItem {
+    fileprivate func dismissTimePickerButton() -> UIBarButtonItem {
         return UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissTimePicker))
     }
     
-    private func confirmTimePickerButton() -> UIBarButtonItem {
+    fileprivate func confirmTimePickerButton() -> UIBarButtonItem {
         return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(confirmTimePicker))
     }
     
-    @objc private func presentTimePicker() {
+    @objc fileprivate func presentTimePicker() {
         
         searchBar.isUserInteractionEnabled = false
         
@@ -276,7 +287,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         })
     }
     
-    @objc private func dismissTimePicker() {
+    @objc fileprivate func dismissTimePicker() {
         
         navigationItem.rightBarButtonItem = nil
         navigationItem.leftBarButtonItem = presentTimePickerButton()
@@ -295,7 +306,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         })
     }
     
-    @objc private func confirmTimePicker() {
+    @objc fileprivate func confirmTimePicker() {
         guard let timePicker = timePicker else {
             navigationItem.rightBarButtonItem = nil
             return
@@ -306,10 +317,23 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         dismissTimePicker()
     }
+}
     
+
+// MARK: - TableView methods
     
+extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     
-    // MARK: Table View Delegate Methods
+    func setSearchResultsTableVisible(_ visible: Bool, animated: Bool) {
+        
+        if animated {
+            
+            UIView.transition(with: mapView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                self.mapView.layer.opacity = (visible ? 0.0 : 1.0) // isHidden = visible
+            }, completion: nil)
+            
+        } else { mapView.layer.opacity = (visible ? 0.0 : 1.0)}
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return tableView.dequeueReusableCell(withIdentifier: "searchResultsCell", for: indexPath)
@@ -335,44 +359,56 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         
         let room = filteredRooms[indexPath.row]
         
-        searchBar.resignFirstResponder()
+        dismissSearchBar()
         
-        if CLLocationCoordinate2DIsValid(CLLocationCoordinate2D(fromRoom: room)) {
-            roomToFocus = room
-            focusOnRoom(room)
-        } else {
-            focusOnRoom(nil)
+        focusOnRoom(room)
+    }
+    
+}
+
+
+
+// MARK: - Search related methods
+
+extension MapViewController: UISearchControllerDelegate, UISearchResultsUpdating {
+    
+    func dismissSearchBar(force: Bool = false) {
+        if force || searchController.isActive {
+            searchController.isActive = false
         }
     }
     
+    func didPresentSearchController(_ searchController: UISearchController) {
+        searchResultsTable.isScrollEnabled = true
+    }
     
+    func didDismissSearchController(_ searchController: UISearchController) {
+        searchResultsTable.isScrollEnabled = false
+    }
     
-    // MARK: Search Controller Methods
+    func willPresentSearchController(_ searchController: UISearchController) {
+        setSearchResultsTableVisible(true, animated: true)
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        setSearchResultsTableVisible(false, animated: true)
+    }
     
     func updateSearchResults(for searchController: UISearchController) {
         
-        guard let query = searchBar.text else { return }
-        filteredRooms.removeAll()
+        let query = searchBarText
         
-        if searchBar.isFirstResponder {
+        if query.isEmpty {
             
-            mapView.isHidden = true
-            searchResultsTable.isScrollEnabled = true
+            filteredRooms.removeAll()
+            searchResultsTable.reloadData()
             
-        } else {
-            
-            mapView.isHidden = false
-            searchResultsTable.isScrollEnabled = false
-            
-            if query.isEmpty {
-                
-                roomToFocus = nil
-                showAllRooms()
-                zoomToMainCampus()
-                return
+            if searchController.isBeingDismissed {
+                focusOnRoom(nil)
             }
+            
+            return;
         }
-        
         
         let queryComps = query.lowercased().components(separatedBy: " ")
         
@@ -398,9 +434,13 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         searchResultsTable.reloadData()
     }
     
-    
-    
-    // MARK: Map View Methods
+}
+
+
+
+// MARK: - MapView methods
+
+extension MapViewController: MKMapViewDelegate, CLLocationManagerDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -421,40 +461,47 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
         return nil
     }
     
-    private func removeAllAnnotations() {
+    fileprivate func removeAllAnnotations() {
         freeRoomsAnnotations.removeAll()
         mapView.removeAnnotations(mapView.annotations)
     }
     
-    private func focusOnRoom(_ room: PTRoom?, animated: Bool = true) {
+    fileprivate func focusOnRoom(_ room: PTRoom?, animated: Bool = true) {
         
         guard let room = room else {
             
-            searchController.isActive = false
-            searchBar.text = nil
             roomToFocus = nil
+            
+            if !searchBarText.isEmpty {
+                searchBar.text = nil
+            }
+            
             showAllRooms()
             zoomToMainCampus(animated: animated)
             return
         }
         
+        let coords = CLLocationCoordinate2D(fromRoom: room)
+        guard CLLocationCoordinate2DIsValid(coords) else {
+            
+            focusOnRoom(nil, animated: animated)
+            return
+        }
         
+        roomToFocus = room
         searchBar.text = room.localizedName
         
         roomsToShow = [room]
         reloadRoomAnnotations()
         
-        let coords = CLLocationCoordinate2D(fromRoom: room)
-        guard CLLocationCoordinate2DIsValid(coords) else { return }
-        
         zoomToCoordinates(coords, withDelta: 0.00125, animated: animated)
     }
     
-    private func zoomToMainCampus(animated: Bool = true) {
+    fileprivate func zoomToMainCampus(animated: Bool = true) {
         zoomToCoordinates(CLLocationCoordinate2D.PolitecnicoMainCampus, withDelta: 0.00925, animated: animated)
     }
     
-    private func zoomToCoordinates(_ coordinates: CLLocationCoordinate2D, withDelta delta: Double, animated: Bool = true) {
+    fileprivate func zoomToCoordinates(_ coordinates: CLLocationCoordinate2D, withDelta delta: Double, animated: Bool = true) {
         
         guard CLLocationCoordinate2DIsValid(coordinates) else {
             return
@@ -467,6 +514,7 @@ class MapViewController: UIViewController, UISearchResultsUpdating, UITableViewD
     }
 }
 
+
 fileprivate extension CLLocationCoordinate2D {
     static let PolitecnicoMainCampus = CLLocationCoordinate2D(latitude: 45.063371, longitude: 7.659864)
     
@@ -475,6 +523,7 @@ fileprivate extension CLLocationCoordinate2D {
         self.longitude = room.longitude
     }
 }
+
 
 fileprivate extension MKPointAnnotation {
     convenience init(fromRoom room: PTRoom, free: Bool) {
