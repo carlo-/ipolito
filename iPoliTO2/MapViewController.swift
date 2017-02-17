@@ -16,6 +16,7 @@ class MapViewController: UIViewController {
     
     fileprivate var locationManager = CLLocationManager()
     
+    fileprivate var searchBarContainer: UIView!
     fileprivate var searchController = UISearchController(searchResultsController: nil)
     fileprivate var searchBar: UISearchBar { return searchController.searchBar }
     fileprivate var searchBarText: String { return searchBar.text ?? "" }
@@ -62,23 +63,9 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        searchController.searchResultsUpdater = self
-        searchController.delegate = self
-        searchController.dimsBackgroundDuringPresentation = false
-        
-        let searchBar = searchController.searchBar
-        searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
-        searchBar.placeholder = ~"ls.mapVC.searchBarPlaceholder"
-        
-        searchResultsTable.tableHeaderView = searchBar
-        searchResultsTable.isScrollEnabled = false
-        
-        self.definesPresentationContext = true
+        setupSearchController()
         
         navigationItem.leftBarButtonItem = presentTimePickerButton()
-        
-        let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]
-        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: .normal)
         
         locationManager.delegate = self
         if CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
@@ -334,10 +321,10 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         if animated {
             
             UIView.transition(with: mapView, duration: 0.25, options: .transitionCrossDissolve, animations: {
-                self.mapView.layer.opacity = (visible ? 0.0 : 1.0) // isHidden = visible
+                self.searchResultsTable.layer.opacity = (visible ? 1.0 : 0.0)
             }, completion: nil)
             
-        } else { mapView.layer.opacity = (visible ? 0.0 : 1.0)}
+        } else { searchResultsTable.layer.opacity = (visible ? 1.0 : 0.0)}
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -377,19 +364,43 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MapViewController: UISearchControllerDelegate, UISearchResultsUpdating {
     
+    func setupSearchController() {
+        
+        searchController.searchResultsUpdater = self
+        searchController.delegate = self
+        searchController.dimsBackgroundDuringPresentation = false
+        
+        let searchBar = searchController.searchBar
+        searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
+        searchBar.placeholder = ~"ls.mapVC.searchBarPlaceholder"
+        
+        searchBarContainer = UIView(frame: CGRect(x: 0.0, y: 64.0, width: view.frame.width, height: 44.0))
+        searchBarContainer.addSubview(searchBar)
+        searchBarContainer.isOpaque = false
+        view.insertSubview(searchBarContainer, belowSubview: searchResultsTable)
+        
+        searchResultsTable.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+        searchResultsTable.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+        
+        self.definesPresentationContext = true
+        
+        let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: .normal)
+    }
+    
     func dismissSearchBar(force: Bool = false) {
         if force || searchController.isActive {
             searchController.isActive = false
         }
     }
     
+    /*
     func didPresentSearchController(_ searchController: UISearchController) {
-        searchResultsTable.isScrollEnabled = true
     }
-    
+ 
     func didDismissSearchController(_ searchController: UISearchController) {
-        searchResultsTable.isScrollEnabled = false
     }
+    */
     
     func willPresentSearchController(_ searchController: UISearchController) {
         setSearchResultsTableVisible(true, animated: true)
@@ -438,7 +449,6 @@ extension MapViewController: UISearchControllerDelegate, UISearchResultsUpdating
         
         searchResultsTable.reloadData()
     }
-    
 }
 
 
