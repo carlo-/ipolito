@@ -179,21 +179,21 @@
                          {
                          "nome_ins": "Analisi matematica I",
                          "n_cfe": 10,
-                         "desc_voto": "21",
+                         "desc_voto": "20",
                          "d_esame": "29/01/2015",
                          "esplica_efi": "S"
                          },
                          {
                          "nome_ins": "Chimica",
                          "n_cfe": 8,
-                         "desc_voto": "24",
+                         "desc_voto": "28",
                          "d_esame": "17/02/2015",
                          "esplica_efi": "S"
                          },
                          {
                          "nome_ins": "Circuit Theory",
                          "n_cfe": 10,
-                         "desc_voto": "26",
+                         "desc_voto": "28",
                          "d_esame": "28/01/2016",
                          "esplica_efi": "S"
                          },
@@ -221,7 +221,7 @@
                          {
                          "nome_ins": "Fisica I",
                          "n_cfe": 10,
-                         "desc_voto": "24",
+                         "desc_voto": "25",
                          "d_esame": "15/09/2015",
                          "esplica_efi": "S"
                          },
@@ -242,14 +242,14 @@
                          {
                          "nome_ins": "Mathematical analysis II",
                          "n_cfe": 8,
-                         "desc_voto": "24",
+                         "desc_voto": "22",
                          "d_esame": "16/02/2016",
                          "esplica_efi": "S"
                          },
                          {
                          "nome_ins": "Mathematical methods",
                          "n_cfe": 10,
-                         "desc_voto": "25",
+                         "desc_voto": "30 e lode",
                          "d_esame": "22/07/2016",
                          "esplica_efi": "S"
                          },
@@ -335,7 +335,7 @@
                                  ],
             "offerte_lavoro": [],
             "anagrafica": {
-                "utente": "S211906",
+                "utente": "S000000",
                 "nome": "Mario",
                 "cognome": "ROSSI",
                 "condizione": "0",
@@ -348,13 +348,13 @@
                 "norma": "DM270",
                 "tipo_corso_laurea": "Corso di Laurea in",
                 "nome_corso_laurea": "INGEGNERIA INFORMATICA (COMPUTER ENGINEERING)",
-                "media_complessiva": 2428,
+                "media_complessiva": 2728,
                 "media_compl_30": 27.28,
-                "media_compl_110": 95.03,
-                "media_depu_30": 25.07,
-                "media_depu_110": 98.92,
+                "media_compl_110": 100.03,
+                "media_depu_30": 28.14,
+                "media_depu_110": 103.18,
                 "scorporo_media_depu": 16,
-                "media_ammissione_lm": 27.87,
+                "media_ammissione_lm": 28.87,
                 "crediti_totali": 180,
                 "crediti_tot_frequentati": 111,
                 "crediti_tot_sostenuti": 111,
@@ -739,29 +739,9 @@
             "data": {
                 "avvisi": [
                            {
-                           "data_inizio": "05/07/2016",
-                           "data_fine": "",
-                           "info": "<p>Second call. Oral booking.</p>\f\n\f\n<p>&nbsp;</p>\f\n\f\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:609px\">\f\n\t<tbody>\f\n\t\t<tr>\f\n\t\t\t<td colspan=\"2\" style=\"height:23px; width:340px\">Poll &quot;oral second call July 2016&quot;</td>\f\n\t\t\t<td style=\"width:139px\">&nbsp;</td>\f\n\t\t\t<td style=\"width:131px\">&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td colspan=\"2\" style=\"height:16px\">http://doodle.com/poll/2zc98vaehfdpxbzb</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">&nbsp;</td>\f\n\t\t\t<td colspan=\"3\">July 2016</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">&nbsp;</td>\f\n\t\t\t<td colspan=\"3\">Tue 5</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">&nbsp;</td>\f\n\t\t\t<td>8:30 AM &ndash; 11:30 AM</td>\f\n\t\t\t<td>12:00 PM &ndash; 3:00 PM</td>\f\n\t\t\t<td>3:30 PM &ndash; 6:30 PM</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">S212412 Colucci Alessio</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">ullah</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Falletta Alberto 203928</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">s213196 MatteoMerlo</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">s196550</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">s215364 Macsim Alexandru</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">attar ayoub</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Santolini</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">S212696 Occelli Nicola</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Ciureanu Cristian</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Zhou meng</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">213407 Ghibaudo Gabriele</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">216663 Nuzzo Claudio</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Arianna Parisi</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Hao yu</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Paolo Notaro</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Matias V&aacute;zquez</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Alicia Uceda</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">#212323</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Jia Uddin</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Dheeraj Thadhani</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Getu Samuel Befekadu</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Carlo Maria Negri s214809</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Antonio Falabella</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Firdavs Nematzoda s226377</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">s214900, Sofi Valerio</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">ENGIN ELJEZ S163072</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Luca Pezzolla</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Anton Morale S213070</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Jamal Mohammed</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Babak Golchin jouposhtii</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">212990 Longobardi Simone</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">s196550</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">TOUIL Malek</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Syed Musa Raza</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Wake,&nbsp; Matiyas Negussie</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:16px\">Ege &Uuml;nl&uuml;soy</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>OK</td>\f\n\t\t</tr>\f\n\t</tbody>\f\n</table>\f\n"
-                           },
-                           {
                            "data_inizio": "30/06/2016",
                            "data_fine": "",
                            "info": "<p>Oral exams for the second call will take place on July 5 at labinf in three slots, each one hosting up to 16 people. The three slots are: 8.30-11.30, 12.00-15.00, 15.30-18.30. Please show up at the beginning of your slot. Late arrivals will not have the oral exam and will be checked as NOT PRESENT. The doodle poll to book the oral slot, will be sent to students right after the written exam.</p>\f\n"
-                           },
-                           {
-                           "data_inizio": "23/06/2016",
-                           "data_fine": "",
-                           "info": "<p>Students Kong Xiangyi and Li Xu have been rebooked to Moday June 27, at 11.30 at LABINF. Please contact prof. Montuschi in case of problems. Thanks for your collaboration.</p>\f\n"
-                           },
-                           {
-                           "data_inizio": "23/06/2016",
-                           "data_fine": "",
-                           "info": "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:327px\">\f\n\t<tbody>\f\n\t\t<tr>\f\n\t\t\t<td colspan=\"4\" style=\"height:20px; width:173px\">first call june 2016 CA</td>\f\n\t\t\t<td style=\"width:153px\">&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td colspan=\"5\" style=\"height:20px\">scores below are UNCONFIRMED</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td colspan=\"5\" style=\"height:20px\">all proofs will be reviewed during oral exam</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td colspan=\"5\" style=\"height:20px\">&quot;rejected proofs&quot; can be viewed only</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td colspan=\"5\" style=\"height:20px\">in the morning of 23 and 27</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">MATRICOLA</td>\f\n\t\t\t<td>WRITTEN</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">163072</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">173832</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">185510</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">194362</td>\f\n\t\t\t<td>15,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">196413</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">196550</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">196939</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">197381</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">203557</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">203928</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">204120</td>\f\n\t\t\t<td>18,75</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">206860</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">206909</td>\f\n\t\t\t<td>12</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">206912</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">207110</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">208240</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">208414</td>\f\n\t\t\t<td>12</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">211897</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">211906</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212065</td>\f\n\t\t\t<td>20</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212077</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212245</td>\f\n\t\t\t<td>24</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212294</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212295</td>\f\n\t\t\t<td>18,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212432</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212564</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212696</td>\f\n\t\t\t<td>13,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212699</td>\f\n\t\t\t<td>15,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212808</td>\f\n\t\t\t<td>25</td>\f\n\t\t\t<td>CONGRATULATIONS!</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212860</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212955</td>\f\n\t\t\t<td>20,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212969</td>\f\n\t\t\t<td>18,25</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">212996</td>\f\n\t\t\t<td>19</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213022</td>\f\n\t\t\t<td>17,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213070</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213081</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213095</td>\f\n\t\t\t<td>16,75</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213196</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213290</td>\f\n\t\t\t<td>16,75</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213356</td>\f\n\t\t\t<td>22,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213448</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">213673</td>\f\n\t\t\t<td>18</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">214086</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">214535</td>\f\n\t\t\t<td>22</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">214809</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">214900</td>\f\n\t\t\t<td>15,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">215031</td>\f\n\t\t\t<td>14,75</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">215064</td>\f\n\t\t\t<td>24</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">215579</td>\f\n\t\t\t<td>16,25</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">215686</td>\f\n\t\t\t<td>20,75</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">215906</td>\f\n\t\t\t<td>18,25</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">215969</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">216138</td>\f\n\t\t\t<td>12</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">216373</td>\f\n\t\t\t<td>17</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">216470</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">216663</td>\f\n\t\t\t<td>12</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">217287</td>\f\n\t\t\t<td>16</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">217312</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">217410</td>\f\n\t\t\t<td>16</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">218112</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">218310</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">218400</td>\f\n\t\t\t<td>12</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">218501</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">218502</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">219119</td>\f\n\t\t\t<td>17,5</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">219174</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">225866</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">225882</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">226021</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">226034</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">226127</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">226377</td>\f\n\t\t\t<td>REJ</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">230803</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t\t<tr>\f\n\t\t\t<td style=\"height:20px\">232710</td>\f\n\t\t\t<td>12</td>\f\n\t\t\t<td>&nbsp;</td>\f\n\t\t</tr>\f\n\t</tbody>\f\n</table>\f\n"
-                           },
-                           {
-                           "data_inizio": "22/06/2016",
-                           "data_fine": "",
-                           "info": "<p>schedule of oral exams (first call 2016) is now available in section materiali (file &quot;<a href=\"https://didattica.polito.it/pls/portal30/sviluppo.materiale.download?nod=32559816\">schedule oral exams first call June 2016.xls.pdf</a>&quot;)</p>\f\n\f\n<p>&nbsp;</p>\f\n"
                            },
                            {
                            "data_inizio": "16/06/2016",
@@ -772,11 +752,6 @@
                            "data_inizio": "14/06/2016",
                            "data_fine": "",
                            "info": "<p>to help students familiarizing with the oral exam booking procedure, a test poll has been created at http://doodle.com/poll/rh8cmby8shrry8g7 Please go there and check the system and get familiar with the procedure. This poll is just for testing purposes. The real poll for oral exam will be sent shortly after the end of the written exam.</p>\f\n\f\n<p>&nbsp;</p>\f\n\f\n<p>Regards,</p>\f\n\f\n<p>&nbsp;</p>\f\n\f\n<p>PMO</p>\f\n"
-                           },
-                           {
-                           "data_inizio": "26/05/2016",
-                           "data_fine": "",
-                           "info": "<p>If you are a student in a group wishing to have the oral exam with Montuschi (i.e. 2 questions) on June 21 at 5 pm in room 8C, please book at</p>\f\n\f\n<p>http://tiny.cc/pmo_pre210616</p>\f\n\f\n<p>or, equivalently, at http://doodle.com/poll/2pwmfb23hp7kv72r</p>\f\n\f\n<p>by June 18. Thanks. The last question and presentation of the project should be agreed and scheduled directly with Sterpone.</p>\f\n\f\n<p>Best Regards,</p>\f\n\f\n<p>P Montuschi</p>\f\n"
                            },
                            {
                            "data_inizio": "18/05/2016",
@@ -807,11 +782,6 @@
                            "data_inizio": "30/03/2016",
                            "data_fine": "",
                            "info": "<p>REMINDER: NO LECTURE ON MARCH 30</p>\f\n\f\n<p>If you have not yet done, please download the updated course calendar.</p>\f\n\f\n<p>regards,</p>\f\n\f\n<p>PMO</p>\f\n\f\n<p>march 30, 2016</p>\f\n"
-                           },
-                           {
-                           "data_inizio": "23/03/2016",
-                           "data_fine": "",
-                           "info": "<p>The following students have been selected for the project:<br />\f\nZAMBONI&nbsp;&nbsp; &nbsp;STEFANO<br />\f\nABJABBOROV&nbsp;&nbsp; &nbsp;ULFAT<br />\f\nCIUREANU&nbsp;&nbsp; &nbsp;CRISTIAN<br />\f\nGROSSO&nbsp;&nbsp; &nbsp;ANNA<br />\f\nPOSTOLOV&nbsp;&nbsp; &nbsp;ENRICO<br />\f\nGIORDANO&nbsp;&nbsp; &nbsp;SALVATORE<br />\f\nMAXIM&nbsp;&nbsp; &nbsp;ALEXANDRU<br />\f\nCASTELVERO&nbsp;&nbsp; &nbsp;LORENZO<br />\f\nCOLUCCI&nbsp;&nbsp; &nbsp;ALESSIO<br />\f\nFUOCO&nbsp;&nbsp; &nbsp;EMANUELE<br />\f\nRAJPUT&nbsp;&nbsp; &nbsp;REHAN<br />\f\nROGGERO&nbsp;&nbsp; &nbsp;GIULIO<br />\f\nLONGOBARDI&nbsp;&nbsp; &nbsp;SIMONE<br />\f\nNOTARO&nbsp;&nbsp; &nbsp;PAOLO<br />\f\nMOHAMMED&nbsp;&nbsp; &nbsp;JAMAL<br />\f\nROVERE&nbsp;&nbsp; &nbsp;ENRICO</p>\f\n\f\n<p>We also have a sorted waiting list, incase one student or more decide to quit by the next 3 weeks<br />\f\nGALLA&#39;&nbsp;&nbsp; &nbsp;FRANCESCO<br />\f\nNUZZO&nbsp;&nbsp; &nbsp;FRANCESCO<br />\f\nCATANEO&nbsp;&nbsp; &nbsp;MARCO</p>\f\n\f\n<p>Still one interview has to take place, which could slightly change the previous lists (add one more name to one list or not).</p>\f\n\f\n<p>Students are invited to form groups by 3 people, as the project is tough and different expertise could be very helpful inside a same group. I suggest creating a facebook group (in general a social media group) and inviting all students in these lists. This could be useful&nbsp; not only to form groups, but also to discuss common issues and topics, while the projects will proceed. Groups of 4 people or more will not be accepted, while groups of 1 people are possible but a bit discouraged, because of the heavy load and the impossibility to interact with a colleague on the biggest difficulties.</p>\f\n\f\n<p>As soon as you have created a group, please:<br />\f\n1. send an email (with in CC all members of the group) to luca.sterpone&ograve;polito.it with the names of the components of the group, as well as their cell phone numbers<br />\f\n2. start thinking at a possible idea to be developed for the project</p>\f\n\f\n<p>Thank you for taking this challenge and welcome.</p>\f\n\f\n<p>P Montuschi</p>\f\n\f\n<p>23 march 2016</p>\f\n\f\n<p>&nbsp;</p>\f\n"
                            },
                            {
                            "data_inizio": "23/03/2016",
@@ -6364,7 +6334,7 @@
         "data": {
             "login": {
                 "username": "S000000",
-                "token": "f2c344429e3c8caa47561de00484438e",
+                "token": "ffffffffffffffffffffffffffffffff",
                 "tipo_utente": "studente"
             },
             "anagrafica": {
@@ -6380,14 +6350,14 @@
                 "classe": "L-8",
                 "norma": "DM270",
                 "tipo_corso_laurea": "Corso di Laurea in",
-                "nome_corso_laurea": "INGEGNERIA INFORMATICA",
-                "media_complessiva": 2428,
-                "media_compl_30": 24.28,
-                "media_compl_110": 89.03,
-                "media_depu_30": 25.07,
-                "media_depu_110": 91.92,
+                "nome_corso_laurea": "INGEGNERIA INFORMATICA (COMPUTER ENGINEERING)",
+                "media_complessiva": 2728,
+                "media_compl_30": 27.28,
+                "media_compl_110": 100.03,
+                "media_depu_30": 28.14,
+                "media_depu_110": 103.18,
                 "scorporo_media_depu": 16,
-                "media_ammissione_lm": 25.57,
+                "media_ammissione_lm": 28.87,
                 "crediti_totali": 180,
                 "crediti_tot_frequentati": 111,
                 "crediti_tot_sostenuti": 111,
