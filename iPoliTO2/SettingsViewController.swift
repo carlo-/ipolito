@@ -61,7 +61,7 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     }
     
     func learnMorePressed() {
-        let url = URL(string: kGitHubReadmeLink)!
+        let url = URL(string: PTConstants.gitHubReadmeLink)!
         UIApplication.shared.openURL(url)
     }
     
@@ -79,13 +79,13 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
     }
     
     func reviewPressed() {
-        let url = URL(string: kAppStoreReviewLink)!
+        let url = URL(string: PTConstants.appStoreReviewLink)!
         UIApplication.shared.openURL(url)
     }
     
     func tellSomeFriendsPressed() {
         
-        let url = URL(string: kAppStoreLink)
+        let url = URL(string: PTConstants.appStoreLink)
         let text = ~"ls.settingsVC.tellSomeFriendsBody"
         
         presentSharePopup(withText: text, image: nil, andURL: url)
@@ -103,7 +103,7 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
         
         composer.setSubject(subject ?? "")
         composer.setMessageBody(body ?? "", isHTML: false)
-        composer.setToRecipients([kFeedbackEmail])
+        composer.setToRecipients([PTConstants.feedbackEmail])
         
         present(composer, animated: true, completion: nil)
     }

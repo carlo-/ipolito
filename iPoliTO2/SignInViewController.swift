@@ -168,8 +168,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
         
         let account: PTAccount = {
             
-            if kDebugShouldForceCredentials {
-                return kDebugForcingCredentials
+            if PTConstants.shouldForceDebugAccount {
+                return PTConstants.debugAccount
             } else {
                 return PTAccount(rawStudentID: studentID, password: password)
             }
@@ -179,7 +179,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, PTSessionDele
         session.account = account
         session.delegate = self
         
-        if account == kDemoAccount {
+        if account == PTConstants.demoAccount {
             session.shouldLoadTestData = true
         }
         

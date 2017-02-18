@@ -487,7 +487,7 @@ class PTSession: NSObject {
         
         if let release = Bundle.main.releaseVersionNumber {
             UserDefaults().synchronize()
-            UserDefaults().set(release, forKey: kReleaseVersionOfLastExecutionKey)
+            UserDefaults().set(release, forKey: PTConstants.releaseVersionOfLastExecutionKey)
         }
         
         PTSession.reset()

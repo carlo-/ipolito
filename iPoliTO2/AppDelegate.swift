@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     var releaseVersionOfLastExecution: String? {
         UserDefaults().synchronize()
-        return UserDefaults().string(forKey: kReleaseVersionOfLastExecutionKey)
+        return UserDefaults().string(forKey: PTConstants.releaseVersionOfLastExecutionKey)
     }
     var isFirstTimeWithThisRelease: Bool {
         return Bundle.main.releaseVersionNumber != releaseVersionOfLastExecution
@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             session?.account = account
             session?.delegate = self
             
-            if account == kDemoAccount {
+            if account == PTConstants.demoAccount {
                 session?.shouldLoadTestData = true
             }
             
@@ -166,7 +166,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             
             emptyDocumentsDirectory()
             
-            userDefaults.set("1.x.x", forKey: kReleaseVersionOfLastExecutionKey)
+            userDefaults.set("1.x.x", forKey: PTConstants.releaseVersionOfLastExecutionKey)
         }
     }
     
@@ -201,7 +201,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func updateVersionOfLastExecution() {
         
         guard let release = Bundle.main.releaseVersionNumber else { return }
-        UserDefaults().set(release, forKey: kReleaseVersionOfLastExecutionKey)
+        UserDefaults().set(release, forKey: PTConstants.releaseVersionOfLastExecutionKey)
     }
     
     func emptyDocumentsDirectory() {
@@ -431,12 +431,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 
 private func storedAccount() -> PTAccount? {
     
-    if kDebugForcePresentLoginVC {
+    if PTConstants.alwaysAskToLogin {
         return nil
     }
     
-    if kDebugShouldForceCredentials {
-        return kDebugForcingCredentials
+    if PTConstants.shouldForceDebugAccount {
+        return PTConstants.debugAccount
     }
     
     return PTKeychain.retrieveAccount()
