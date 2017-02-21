@@ -40,7 +40,7 @@
 // MARK: AppDelegate
 
 "ls.appDelegate.justUpdatedAlert.title" = "Novità della versione 2.3";
-"ls.appDelegate.justUpdatedAlert.body" = "- \n- ";
+"ls.appDelegate.justUpdatedAlert.body" = "- Aggiunta la possibilità di cercare un file nel materiale\n- Aggiunta la possibilità di aggiornare i contenuti\n- Migliorate prestazioni & animazioni\n- Diversi bug risolti";
 
 "ls.appDelegate.justDownloadedAlert.title" = "Benvenuto";
 "ls.appDelegate.justDownloadedAlert.body" = "Grazie per aver scaricato iPoliTO!";

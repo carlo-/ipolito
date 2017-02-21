@@ -1,5 +1,5 @@
 # iPoliTO
-##### v2.3-beta
+##### v2.3 stable (2797)
 ![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg) ![Swift Version](https://img.shields.io/badge/swift-3.0-orange.svg) ![License](https://img.shields.io/badge/license-GPL-blue.svg)
 
 iPoliTO is an [unofficial](#disclaimer) iOS app for the students of Politecnico di Torino. It is currently available on the App Store [here](https://itunes.apple.com/app/id1069740093).

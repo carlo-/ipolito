@@ -310,18 +310,18 @@
                                 <rect key="frame" x="0.0" y="98" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nF7-mV-o1J" id="ntN-Ee-WIV">
-                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ixS-ro-NZj">
-                                            <rect key="frame" x="15" y="4" width="34" height="21"/>
+                                            <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tgb-QB-U2d">
-                                            <rect key="frame" x="15" y="25" width="44" height="15"/>
+                                            <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
@@ -1171,19 +1171,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" axis="vertical" distribution="equalCentering" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="BaG-v4-kF4">
-                                            <rect key="frame" x="16" y="4" width="343" height="67"/>
+                                            <rect key="frame" x="16" y="5" width="343" height="65.5"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="a82-Re-LMQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="21"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" text="Weighted Avg." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qbR-vo-whW">
-                                                            <rect key="frame" x="0.0" y="0.0" width="179" height="21"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="179" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z44-Pl-mrf">
-                                                            <rect key="frame" x="194" y="0.0" width="149" height="21"/>
+                                                            <rect key="frame" x="194" y="0.0" width="149" height="20.5"/>
                                                             <attributedString key="attributedText">
                                                                 <fragment content="30.00">
                                                                     <attributes>
@@ -1229,16 +1229,16 @@
                                                     </subviews>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="prp-ml-vBI">
-                                                    <rect key="frame" x="0.0" y="23" width="343" height="21"/>
+                                                    <rect key="frame" x="0.0" y="22.5" width="343" height="20.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="750" text="Clean Weighted Avg." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UVU-dI-Mpk">
-                                                            <rect key="frame" x="0.0" y="0.0" width="179" height="21"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="179" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFG-jG-iLX">
-                                                            <rect key="frame" x="194" y="0.0" width="149" height="21"/>
+                                                            <rect key="frame" x="194" y="0.0" width="149" height="20.5"/>
                                                             <attributedString key="attributedText">
                                                                 <fragment content="30.00">
                                                                     <attributes>
@@ -1284,16 +1284,16 @@
                                                     </subviews>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="gHK-QI-Bwf">
-                                                    <rect key="frame" x="0.0" y="46" width="343" height="21"/>
+                                                    <rect key="frame" x="0.0" y="45" width="343" height="20.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" text="Total Credits" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WCR-cq-vnF">
-                                                            <rect key="frame" x="0.0" y="0.0" width="275" height="21"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="275.5" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGO-Qe-czV">
-                                                            <rect key="frame" x="290" y="0.0" width="53" height="21"/>
+                                                            <rect key="frame" x="290.5" y="0.0" width="52.5" height="20.5"/>
                                                             <attributedString key="attributedText">
                                                                 <fragment content="180">
                                                                     <attributes>
@@ -1377,18 +1377,18 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mau-HV-sJc" id="Oji-F4-ds2">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MAY-At-tqF">
-                                                    <rect key="frame" x="15" y="4" width="34" height="21"/>
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fdl-9d-a62">
-                                                    <rect key="frame" x="15" y="25" width="44" height="15"/>
+                                                    <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1443,7 +1443,7 @@
                             <tableViewSection headerTitle="Account" id="x3u-fg-1AG">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="125" id="okK-h8-JAO">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="125"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="okK-h8-JAO" id="J5w-FS-EED">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
@@ -1485,7 +1485,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="1Tv-SX-AVW">
-                                        <rect key="frame" x="0.0" y="181" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="180.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Tv-SX-AVW" id="XdL-xc-pwN">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
@@ -1538,7 +1538,7 @@
                                 <string key="footerTitle">Are you having issues with the app and want to report a bug, or simply suggest a feature? You can get in touch with me by tapping the button above.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="rau-35-gvp">
-                                        <rect key="frame" x="0.0" y="452" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="451.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rau-35-gvp" id="3bQ-Ab-fm2">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
@@ -1607,8 +1607,8 @@
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="hg2-hQ-iJl">
-                                <string key="footerTitle">© 2016 Carlo Rapisarda
-v2.3-beta</string>
+                                <string key="footerTitle">© 2017 Carlo Rapisarda
+v2.3 (2797)</string>
                                 <cells/>
                             </tableViewSection>
                         </sections>
