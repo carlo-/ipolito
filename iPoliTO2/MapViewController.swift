@@ -23,16 +23,7 @@ class MapViewController: UIViewController {
     
     fileprivate var timePicker: CRTimePicker?
     
-    fileprivate lazy var allRooms: [PTRoom] = {
-        
-        if let plistPath = Bundle.main.path(forResource: "Rooms", ofType: "plist"),
-           let dict = NSDictionary(contentsOfFile: plistPath) {
-            
-            return PTParser.roomsFromRawContainer(dict) ?? []
-        } else {
-            return []
-        }
-    }()
+    fileprivate lazy var allRooms: [PTRoom] = [PTRoom].fromBundle()
     
     fileprivate var filteredRooms: [PTRoom] = []
     fileprivate var roomsToShow: [PTRoom] = []
@@ -155,23 +146,24 @@ extension MapViewController {
         navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.mapVC.status.loading")
         
         PTSession.shared.requestFreeRooms(forDate: date, completion: {
-            (freeRooms, error) in
+            result in
             
             OperationQueue.main.addOperation({
                 
-                if error != nil {
+                switch result {
                     
+                case .success(let freeRooms):
+                    self.freeRoomsLoadedDate = date ?? Date()
+                    self.freeRooms = freeRooms
+                    self.reloadRoomAnnotations()
+                    self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: self.freeRoomsLoadedDateDescription ?? "")
+                    
+                case .failure(_):
                     self.freeRoomsLoadedDate = nil
                     self.freeRooms = []
                     self.reloadRoomAnnotations()
                     self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: ~"ls.mapVC.freeRoomsError")
                     
-                } else {
-                    
-                    self.freeRoomsLoadedDate = date ?? Date()
-                    self.freeRooms = freeRooms ?? []
-                    self.reloadRoomAnnotations()
-                    self.navigationItem.titleView = PTDualTitleView(withTitle: ~"ls.mapVC.title", subtitle: self.freeRoomsLoadedDateDescription ?? "")
                 }
                 
                 self.isDownloadingFreeRooms = false

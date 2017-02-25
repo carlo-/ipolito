@@ -152,6 +152,14 @@ extension UIImage {
     }
 }
 
+func simpleDeviceLanguage() -> String? {
+    if let preferredLanguage = Locale.preferredLanguages.first {
+        return preferredLanguage.components(separatedBy: "-").first
+    } else {
+        return nil
+    }
+}
+
 /// Mon = 0, Tue = 1, ...
 func italianWeekday(fromDate date: Date) -> Int {
     var cal = Calendar(identifier: .gregorian)

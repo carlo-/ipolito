@@ -6,9 +6,42 @@
 //  Copyright © 2016 crapisarda. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-public enum PTGrade: Equatable {
+
+
+// MARK: - PTToken & PTRegisteredID
+
+struct PTToken {
+    let stringValue: String
+    init(_ token: String) {
+        self.stringValue = token
+    }
+}
+
+struct PTRegisteredID {
+    
+    let stringValue: String
+    
+    var isValid: Bool {
+        return !stringValue.isEmpty
+    }
+    
+    init(string: String) {
+        self.stringValue = string
+    }
+    
+    static func fromUUID() -> PTRegisteredID {
+        let uuid = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        return PTRegisteredID(string: uuid)
+    }
+}
+
+
+
+// MARK: - PTGrade, PTTemporaryGrade, PTExam
+
+enum PTGrade: Equatable {
     case honors
     case passed
     case numerical(Int)
@@ -26,7 +59,8 @@ public enum PTGrade: Equatable {
         }
     }
 }
-public func ==(lhs: PTGrade, rhs: PTGrade) -> Bool {
+
+func ==(lhs: PTGrade, rhs: PTGrade) -> Bool {
     
     switch (lhs, rhs) {
     case (.passed, .passed):
@@ -40,7 +74,7 @@ public func ==(lhs: PTGrade, rhs: PTGrade) -> Bool {
     }
 }
 
-public struct PTTemporaryGrade {
+struct PTTemporaryGrade {
     
     let subjectName: String
     let absent: Bool
@@ -58,7 +92,7 @@ public struct PTTemporaryGrade {
     let lecturerID: String
 }
 
-public struct PTExam {
+struct PTExam {
     
     let name: String
     let date: Date
@@ -66,7 +100,11 @@ public struct PTExam {
     let grade: PTGrade
 }
 
-public struct PTMessage {
+
+
+// MARK: - PTMessage
+
+struct PTMessage {
     
     let date: Date
     let rawHtml: String
@@ -130,26 +168,18 @@ public struct PTMessage {
     }
 }
 
-public struct PTLecturer {
-    let firstName: String
-    let lastName: String
-    
-    /// Numerical digits of the lecturerID, excluding the initial letter
-    let numericalID: String?
-    
-    var fullName: String {
-        return firstName + " " + lastName
-    }
-}
 
-public struct PTSubject: Hashable {
+
+// MARK: - PTSubject
+
+struct PTSubject: Hashable {
     
     let name: String
     let incarico: String
     let inserimento: String
     let credits: Int
     
-    public var hashValue: Int {
+    var hashValue: Int {
         let concat = "\(name)\(incarico)\(inserimento)"
         return concat.hashValue
     }
@@ -162,20 +192,17 @@ public struct PTSubject: Hashable {
     }
 }
 
-public func ==(lhs: PTSubject, rhs: PTSubject) -> Bool {
+func ==(lhs: PTSubject, rhs: PTSubject) -> Bool {
     let concatA = "\(lhs.name)\(lhs.incarico)\(lhs.inserimento)"
     let concatB = "\(rhs.name)\(rhs.incarico)\(rhs.inserimento)"
     return concatA == concatB
 }
 
-public struct PTSubjectGuide {
-    struct Entry {
-        let title, body: String
-    }
-    let entries: [Entry]
-}
 
-public enum PTTerm {
+
+// MARK: - PTTerm
+
+enum PTTerm {
     case first
     case second
     case both
@@ -206,27 +233,48 @@ public enum PTTerm {
     }
 }
 
-public struct PTSubjectInfo {
-    let year: String
-    let lecturer: PTLecturer
-    let term: PTTerm?
-}
 
-public struct PTSubjectData {
+
+// MARK: - PTSubjectData
+
+struct PTSubjectData {
+    
+    struct Lecturer {
+        let firstName: String
+        let lastName: String
+        
+        /// Numerical digits of the lecturerID, excluding the initial letter
+        let numericalID: String?
+        
+        var fullName: String {
+            return firstName + " " + lastName
+        }
+    }
+    
+    struct Info {
+        let year: String
+        let lecturer: PTSubjectData.Lecturer
+        let term: PTTerm?
+    }
+    
+    struct Guide {
+        struct Entry {
+            let title, body: String
+        }
+        let entries: [Entry]
+    }
     
     let subject: PTSubject
     
-    var lecturers: [PTLecturer]
     var messages: [PTMessage]
     var documents: [PTMElement]
-    var guide: PTSubjectGuide?
-    var info: PTSubjectInfo?
+    var guide: PTSubjectData.Guide?
+    var info: PTSubjectData.Info?
     
     private(set) var isValid: Bool = true
     
-    init(subject: PTSubject, lecturers: [PTLecturer], messages: [PTMessage], documents: [PTMElement], guide: PTSubjectGuide?, info: PTSubjectInfo?) {
+    init(subject: PTSubject, messages: [PTMessage], documents: [PTMElement], guide: PTSubjectData.Guide?, info: PTSubjectData.Info?) {
         self.subject = subject
-        self.lecturers = lecturers
         self.messages = messages
         self.documents = documents
         self.guide = guide
@@ -234,12 +282,7 @@ public struct PTSubjectData {
     }
     
     var numberOfUnreadMessages: Int {
-        
-        var count = 0
-        for mex in messages {
-            if !mex.isRead { count += 1 }
-        }
-        return count
+        return messages.filter({ !($0.isRead) }).count
     }
     
     var numberOfFiles: Int {
@@ -249,49 +292,25 @@ public struct PTSubjectData {
     static var invalid: PTSubjectData {
         
         let subject = PTSubject(name: "", incarico: "", inserimento: "", credits: 0)
-        var data = PTSubjectData(subject: subject, lecturers: [], messages: [], documents: [], guide: nil, info: nil)
+        var data = PTSubjectData(subject: subject, messages: [], documents: [], guide: nil, info: nil)
         data.isValid = false
         return data
     }
     
     var flatDocuments: [PTMElement] {
-        
-        let folder = PTMFolder(description: "", identifier: "", identifierOfParent: "", children: documents)
-        return folder.descendantElements
+        return PTMFolder(rawFolderWithChildren: documents).descendantElements
     }
     
     var flatFiles: [PTMFile] {
-        
-        let folder = PTMFolder(description: "", identifier: "", identifierOfParent: "", children: documents)
-        return folder.descendantFiles
-    }
-}
-
-func simpleDeviceLanguage() -> String? {
-    if let preferredLanguage = Locale.preferredLanguages.first {
-        return preferredLanguage.components(separatedBy: "-").first
-    } else {
-        return nil
-    }
-}
-
-public enum PTLocale {
-    case Italian, English
-    
-    static func preferred() -> PTLocale {
-        
-        let devLang = simpleDeviceLanguage()
-        
-        if devLang == "it" {
-            return .Italian
-        } else {
-            return .English
-        }
+        return PTMFolder(rawFolderWithChildren: documents).descendantFiles
     }
 }
 
 
-public struct PTLecture: Hashable {
+
+// MARK: - PTLecture
+
+struct PTLecture: Hashable {
     
     let subjectName: String
     let lecturerName: String?
@@ -316,18 +335,23 @@ public struct PTLecture: Hashable {
         }
     }
     
-    public var hashValue: Int {
+    var hashValue: Int {
         let concat = "\(date.hashValue)\(length)\(subjectName)\(roomName ?? "")\(lectureIdentifier ?? "")\(eventType ?? "")\(eventDescription ?? "")"
         return concat.hashValue
     }
 }
-public func ==(lhs: PTLecture, rhs: PTLecture) -> Bool {
+
+func ==(lhs: PTLecture, rhs: PTLecture) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-public typealias PTFreeRoom = String
 
-public struct PTRoom: Hashable {
+
+// MARK: - PTFreeRoom & PTRoom
+
+typealias PTFreeRoom = String
+
+struct PTRoom: Hashable {
     
     let name:  [PTLocale: String]
     let floor: [PTLocale: String]
@@ -343,16 +367,35 @@ public struct PTRoom: Hashable {
         return floor[PTLocale.preferred()]!
     }
     
-    public var hashValue: Int {
+    var hashValue: Int {
         let concat = "\(name[.Italian])\(latitude)\(longitude)"
         return concat.hashValue
     }
 }
-public func ==(lhs: PTRoom, rhs: PTRoom) -> Bool {
+
+func ==(lhs: PTRoom, rhs: PTRoom) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-public class PTMElement {
+extension Sequence where Iterator.Element == PTRoom {
+    
+    static func fromBundle() -> [PTRoom] {
+        
+        if let plistPath = Bundle.main.path(forResource: "Rooms", ofType: "plist"),
+            let dict = NSDictionary(contentsOfFile: plistPath) {
+            
+            return PTParser.roomsFromRawContainer(dict) ?? []
+        } else {
+            return []
+        }
+    }
+}
+
+
+
+// MARK: - PTMElement & descendants
+
+class PTMElement {
     let description: String
     let identifier: String
     let identifierOfParent: String
@@ -384,7 +427,7 @@ public class PTMElement {
     }
 }
 
-public class PTMFile: PTMElement {
+class PTMFile: PTMElement {
     
     let date: Date?
     let contentType: String?
@@ -447,7 +490,7 @@ public class PTMFile: PTMElement {
     }
 }
 
-public class PTMFolder: PTMElement {
+class PTMFolder: PTMElement {
     
     private var _descendantElements: [PTMElement]?
     private var _descendantFiles: [PTMFile]?
@@ -462,6 +505,11 @@ public class PTMFolder: PTMElement {
     init(description: String, identifier: String, identifierOfParent: String, children: [PTMElement]) {
         self.children = children
         super.init(description: description, identifier: identifier, identifierOfParent: identifierOfParent)
+    }
+    
+    fileprivate init(rawFolderWithChildren children: [PTMElement]) {
+        self.children = children
+        super.init(description: "", identifier: "", identifierOfParent: "")
     }
     
     var isEmpty: Bool { return children.isEmpty }
@@ -510,7 +558,11 @@ public class PTMFolder: PTMElement {
     }
 }
 
-public struct PTStudentInfo {
+
+
+// MARK: - PTStudentInfo
+
+struct PTStudentInfo {
     
     var firstName: String?
     var lastName: String?
@@ -537,7 +589,11 @@ public struct PTStudentInfo {
     var academicMajor: String?
 }
 
-public struct PTAccount {
+
+
+// MARK: - PTAccount
+
+struct PTAccount {
     
     /// Student identifier (matricola), including the initial 's'
     private(set) var studentID: String!
@@ -583,7 +639,32 @@ public struct PTAccount {
     }
 }
 
-public func ==(lhs: PTAccount, rhs: PTAccount) -> Bool {
+func ==(lhs: PTAccount, rhs: PTAccount) -> Bool {
     return lhs.numericalID == rhs.numericalID &&
            lhs.password == rhs.password
+}
+
+
+
+// MARK: - Others
+
+enum PTLocale {
+    case Italian, English
+    
+    static func preferred() -> PTLocale {
+        
+        let devLang = simpleDeviceLanguage()
+        
+        if devLang == "it" {
+            return .Italian
+        } else {
+            return .English
+        }
+    }
+}
+
+struct PTBasicInfo {
+    let studentInfo: PTStudentInfo?
+    let subjects: [PTSubject]?
+    let passedExams: [PTExam]?
 }

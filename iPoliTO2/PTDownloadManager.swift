@@ -18,31 +18,31 @@ fileprivate extension PTMFile {
 }
 
 enum PTFileTransferStatus {
-    case Downloading
-    case Cancelled
-    case Failed
-    case Paused
-    case Completed
-    case WaitingForURL
-    case Ready
-    case Added
+    case downloading
+    case cancelled
+    case failed
+    case paused
+    case completed
+    case waitingForURL
+    case ready
+    case added
     
     func localizedDescription() -> String {
         
         switch self {
-        case .Downloading:
+        case .downloading:
             return ~"ls.fileTransfer.status.downloading"
-        case .Cancelled:
+        case .cancelled:
             return ~"ls.fileTransfer.status.cancelled"
-        case .Failed:
+        case .failed:
             return ~"ls.fileTransfer.status.failed"
-        case .Paused:
+        case .paused:
             return ~"ls.fileTransfer.status.paused"
-        case .Completed:
+        case .completed:
             return ~"ls.fileTransfer.status.completed"
-        case .WaitingForURL:
+        case .waitingForURL:
             return ~"ls.fileTransfer.status.waitingForURL"
-        case .Ready, .Added:
+        case .ready, .added:
             return ~"ls.fileTransfer.status.onQueue"
         }
     }
@@ -85,7 +85,7 @@ class PTFileTransfer: NSObject {
     let subject: PTSubject
     var url: URL?
     var progress: Float = 0.0
-    var status: PTFileTransferStatus = .Added
+    var status: PTFileTransferStatus = .added
     var task: URLSessionDownloadTask?
     
     init(file: PTMFile, url: URL? = nil, subject: PTSubject) {
@@ -94,7 +94,7 @@ class PTFileTransfer: NSObject {
         self.subject = subject
         
         if url != nil {
-            self.status = .Ready
+            self.status = .ready
         }
     }
 }
@@ -154,7 +154,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     func resume(fileTransfer transfer: PTFileTransfer) {
         
         transfer.task?.resume()
-        transfer.status = .Downloading
+        transfer.status = .downloading
         
         delegate?.fileTransferDidChangeStatus(transfer)
     }
@@ -162,7 +162,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     func pause(fileTransfer transfer: PTFileTransfer) {
         
         transfer.task?.suspend()
-        transfer.status = .Paused
+        transfer.status = .paused
         
         delegate?.fileTransferDidChangeStatus(transfer)
         
@@ -171,7 +171,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     
     func retry(fileTransfer transfer: PTFileTransfer) {
         
-        transfer.status = .Added
+        transfer.status = .added
         checkQueue()
     }
     
@@ -189,16 +189,23 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     
     private func requestURL(forFileTransfer transfer: PTFileTransfer) {
         
-        transfer.status = .WaitingForURL
+        transfer.status = .waitingForURL
         self.delegate?.fileTransferDidChangeStatus(transfer)
         
         PTSession.shared.requestDownloadURL(forFile: transfer.file, completion: {
-            url in
+            result in
             
             OperationQueue.main.addOperation({
                 
-                transfer.url = url
-                transfer.status = (url == nil ? .Failed : .Ready)
+                switch result {
+                case .success(let url):
+                    transfer.url = url
+                    transfer.status = .ready
+                    
+                case .failure(_):
+                    transfer.url = nil
+                    transfer.status = .failed
+                }
                 
                 self.delegate?.fileTransferDidChangeStatus(transfer)
                 
@@ -210,12 +217,12 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     private func beginDownload(_ transfer: PTFileTransfer) {
         
         guard let url = transfer.url else {
-            transfer.status = .Failed
+            transfer.status = .failed
             delegate?.fileTransferDidChangeStatus(transfer)
             return
         }
         
-        transfer.status = .Downloading
+        transfer.status = .downloading
         delegate?.fileTransferDidChangeStatus(transfer)
         
         let sessionConfig = URLSessionConfiguration.background(withIdentifier: "com.crapisarda.iPoliTO.\(transfer.file.identifier)")
@@ -233,19 +240,20 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         
         for transfer in queue {
             
-            
-            
-            if transfer.status == .Downloading {
+            switch transfer.status {
+                
+            case .downloading:
                 break
-            }
-            
-            if transfer.status == .Ready {
+                
+            case .ready:
                 beginDownload(transfer)
                 break
-            }
-            
-            if transfer.status == .Added {
+                
+            case .added:
                 requestURL(forFileTransfer: transfer)
+                
+            default:
+                continue
             }
         }
     }
@@ -403,7 +411,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         guard let transfer = ongoingTasks[downloadTask] else { return }
         
         // Updates its status
-        transfer.status = .Completed
+        transfer.status = .completed
         
         // Removes its task from the list of ongoing tasks
         ongoingTasks.removeValue(forKey: downloadTask)
@@ -429,7 +437,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
             
             // Invalidates the task and marks the transfer as failed
             session.finishTasksAndInvalidate()
-            transfer.status = .Failed
+            transfer.status = .failed
             delegate?.fileTransferDidChangeStatus(transfer)
             return
         }
@@ -471,7 +479,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
             return
         }
         
-        download.status = .Failed
+        download.status = .failed
         
         ongoingTasks.removeValue(forKey: downloadTask)
         

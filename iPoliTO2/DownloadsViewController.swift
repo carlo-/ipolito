@@ -92,7 +92,7 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
     
     func fileTransferDidChangeStatus(_ transfer: PTFileTransfer) {
         
-        if transfer.status == .Completed {
+        if transfer.status == .completed {
             
             tableView.reloadData()
             return
@@ -191,11 +191,11 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             })
             
             switch transfer.status {
-            case .Downloading, .Ready, .WaitingForURL:
+            case .downloading, .ready, .waitingForURL:
                 return [cancelAction, pauseAction]
-            case .Paused:
+            case .paused:
                 return [cancelAction, resumeAction]
-            case .Failed:
+            case .failed:
                 return [cancelAction, retryAction]
             default:
                 return nil

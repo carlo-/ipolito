@@ -13,14 +13,14 @@ class SubjectInfoViewController: UIViewController {
     
     static let identifier = "SubjectInfoViewController_id"
 
-    private var subjectGuide: PTSubjectGuide!
-    private var subjectInfo: PTSubjectInfo?
+    private var subjectGuide: PTSubjectData.Guide!
+    private var subjectInfo: PTSubjectData.Info?
     
     @IBOutlet var lecturerLabel: UILabel!
     @IBOutlet var academicYearLabel: UILabel!
     @IBOutlet var guideView: UITextView!
     
-    func configure(forSubject subject: PTSubject, withGuide guide:PTSubjectGuide, andInfo info: PTSubjectInfo?) {
+    func configure(forSubject subject: PTSubject, withGuide guide:PTSubjectData.Guide, andInfo info: PTSubjectData.Info?) {
         
         self.title = subject.name
         self.subjectGuide = guide
@@ -51,7 +51,7 @@ class SubjectInfoViewController: UIViewController {
         guideView.setContentOffset(CGPoint.zero, animated: false)
     }
     
-    func attributedString(forGuide guide: PTSubjectGuide) -> NSAttributedString {
+    func attributedString(forGuide guide: PTSubjectData.Guide) -> NSAttributedString {
         
         let titleAttributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
                                NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]

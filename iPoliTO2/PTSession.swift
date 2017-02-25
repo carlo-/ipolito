@@ -9,9 +9,9 @@
 import UIKit
 
 enum PTSessionStatus {
-    case Unauthenticated
-    case Authenticated
-    case Unknown
+    case unauthenticated
+    case authenticated
+    case unknown
 }
 
 protocol PTSessionDelegate {
@@ -62,7 +62,7 @@ class PTSession: NSObject {
     
     var account: PTAccount?
     var delegate: PTSessionDelegate?
-    var status: PTSessionStatus = .Unknown
+    var status: PTSessionStatus = .unknown
     
     var studentInfo: PTStudentInfo?
     var subjects: [PTSubject]?
@@ -79,34 +79,13 @@ class PTSession: NSObject {
     
     private(set) var pendingRequests: UInt = 0
     
-    var isBusy: Bool {
-        return (pendingRequests > 0)
-    }
+    var isBusy: Bool { return (pendingRequests > 0) }
     
-    var token: String?
+    var token: PTToken?
     
-    lazy var registeredID: String = {
-        
-        guard let uuid = UIDevice.current.identifierForVendor?.uuidString else {
-            // This should never happen to us, but just in case, returning an empty string
-            // should result in a 'bad request' response from the server, and the
-            // app will present an 'unknown error' alert to the user.
-            return ""
-        }
-        
-        return uuid
-    }()
+    lazy var registeredID: PTRegisteredID = PTRegisteredID.fromUUID()
     
-    lazy var allRooms: [PTRoom] = {
-        
-        if let plistPath = Bundle.main.path(forResource: "Rooms", ofType: "plist"),
-            let dict = NSDictionary(contentsOfFile: plistPath) {
-            
-            return PTParser.roomsFromRawContainer(dict) ?? []
-        } else {
-            return []
-        }
-    }()
+    lazy var allRooms: [PTRoom] = [PTRoom].fromBundle()
     
     private static var privateShared: PTSession?
     
@@ -147,7 +126,7 @@ class PTSession: NSObject {
                 
             } else {
                 
-                self.status = .Unauthenticated
+                self.status = .unauthenticated
                 self.sessionStep1()
             }
         })
@@ -220,68 +199,52 @@ class PTSession: NSObject {
         OperationQueue().addOperation({
             
             PTRequest.fetchTemporaryGrades(token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
-                (temporaryGrades, error) in
+                result in
                 
                 OperationQueue.main.addOperation({
                     
-                    if let error = error {
-                        
-                        self.pendingRequests -= 1
-                        self.delegate?.sessionDidFailRetrievingTemporaryGradesWithError(error: error)
-                        
-                    } else {
-                        
-                        self.temporaryGrades = temporaryGrades
-                        
-                        self.pendingRequests -= 1
-                        
-                        if temporaryGrades != nil {
-                            self.delegate?.sessionDidRetrieveTemporaryGrades(temporaryGrades!)
-                        } else {
-                            self.delegate?.sessionDidFailRetrievingTemporaryGradesWithError(error: .jsonSerializationFailed)
-                        }
-                        
-                        
-                    }
+                    self.pendingRequests -= 1
                     
+                    switch result {
+                        
+                    case .success(let temporaryGrades):
+                        self.temporaryGrades = temporaryGrades
+                        self.delegate?.sessionDidRetrieveTemporaryGrades(temporaryGrades)
+                        
+                    case .failure(let error):
+                        self.delegate?.sessionDidFailRetrievingTemporaryGradesWithError(error: error)
+                    }
                 })
             })
-            
         })
     }
     
-    func requestFreeRooms(forDate date: Date? = nil, completion: @escaping (([PTFreeRoom]?, PTRequestError?) -> Void)) {
+    func requestFreeRooms(forDate date: Date? = nil, completion: @escaping ((PTRequestResult<[PTFreeRoom]>) -> Void)) {
         
         pendingRequests += 1
+        
         PTRequest.fetchFreeRooms(date: date ?? Date(), regID: registeredID, loadTestData: shouldLoadTestData, completion: {
-            (freeRooms: [PTFreeRoom]?, error: PTRequestError?) in
+            result in
             
             self.pendingRequests -= 1
-            completion(freeRooms, error)
+            completion(result)
         })
     }
     
-    func requestDownloadURL(forFile file: PTMFile, completion: @escaping ((URL?) -> Void)) {
+    func requestDownloadURL(forFile file: PTMFile, completion: @escaping ((PTRequestResult<URL>) -> Void)) {
         
         guard let token = self.token else {
-            completion(nil)
+            completion(.failure(.invalidToken))
             return
         }
         
-        let code = file.identifier
-        
         OperationQueue().addOperation({
             
-            PTRequest.fetchLinkForFile(token: token, regID: self.registeredID, fileCode: code, completion: {
-                (url, error) in
+            PTRequest.fetchLinkForFile(token: token, regID: self.registeredID, fileCode: file.identifier, completion: {
+                result in
                 
                 OperationQueue.main.addOperation({
-                    
-                    if error == nil {
-                        completion(url)
-                    } else {
-                        completion(nil)
-                    }
+                    completion(result)
                 })
             })
         })
@@ -301,28 +264,26 @@ class PTSession: NSObject {
         OperationQueue().addOperation({
             
             let sem = DispatchSemaphore(value: 0)
-            var _schedule: [PTLecture]? = nil
-            var _error: PTRequestError? = nil
+            var result: PTRequestResult<[PTLecture]> = .failure(.unknownError)
             
             
             // Try with the regular method (APIs only)
             PTRequest.fetchSchedule(date: date, token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
-                (schedule: [PTLecture]?, error: PTRequestError?) in
+                _result in
                 
-                _schedule = schedule; _error = error
+                result = _result
                 sem.signal()
             })
             sem.wait()
             
             
             // Try with the new method (APIs + xml)
-            if _schedule == nil {
-                _error = nil
+            if result.isFailure {
                 
                 PTRequest.fetchScheduleNew(date: date, token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
-                    (schedule: [PTLecture]?, error: PTRequestError?) in
+                    _result in
                     
-                    _schedule = schedule; _error = error
+                    result = _result
                     sem.signal()
                 })
                 sem.wait()
@@ -331,22 +292,16 @@ class PTSession: NSObject {
             
             OperationQueue.main.addOperation({
                 
-                if _error != nil {
+                self.pendingRequests -= 1
+                
+                switch result {
                     
-                    self.pendingRequests -= 1
-                    self.delegate?.sessionDidFailRetrievingScheduleWithError(error: _error!)
+                case .success(let schedule):
+                    self.schedule = schedule
+                    self.delegate?.sessionDidRetrieveSchedule(schedule: schedule)
                     
-                } else {
-                    
-                    self.schedule = _schedule
-                    self.pendingRequests -= 1
-                    
-                    if _schedule != nil {
-                        self.delegate?.sessionDidRetrieveSchedule(schedule: _schedule!)
-                    } else {
-                        self.delegate?.sessionDidFailRetrievingScheduleWithError(error: .jsonSerializationFailed)
-                    }
-                    
+                case .failure(let error):
+                    self.delegate?.sessionDidFailRetrievingScheduleWithError(error: error)
                 }
             })
         })
@@ -358,10 +313,6 @@ class PTSession: NSObject {
             requestDataForSubject(subject)
         }
     }
-    
-    
-    
-    
     
     func requestDataForSubject(_ subject: PTSubject) {
         
@@ -378,25 +329,21 @@ class PTSession: NSObject {
         OperationQueue().addOperation({
             
             PTRequest.fetchSubjectData(subject: subject, token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
-                (subjectData: PTSubjectData?, error: PTRequestError?) in
+                result in
                 
                 OperationQueue.main.addOperation({
                     
-                    self.dataOfSubjects[subject] = subjectData ?? PTSubjectData.invalid
-                    
                     self.pendingRequests -= 1
                     
-                    if error != nil {
+                    switch result {
                         
-                        self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: error!, subject: subject)
+                    case .success(let subjectData):
+                        self.dataOfSubjects[subject] = subjectData
+                        self.delegate?.sessionDidRetrieveSubjectData(data: subjectData, subject: subject)
                         
-                    } else {
-                        
-                        if subjectData != nil {
-                            self.delegate?.sessionDidRetrieveSubjectData(data: subjectData!, subject: subject)
-                        } else {
-                            self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: .jsonSerializationFailed, subject: subject)
-                        }
+                    case .failure(let error):
+                        self.dataOfSubjects[subject] = .invalid
+                        self.delegate?.sessionDidFailRetrievingSubjectDataWithError(error: error, subject: subject)
                     }
                 })
             })
@@ -406,74 +353,69 @@ class PTSession: NSObject {
     
     private func sessionStep1() {
         
-        let uuid: UUID = UUID(uuidString: registeredID)!
-        
-        PTRequest.registerDevice(uuid: uuid, loadTestData: shouldLoadTestData, completion: {
-            (error: PTRequestError?) in
+        PTRequest.registerDevice(regID: registeredID, loadTestData: shouldLoadTestData, completion: { _ in
             
-            PTRequest.performLogin(account: self.account, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
-                (token: String?, studentInfo: PTStudentInfo?, error: PTRequestError?) in
+            PTRequest.performLogin(account: self.account!, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
+                result in
                 
-                if error != nil {
+                switch result {
+                    
+                case .success(let token):
+                    self.sessionStep2(token: token)
+                    
+                case .failure(let error):
                     
                     OperationQueue.main.addOperation({
                         self.isOpening = false
                         self.pendingRequests -= 1
-                        self.delegate?.sessionDidFailOpeningWithError(error: error!)
+                        self.delegate?.sessionDidFailOpeningWithError(error: error)
                     })
-                    
-                } else if token == nil {
-                    
-                    OperationQueue.main.addOperation({
-                        self.isOpening = false
-                        self.pendingRequests -= 1
-                        self.delegate?.sessionDidFailOpeningWithError(error: .unknownError)
-                    })
-                    
-                } else {
-                    
-                    self.sessionStep2(token: token!)
                 }
             })
         })
     }
     
-    private func sessionStep2(token: String) {
+    private func sessionStep2(token: PTToken) {
         
-        PTRequest.fetchStudentInfo(token: token, regID: registeredID, loadTestData: shouldLoadTestData, completion: {
-            (studentInfo: PTStudentInfo?, subjects: [PTSubject]?, passedExams: [PTExam]?, error: PTRequestError?) in
+        PTRequest.fetchBasicInfo(token: token, regID: registeredID, loadTestData: shouldLoadTestData, completion: {
+            result in
             
-            if error != nil {
+            switch result {
                 
-                self.status = .Unauthenticated
-                self.sessionStep1()
-                
-            } else {
+            case .success(let basicInfo):
                 
                 OperationQueue.main.addOperation({
-                
-                    self.studentInfo = studentInfo
-                    self.subjects = subjects
-                    self.passedExams = passedExams
+                    
+                    self.studentInfo = basicInfo.studentInfo
+                    self.subjects = basicInfo.subjects
+                    self.passedExams = basicInfo.passedExams
                     self.token = token
-                    self.status = .Authenticated
+                    self.status = .authenticated
                     
                     // Confirm token and account
                     PTKeychain.storeAccount(self.account!)
-                    PTKeychain.storeValue(token, ofType: .token)
+                    PTKeychain.storeValue(token.stringValue, ofType: .token)
                     
                     self.dateOpened = Date()
                     self.isOpening = false
                     self.pendingRequests -= 1
                     self.delegate?.sessionDidFinishOpening()
                 })
+                
+            case .failure(_):
+                self.status = .unauthenticated
+                self.sessionStep1()
             }
         })
     }
     
-    private func storedToken() -> String? {
+    private func storedToken() -> PTToken? {
         
-        return PTKeychain.retrieveValue(ofType: .token)
+        if let stringToken = PTKeychain.retrieveValue(ofType: .token) {
+            return PTToken(stringToken)
+        } else {
+            return nil
+        }
     }
     
     private func forgetSessionData() {

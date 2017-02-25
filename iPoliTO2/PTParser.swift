@@ -276,7 +276,7 @@ class PTParser: NSObject {
     }
     
     
-    class func subjectInfoFromRawContainer(_ container: AnyObject!) -> PTSubjectInfo? {
+    class func subjectInfoFromRawContainer(_ container: AnyObject!) -> PTSubjectData.Info? {
         
         if let rawInfo = rawSubjectInfoFromRawContainer(container) as? [String: AnyObject] {
             
@@ -293,11 +293,11 @@ class PTParser: NSObject {
                 term = PTTerm(fromString: rawTerm)
             }
             
-            let lecturer = PTLecturer(firstName: lecturerFirstName,
-                                      lastName: lecturerLastName,
-                                      numericalID: lecturerNumericalID)
+            let lecturer = PTSubjectData.Lecturer(firstName: lecturerFirstName,
+                                                  lastName: lecturerLastName,
+                                                  numericalID: lecturerNumericalID)
             
-            return PTSubjectInfo(year: year, lecturer: lecturer, term: term)
+            return PTSubjectData.Info(year: year, lecturer: lecturer, term: term)
             
         } else {
             return nil
@@ -465,11 +465,11 @@ class PTParser: NSObject {
         }
     }
     
-    class func subjectGuideFromRawContainer(_ container: AnyObject!) -> PTSubjectGuide? {
+    class func subjectGuideFromRawContainer(_ container: AnyObject!) -> PTSubjectData.Guide? {
         
         if let rawGuideEntries = rawSubjectGuideFromRawContainer(container) as? [[String: AnyObject]] {
             
-            var entries: [PTSubjectGuide.Entry] = []
+            var entries: [PTSubjectData.Guide.Entry] = []
             
             for rawEntry in rawGuideEntries {
                 
@@ -477,12 +477,12 @@ class PTParser: NSObject {
                       let body = rawEntry["testo"] as? String
                 else { continue }
                 
-                let entry = PTSubjectGuide.Entry(title: title, body: body)
+                let entry = PTSubjectData.Guide.Entry(title: title, body: body)
                 
                 entries.append(entry)
             }
             
-            return PTSubjectGuide(entries: entries)
+            return PTSubjectData.Guide(entries: entries)
             
         } else {
             return nil
