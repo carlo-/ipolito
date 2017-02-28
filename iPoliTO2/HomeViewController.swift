@@ -107,7 +107,79 @@ class PTLectureCell: CRTableViewCell {
 
 
 
-// MARK: -
+// MARK: - PTSchedule & PTScheduleDay
+
+private enum PTScheduleDay: Int {
+    
+    case monday = 0, tuesday, wednesday, thursday, friday
+    
+    static var allValues: [PTScheduleDay] = [.monday, .tuesday, .wednesday, .thursday, .friday]
+    
+    init?(fromDate date: Date) {
+        
+        let dayIndex = italianWeekday(fromDate: date)
+        
+        if let day = PTScheduleDay(rawValue: dayIndex) {
+            self = day
+        } else {
+            return nil
+        }
+    }
+}
+
+private struct PTSchedule {
+    
+    private let scheduleByDay: [PTScheduleDay: [PTLecture]]
+    
+    let count: Int
+    
+    var isEmpty: Bool { return count < 1 }
+    
+    init(withLectures lectures: [PTLecture]) {
+        
+        let sortedLectures = lectures.sorted(by: { $0.date < $1.date })
+        
+        var _scheduleByDay: [PTScheduleDay: [PTLecture]] = [:]
+        
+        PTScheduleDay.allValues.forEach({ _scheduleByDay[$0] = [] })
+        
+        for lecture in sortedLectures {
+            
+            guard let day = PTScheduleDay(fromDate: lecture.date) else { continue; }
+            
+            var todaysSchedule = _scheduleByDay[day]!
+            
+            todaysSchedule.append(lecture)
+            
+            _scheduleByDay[day] = todaysSchedule
+        }
+        
+        self.count = lectures.count
+        self.scheduleByDay = _scheduleByDay
+    }
+    
+    static var empty: PTSchedule {
+        return PTSchedule(withLectures: [])
+    }
+    
+    func lectures(on day: PTScheduleDay) -> [PTLecture] {
+        return scheduleByDay[day]!
+    }
+    
+    /// Mon = 0, Tue = 1, ...
+    func lectures(on dayIndex: Int) -> [PTLecture]? {
+        
+        guard let day = PTScheduleDay(rawValue: dayIndex) else {
+            return nil
+        }
+        
+        return lectures(on: day)
+    }
+}
+
+
+
+// MARK: - HomeViewController
 
 class HomeViewController: UITableViewController {
 
@@ -115,9 +187,9 @@ class HomeViewController: UITableViewController {
         return PTSession.shared.allRooms
     }
     
-    var schedule: [PTLecture] = [] {
+    var allLectures: [PTLecture] = [] {
         didSet {
-            recomputeScheduleByWeekday()
+            reloadSchedule()
             tableView.reloadData()
             scrollToMostRelevantRow()
         }
@@ -127,14 +199,13 @@ class HomeViewController: UITableViewController {
         didSet { statusDidChange() }
     }
     
-    // Mon = 0, Tue = 1, ...
-    var scheduleByWeekday: [Int: [PTLecture]] = [:]
+    fileprivate var schedule: PTSchedule = PTSchedule.empty
     
-    var expandedIndexPath: IndexPath? = nil
+    fileprivate var expandedIndexPath: IndexPath? = nil
     
-    var cachedMapSnapshotsLandscape: [PTRoom: UIImage] = [:]
+    fileprivate var cachedMapSnapshotsLandscape: [PTRoom: UIImage] = [:]
     
-    var cachedMapSnapshotsPortrait: [PTRoom: UIImage] = [:]
+    fileprivate var cachedMapSnapshotsPortrait: [PTRoom: UIImage] = [:]
     
     
     func statusDidChange() {
@@ -143,7 +214,7 @@ class HomeViewController: UITableViewController {
             refreshControl?.endRefreshing()
         }
         
-        let isTableEmpty = schedule.isEmpty
+        let isTableEmpty = allLectures.isEmpty
         
         if isTableEmpty {
             
@@ -226,23 +297,22 @@ class HomeViewController: UITableViewController {
 extension HomeViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // Seven days in a week
-        return 7
+        return PTScheduleDay.allValues.count
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        let todaysSchedule = scheduleByWeekday[section] ?? []
-        return todaysSchedule.isEmpty ? 0 : (28+5)
+        let todaysLectures = schedule.lectures(on: section)!
+        return todaysLectures.isEmpty ? 0 : (28+5)
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let todaysSchedule = scheduleByWeekday[section] ?? []
-        if todaysSchedule.isEmpty {
+        let todaysLectures = schedule.lectures(on: section)!
+        if todaysLectures.isEmpty {
             return nil
         }
-        guard let today = todaysSchedule.first?.date else {
+        guard let today = todaysLectures.first?.date else {
             return nil
         }
         
@@ -280,10 +350,10 @@ extension HomeViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let todaysSchedule = scheduleByWeekday[section] ?? []
+        let todaysLectures = schedule.lectures(on: section)!
         
         // Empty day => No section => No footer for that section (i.e. footer of 0 height)
-        return todaysSchedule.isEmpty ? 0 : 5
+        return todaysLectures.isEmpty ? 0 : 5
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -293,8 +363,8 @@ extension HomeViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let todaysSchedule = scheduleByWeekday[section] ?? []
-        return todaysSchedule.count
+        let todaysLectures = schedule.lectures(on: section)!
+        return todaysLectures.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -315,16 +385,14 @@ extension HomeViewController {
         
         let cell = cell as! PTLectureCell
         
-        
-        let todaysSchedule = scheduleByWeekday[indexPath.section] ?? []
-        let lecture = todaysSchedule[indexPath.row]
+        let todaysLectures = schedule.lectures(on: indexPath.section)!
+        let lecture = todaysLectures[indexPath.row]
         
         cell.lecture = lecture
         cell.indexPath = indexPath
         cell.mapSelectionHandler = handleLectureMapSelection
         cell.isExpanded = (expandedIndexPath == indexPath)
         cell.activityIndicator.stopAnimating()
-        
         
         if cell.isExpanded, let roomName = lecture.roomName, let room = room(answearingName: roomName) {
             
@@ -417,11 +485,11 @@ extension HomeViewController {
     
     func room(forIndexPath indexPath: IndexPath) -> PTRoom? {
         
-        let todaysSchedule = scheduleByWeekday[indexPath.section] ?? []
+        let todaysLectures = schedule.lectures(on: indexPath.section)!
         
-        guard todaysSchedule.count > indexPath.row else { return nil; }
+        guard todaysLectures.count > indexPath.row else { return nil; }
         
-        let lecture = todaysSchedule[indexPath.row]
+        let lecture = todaysLectures[indexPath.row]
         
         guard let roomName = lecture.roomName else { return nil; }
         
@@ -456,14 +524,14 @@ extension HomeViewController {
     /// Returns the IndexPath of the specified lecture, if found in the table, otherwise nil
     func indexPath(ofLecture lecture: PTLecture) -> IndexPath? {
         
-        for s in 0...4 {
+        for day in PTScheduleDay.allValues {
             
-            let todaysSchedule = scheduleByWeekday[s] ?? []
+            let todaysLectures = schedule.lectures(on: day)
             
-            for r in 0..<todaysSchedule.count {
+            for r in 0..<todaysLectures.count {
                 
-                if lecture == todaysSchedule[r] {
-                    return IndexPath(row: r, section: s)
+                if lecture == todaysLectures[r] {
+                    return IndexPath(row: r, section: day.rawValue)
                 }
             }
         }
@@ -474,14 +542,15 @@ extension HomeViewController {
     /// Scrolls to the top of the table
     func scrollToFirstRow() {
         
-        if schedule.isEmpty { return; }
+        if allLectures.isEmpty { return; }
         
         // Looks for the first non-empty section
-        for s in 0...4 {
-            if !((scheduleByWeekday[s] ?? []).isEmpty) {
+        for day in PTScheduleDay.allValues {
+            
+            if !(schedule.lectures(on: day).isEmpty) {
                 
                 // Scrolls to the first row of that section
-                let indexPath = IndexPath(row: 0, section: s)
+                let indexPath = IndexPath(row: 0, section: day.rawValue)
                 self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
                 return;
             }
@@ -492,9 +561,9 @@ extension HomeViewController {
     func scrollToMostRelevantRow() {
         
         let now = Date()
-        let weekday = italianWeekday(fromDate: now)
+        let dayIndex = italianWeekday(fromDate: now)
         
-        if weekday > 4 {
+        if dayIndex > 4 {
             // It's the weekend!
             scrollToFirstRow()
             return
@@ -522,15 +591,15 @@ extension HomeViewController {
     func currentLecture() -> PTLecture? {
         
         let now = Date()
-        let weekday = italianWeekday(fromDate: now)
-        if weekday > 4 {
+        
+        guard let day = PTScheduleDay(fromDate: now) else {
             // It's the weekend!
             return nil
         }
         
-        let todaysSchedule = scheduleByWeekday[weekday] ?? []
+        let todaysLectures = schedule.lectures(on: day)
         
-        for lecture in todaysSchedule {
+        for lecture in todaysLectures {
             
             let interval = now.timeIntervalSince(lecture.date)
             if interval < 0 {
@@ -539,6 +608,7 @@ extension HomeViewController {
                 return lecture
             }
         }
+        
         return nil
     }
     
@@ -546,17 +616,12 @@ extension HomeViewController {
     func nextLecture() -> PTLecture? {
         
         let now = Date()
-        let weekday = italianWeekday(fromDate: now)
-        if weekday > 4 {
-            // It's the weekend!
-            return nil
-        }
         
-        for i in weekday...4 {
+        for day in PTScheduleDay.allValues {
             
-            let todaysSchedule = scheduleByWeekday[i] ?? []
+            let todaysLectures = schedule.lectures(on: day)
             
-            for lecture in todaysSchedule {
+            for lecture in todaysLectures {
                 
                 let interval = now.timeIntervalSince(lecture.date)
                 if interval < 0 {
@@ -678,25 +743,8 @@ extension HomeViewController {
         }
     }
     
-    func recomputeScheduleByWeekday() {
-        
-        let sortedSchedule = schedule.sorted { (lectureA, lectureB) -> Bool in
-            
-            return lectureA.date.compare(lectureB.date) == .orderedAscending
-        }
-        
-        scheduleByWeekday.removeAll()
-        
-        for lecture in sortedSchedule {
-            
-            let date = lecture.date
-            let weekday = italianWeekday(fromDate: date)
-            var todaysSchedule = scheduleByWeekday[weekday] ?? []
-            
-            todaysSchedule.append(lecture)
-            
-            scheduleByWeekday[weekday] = todaysSchedule
-        }
+    func reloadSchedule() {
+        schedule = PTSchedule(withLectures: allLectures)
     }
     
     // Required to unwind from settings programmatically

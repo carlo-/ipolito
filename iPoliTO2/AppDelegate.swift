@@ -301,7 +301,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         print("managerDidRetrieveSchedule")
         
-        homeVC?.schedule = schedule
+        homeVC?.allLectures = schedule
         homeVC?.status = .ready
     }
     
@@ -357,7 +357,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     func sessionDidFinishClosing() {
         
-        homeVC?.schedule = []
+        homeVC?.allLectures = []
         homeVC?.status = .loggedOut
         
         subjectsVC?.dataOfSubjects = [:]
