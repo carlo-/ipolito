@@ -142,7 +142,12 @@ class SubjectsViewController: UITableViewController {
     func handleTabBarItemSelection(wasAlreadySelected: Bool, poppingFromNavigationStack: Bool) {
         
         if (wasAlreadySelected && !poppingFromNavigationStack) {
-            dismissSearchBar()
+            
+            if searchController.isActive {
+                dismissSearchBar()
+            } else {
+                scrollToTopOfTableView()
+            }
         }
     }
     
@@ -306,6 +311,12 @@ extension SubjectsViewController {
 // MARK: - General TableView methods
 
 extension SubjectsViewController {
+    
+    func scrollToTopOfTableView(animated: Bool = true) {
+        
+        let yOffset: CGFloat = searchController.isActive ? -64+44 : -64
+        tableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: animated)
+    }
     
     func reloadTable(animated: Bool = false) {
         
