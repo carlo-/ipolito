@@ -102,6 +102,12 @@
 
 "ls.careerVC.chart.noData" = "Non ci sono abbastanza dati";
 
+"ls.careerVC.sorting.sortBy" = "Ordina esami per";
+"ls.careerVC.sorting.date" = "Data";
+"ls.careerVC.sorting.credits" = "Crediti";
+"ls.careerVC.sorting.grade" = "Voto";
+"ls.careerVC.sorting.name" = "Nome";
+
 
 
 // MARK: MapViewController

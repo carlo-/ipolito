@@ -58,6 +58,17 @@ enum PTGrade: Equatable {
             }
         }
     }
+    
+    var rawValue: Int {
+        switch self {
+        case .passed:
+            return 0
+        case .honors:
+            return 31
+        case .numerical(let val):
+            return val
+        }
+    }
 }
 
 func ==(lhs: PTGrade, rhs: PTGrade) -> Bool {

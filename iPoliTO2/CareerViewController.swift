@@ -12,35 +12,47 @@ import Charts
 
 class CareerViewController: UITableViewController {
 
-    var temporaryGrades: [PTTemporaryGrade] = [] {
-        didSet {
-            tableView.reloadData()
-        }
-    }
-    var passedExams: [PTExam] = [] {
-        didSet {
-            reloadSpecialCells()
-            tableView.reloadData()
-        }
-    }
     var status: PTViewControllerStatus = .loggedOut {
         didSet {
             statusDidChange()
         }
     }
     
-    var canShowCareerDetails: Bool {
+    var temporaryGrades: [PTTemporaryGrade] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    var passedExams: [PTExam] = [] {
+        didSet {
+            resortExams()
+            updateSortButton()
+            reloadSpecialCells()
+            tableView.reloadData()
+        }
+    }
+    
+    fileprivate var sortedExams: [PTExam] = []
+    
+    fileprivate var currentSorting: PTExamSorting = PTExamSorting.defaultValue
+    
+    fileprivate var canShowCareerDetails: Bool {
         // Needs at least 1 exam
         return passedExams.count > 0
     }
     
-    var canShowGraph: Bool {
+    fileprivate var canShowGraph: Bool {
         // Needs at least 1 numerical grade
         return passedExams.contains(where: { $0.grade != .passed })
     }
     
-    var graphCell: PTGraphCell?
-    var detailsCell: PTCareerDetailsCell?
+    fileprivate var graphCell: PTGraphCell?
+    
+    fileprivate var detailsCell: PTCareerDetailsCell?
+    
+    @IBOutlet fileprivate var sortButton: UIBarButtonItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,6 +160,67 @@ class CareerViewController: UITableViewController {
         }
     }
     
+    private func updateSortButton() {
+        sortButton.isEnabled = (passedExams.count > 0)
+    }
+    
+    @IBAction func sortPressed(_ sender: UIBarButtonItem) {
+        
+        let actionSheet = UIAlertController(title: ~"ls.careerVC.sorting.sortBy", message: nil, preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: ~"ls.careerVC.sorting.date", style: .default, handler: { _ in
+            self.sortExams(.byDate)
+            self.tableView.reloadData()
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: ~"ls.careerVC.sorting.credits", style: .default, handler: { _ in
+            self.sortExams(.byCredits)
+            self.tableView.reloadData()
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: ~"ls.careerVC.sorting.grade", style: .default, handler: { _ in
+            self.sortExams(.byGrade)
+            self.tableView.reloadData()
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: ~"ls.careerVC.sorting.name", style: .default, handler: { _ in
+            self.sortExams(.byName)
+            self.tableView.reloadData()
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: ~"ls.generic.alert.cancel", style: .cancel, handler: nil))
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    fileprivate func resortExams() {
+        sortExams(currentSorting)
+    }
+    
+    fileprivate func sortExams(_ sorting: PTExamSorting, remember: Bool = true) {
+        
+        switch sorting {
+            
+        case .byDate:
+            sortedExams = passedExams.sorted() { $0.date > $1.date }
+            
+        case .byCredits:
+            sortedExams = passedExams.sorted() { $0.credits > $1.credits }
+            
+        case .byGrade:
+            sortedExams = passedExams.sorted() { $0.grade.rawValue > $1.grade.rawValue }
+            
+        case .byName:
+            sortedExams = passedExams.sorted() { $0.name < $1.name }
+        }
+        
+        currentSorting = sorting
+        
+        if remember {
+            sorting.setAsDefault()
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if tableView.cellForRow(at: indexPath)?.selectionStyle == .none {
             return nil
@@ -173,7 +246,7 @@ class CareerViewController: UITableViewController {
             
         case 1:
             
-            (cell as? PTGradeCell)?.setExam(passedExams[row])
+            (cell as? PTGradeCell)?.setExam(sortedExams[row])
             
         default:
             return
@@ -206,7 +279,7 @@ class CareerViewController: UITableViewController {
         case 0:
             return temporaryGrades.count > 0 ? ~"ls.careerVC.section.tempGrades" : nil
         case 1:
-            return passedExams.count > 0 ? ~"ls.careerVC.section.grades" : nil
+            return sortedExams.count > 0 ? ~"ls.careerVC.section.grades" : nil
         case 2:
             return canShowCareerDetails ? ~"ls.careerVC.section.details" : nil
         case 3:
@@ -222,7 +295,7 @@ class CareerViewController: UITableViewController {
         case 0:
             return temporaryGrades.count
         case 1:
-            return passedExams.count
+            return sortedExams.count
         case 2:
             return canShowCareerDetails ? 1 : 0
         case 3:
@@ -250,6 +323,24 @@ class CareerViewController: UITableViewController {
 }
 
 
+private enum PTExamSorting: Int {
+    
+    private static let udKey = "examSorting"
+    
+    case byName = 0, byGrade, byCredits, byDate
+    
+    static var defaultValue: PTExamSorting {
+        
+        let rawValue = UserDefaults().integer(forKey: PTExamSorting.udKey)
+        
+        return PTExamSorting(rawValue: rawValue) ?? .byName
+    }
+    
+    func setAsDefault() {
+        
+        UserDefaults().set(self.rawValue, forKey: PTExamSorting.udKey)
+    }
+}
 
 class PTGradeCell: UITableViewCell {
     

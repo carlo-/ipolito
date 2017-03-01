@@ -70,6 +70,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         refreshSessionDataIfNeeded()
     }
     
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        
+        UserDefaults().synchronize()
+    }
+    
     func refreshSessionDataIfNeeded() {
         
         guard let session = session else { return }
