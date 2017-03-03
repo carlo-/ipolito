@@ -16,6 +16,7 @@
 		234762001D94A8CD004C5FB3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 234762021D94A8CD004C5FB3 /* Localizable.strings */; };
 		2352C07C1D96C5CE008DED0F /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2352C0751D96C551008DED0F /* Charts.framework */; };
 		2352C07D1D96C5CE008DED0F /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2352C0751D96C551008DED0F /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2363732D1E69DF670091BBCE /* VideolecturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2363732C1E69DF670091BBCE /* VideolecturesViewController.swift */; };
 		236690FC1D8345C4000BC822 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236690FB1D8345C4000BC822 /* MessagesViewController.swift */; };
 		236690FE1D834643000BC822 /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236690FD1D834643000BC822 /* DocumentsViewController.swift */; };
 		236CDB531D9D9EAC00A036BC /* SubjectInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CDB521D9D9EAC00A036BC /* SubjectInfoViewController.swift */; };
@@ -108,6 +109,7 @@
 		234762061D958068004C5FB3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		234762071D95FA2F004C5FB3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2352C0801D974B8A008DED0F /* iPoliTO2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iPoliTO2.entitlements; sourceTree = "<group>"; };
+		2363732C1E69DF670091BBCE /* VideolecturesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideolecturesViewController.swift; sourceTree = "<group>"; };
 		236690FB1D8345C4000BC822 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		236690FD1D834643000BC822 /* DocumentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		236CDB501D9D651400A036BC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				236690FB1D8345C4000BC822 /* MessagesViewController.swift */,
 				236690FD1D834643000BC822 /* DocumentsViewController.swift */,
 				236CDB521D9D9EAC00A036BC /* SubjectInfoViewController.swift */,
+				2363732C1E69DF670091BBCE /* VideolecturesViewController.swift */,
 				23B67D4F1D5338A5009CB44B /* DownloadsViewController.swift */,
 				233293361DA69B5800FB4B00 /* PDFViewerController.swift */,
 			);
@@ -464,6 +467,7 @@
 				236690FC1D8345C4000BC822 /* MessagesViewController.swift in Sources */,
 				2372F1D91D7F8CD200DBC708 /* KeychainWrapper.m in Sources */,
 				230323621D877AC1003881E9 /* PTAccessoryViews.swift in Sources */,
+				2363732D1E69DF670091BBCE /* VideolecturesViewController.swift in Sources */,
 				2399D8541D4CEDDB0001C99C /* SettingsViewController.swift in Sources */,
 				232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */,
 				2399D84C1D4CDA990001C99C /* PTTypes.swift in Sources */,

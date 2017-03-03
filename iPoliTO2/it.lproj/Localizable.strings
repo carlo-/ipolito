@@ -74,6 +74,7 @@
 "ls.subjectsVC.subjectOptions.messages.unread" = "non letti";
 "ls.subjectsVC.subjectOptions.documents" = "Materiale";
 "ls.subjectsVC.subjectOptions.info" = "Informazioni e guida";
+"ls.subjectsVC.subjectOptions.videolectures" = "Videolezioni";
 
 "ls.subjectsVC.noFilesOrMessagesAlert.body" = "Questo corso non ha alcun messaggio né file.";
 "ls.subjectsVC.invalidSubjectDataAlert.body" = "Non è stato possibile scaricare i dati per questa materia.";

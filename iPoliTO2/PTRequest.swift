@@ -360,6 +360,8 @@ class PTRequest {
         })
     }
     
+    
+    
     class func fetchSubjectData(subject: PTSubject, token: PTToken, regID: PTRegisteredID, loadTestData: Bool = false, completion: @escaping (PTRequestResult<PTSubjectData>) -> Void) {
         
         let params: [PTRequestParameter: String] = [.registeredID: regID.stringValue,
@@ -378,12 +380,14 @@ class PTRequest {
                     
                     let guide = PTParser.subjectGuideFromRawContainer(container)
                     let info = PTParser.subjectInfoFromRawContainer(container)
+                    let videolectures = PTParser.videolecturesFromRawContainer(container)
                     
                     let subjectData = PTSubjectData(subject: subject,
                                                     messages: messages,
                                                     documents: documents,
                                                     guide: guide,
-                                                    info: info)
+                                                    info: info,
+                                                    videolectures: videolectures)
                     
                     completion(.success(subjectData))
                     

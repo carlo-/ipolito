@@ -7,6 +7,68 @@
 //
 
 import UIKit
+import AVFoundation
+
+
+
+// MARK: - PTVideolecture
+
+struct PTVideolecture {
+    
+    static let udKey = "watchedVideolectures"
+    static let durationKey = "duration"
+    static let positionKey = "position"
+    
+    let title: String
+    let thumbnailURL: URL
+    let videoURL: URL
+    let identifier: String
+    let date: Date
+    
+    var lastPositionPlayed: CMTime {
+        
+        let watchedVids = (UserDefaults().value(forKey: PTVideolecture.udKey) as? [String: Any]) ?? [:]
+        let dict = (watchedVids[identifier] as? [String: Any]) ?? [:]
+        
+        let seconds: Double = (dict[PTVideolecture.positionKey] as? Double) ?? 0.0
+        
+        return CMTime(seconds: seconds, preferredTimescale: 1)
+    }
+    
+    var duration: CMTime? {
+        
+        let watchedVids = (UserDefaults().value(forKey: PTVideolecture.udKey) as? [String: Any]) ?? [:]
+        let dict = (watchedVids[identifier] as? [String: Any]) ?? [:]
+        
+        if let seconds = dict[PTVideolecture.durationKey] as? Double {
+            return CMTime(seconds: seconds, preferredTimescale: 1)
+        } else {
+            return nil
+        }
+    }
+    
+    func rememberDuration(_ duration: CMTime) {
+        
+        var watchedVids = UserDefaults().dictionary(forKey: PTVideolecture.udKey) ?? [:]
+        var dict = (watchedVids[identifier] as? [String: Any]) ?? [:]
+        
+        dict[PTVideolecture.durationKey] = duration.seconds
+        
+        watchedVids[identifier] = dict
+        UserDefaults().set(watchedVids, forKey: PTVideolecture.udKey)
+    }
+    
+    func rememberPosition(_ position: CMTime) {
+        
+        var watchedVids = UserDefaults().dictionary(forKey: PTVideolecture.udKey) ?? [:]
+        var dict = (watchedVids[identifier] as? [String: Any]) ?? [:]
+        
+        dict[PTVideolecture.positionKey] = position.seconds
+        
+        watchedVids[identifier] = dict
+        UserDefaults().set(watchedVids, forKey: PTVideolecture.udKey)
+    }
+}
 
 
 
@@ -281,15 +343,18 @@ struct PTSubjectData {
     var documents: [PTMElement]
     var guide: PTSubjectData.Guide?
     var info: PTSubjectData.Info?
+    var videolectures: [PTVideolecture]?
+    
     
     private(set) var isValid: Bool = true
     
-    init(subject: PTSubject, messages: [PTMessage], documents: [PTMElement], guide: PTSubjectData.Guide?, info: PTSubjectData.Info?) {
+    init(subject: PTSubject, messages: [PTMessage], documents: [PTMElement], guide: PTSubjectData.Guide?, info: PTSubjectData.Info?, videolectures: [PTVideolecture]?) {
         self.subject = subject
         self.messages = messages
         self.documents = documents
         self.guide = guide
         self.info = info
+        self.videolectures = videolectures
     }
     
     var numberOfUnreadMessages: Int {
@@ -303,7 +368,7 @@ struct PTSubjectData {
     static var invalid: PTSubjectData {
         
         let subject = PTSubject(name: "", incarico: "", inserimento: "", credits: 0)
-        var data = PTSubjectData(subject: subject, messages: [], documents: [], guide: nil, info: nil)
+        var data = PTSubjectData(subject: subject, messages: [], documents: [], guide: nil, info: nil, videolectures: nil)
         data.isValid = false
         return data
     }

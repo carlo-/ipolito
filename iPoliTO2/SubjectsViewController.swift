@@ -238,6 +238,19 @@ extension SubjectsViewController {
         }
     }
     
+    func showVideolectures(forSubject subject: PTSubject) {
+        
+        let id = VideolecturesViewController.identifier
+        
+        if let childController = storyboard?.instantiateViewController(withIdentifier: id) as? VideolecturesViewController,
+            let videos = dataOfSubjects[subject]?.videolectures {
+            
+            childController.configure(forSubject: subject, andVideolectures: videos)
+            
+            navigationController?.pushViewController(childController, animated: true)
+        }
+    }
+    
     func presentOptions(forSubject subject: PTSubject) {
         
         guard let data = dataOfSubjects[subject] else {
@@ -251,8 +264,9 @@ extension SubjectsViewController {
             
             let nmessages = data.messages.count
             let ndocuments = data.numberOfFiles
+            let nvideos = (data.videolectures ?? []).count
             
-            if nmessages > 0 || ndocuments > 0 || data.guide != nil {
+            if nmessages > 0 || ndocuments > 0 || data.guide != nil || nvideos > 0 {
                 
                 alertController = UIAlertController(title: subject.name, message: nil, preferredStyle: .actionSheet)
                 
@@ -279,6 +293,15 @@ extension SubjectsViewController {
                     alertController.addAction(UIAlertAction(title: documentsTitle, style: .default, handler: {
                         action in
                         self.showDocuments(forSubject: subject)
+                    }))
+                }
+                
+                if nvideos > 0 {
+                    
+                    let documentsTitle = ~"ls.subjectsVC.subjectOptions.videolectures"
+                    alertController.addAction(UIAlertAction(title: documentsTitle, style: .default, handler: {
+                        action in
+                        self.showVideolectures(forSubject: subject)
                     }))
                 }
                 

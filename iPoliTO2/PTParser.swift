@@ -88,6 +88,15 @@ private func rawTemporaryGradesFromRawContainer(_ container:AnyObject) -> AnyObj
     return container.value(forKeyPath: "data.valutazioni_provvisorie") as AnyObject?
 }
 
+private func rawVideolecturesFromRawContainer(_ container: AnyObject) -> [[String: AnyObject]]? {
+    guard container.value(forKeyPath: "data") is NSDictionary,
+        container.value(forKeyPath: "data.videolezioni") is NSDictionary,
+        container.value(forKeyPath: "data.videolezioni.lista_videolezioni") is NSArray else {
+        return nil
+    }
+    return container.value(forKeyPath: "data.videolezioni.lista_videolezioni") as? [[String: AnyObject]]
+}
+
 private func rawFreeRoomsFromRawContainer(_ container:AnyObject) -> [NSDictionary]? {
     guard container.value(forKeyPath: "data") is NSDictionary,
           container.value(forKeyPath: "data.aule_libere") is NSDictionary else {
@@ -432,6 +441,49 @@ class PTParser: NSObject {
         }
     }
     
+    class func videolecturesFromRawContainer(_ container: AnyObject) -> [PTVideolecture]? {
+        
+        if let rawVideolectures = rawVideolecturesFromRawContainer(container) {
+            
+            var videolectures: [PTVideolecture] = []
+            
+            for rawVL in rawVideolectures {
+                
+                guard let dateStr = rawVL["data"] as? String,
+                    let title = rawVL["titolo"] as? String,
+                    let thumbnailURL_str = rawVL["cover_url"] as? String,
+                    let videoURL_str = rawVL["video_url"] as? String,
+                    let identifier = rawVL["id"]?.description
+                else { continue }
+                
+                guard let thumbnailURL = URL(string: thumbnailURL_str),
+                    let videoURL = URL(string: videoURL_str)
+                else { continue }
+                
+                let formatter = DateFormatter()
+                formatter.timeZone = TimeZone.Turin
+                formatter.isLenient = true
+                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                
+                guard let date = formatter.date(from: dateStr)
+                else { continue }
+                
+                let videolecture = PTVideolecture(title: title,
+                                                  thumbnailURL: thumbnailURL,
+                                                  videoURL: videoURL,
+                                                  identifier: identifier,
+                                                  date: date)
+                
+                
+                videolectures.append(videolecture)
+            }
+            
+            return videolectures
+            
+        } else {
+            return nil
+        }
+    }
     
     class func messagesFromRawContainer(_ container: AnyObject!) -> [PTMessage]? {
         
