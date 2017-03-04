@@ -198,15 +198,14 @@ struct PTMessage {
         return clean.replacingOccurrences(of: String(char), with: "")
     }
     
-    static let readMessagesKey = "readMessages"
+    private static let readMessagesKey = "readMessages"
     
     func setRead(_ read: Bool) {
         
         let ud = UserDefaults()
+        let hash = self.hashValue
         
         var hashes: [Int] = (ud.array(forKey: PTMessage.readMessagesKey) as? [Int]) ?? []
-        
-        let hash = self.hashValue
         
         if read && !hashes.contains(hash) {
             
@@ -215,21 +214,15 @@ struct PTMessage {
         } else if !read, let index = hashes.index(of: hash) {
             
             hashes.remove(at: index)
-        } else {
             
-            return
-        }
+        } else { return; }
         
         ud.set(hashes, forKey: PTMessage.readMessagesKey)
     }
     
     var isRead: Bool {
         
-        let ud = UserDefaults()
-        
-        guard let hashes = ud.array(forKey: PTMessage.readMessagesKey) as? [Int] else {
-            return false
-        }
+        let hashes: [Int] = (UserDefaults().array(forKey: PTMessage.readMessagesKey) as? [Int]) ?? []
         
         return hashes.contains(hashValue)
     }
