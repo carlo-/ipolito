@@ -39,8 +39,8 @@
 
 // MARK: AppDelegate
 
-"ls.appDelegate.justUpdatedAlert.title" = "What's new in v2.3";
-"ls.appDelegate.justUpdatedAlert.body" = "- Added pull to refresh\n- Added possibility to search files\n- Many bug fixes and improvements";
+"ls.appDelegate.justUpdatedAlert.title" = "What's new in v2.4";
+"ls.appDelegate.justUpdatedAlert.body" = "-\n-";
 
 "ls.appDelegate.justDownloadedAlert.title" = "Welcome";
 "ls.appDelegate.justDownloadedAlert.body" = "Thank you for downloading iPoliTO!";
