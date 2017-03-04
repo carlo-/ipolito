@@ -204,7 +204,6 @@ extension PTSession {
         }
         
         if let release = Bundle.main.releaseVersionNumber {
-            UserDefaults().synchronize()
             UserDefaults().set(release, forKey: PTConstants.releaseVersionOfLastExecutionKey)
         }
         

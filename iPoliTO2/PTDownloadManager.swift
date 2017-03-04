@@ -308,8 +308,6 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
     
     private func synchronizeDownloadedFiles() {
         
-        UserDefaults().synchronize()
-        
         if let data = UserDefaults().value(forKey: downloadedFilesArchiveKey) as? Data {
             
             let downloadedFiles = NSKeyedUnarchiver.unarchiveObject(with: data) as! [PTDownloadedFile]

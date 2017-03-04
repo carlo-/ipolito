@@ -38,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         return getController(.map)      as? MapViewController
     }
     var releaseVersionOfLastExecution: String? {
-        UserDefaults().synchronize()
         return UserDefaults().string(forKey: PTConstants.releaseVersionOfLastExecutionKey)
     }
     var isFirstTimeWithThisRelease: Bool {
@@ -157,7 +156,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func migrateFromOlderReleaseIfNeeded() {
         
         let userDefaults = UserDefaults()
-        userDefaults.synchronize()
         
         if userDefaults.string(forKey: "firstExe") != nil {
             

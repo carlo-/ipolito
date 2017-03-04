@@ -203,7 +203,6 @@ struct PTMessage {
     func setRead(_ read: Bool) {
         
         let ud = UserDefaults()
-        ud.synchronize()
         
         var hashes: [Int] = (ud.array(forKey: PTMessage.readMessagesKey) as? [Int]) ?? []
         
@@ -227,7 +226,6 @@ struct PTMessage {
     var isRead: Bool {
         
         let ud = UserDefaults()
-        ud.synchronize()
         
         guard let hashes = ud.array(forKey: PTMessage.readMessagesKey) as? [Int] else {
             return false
