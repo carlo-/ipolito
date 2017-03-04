@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		230323621D877AC1003881E9 /* PTAccessoryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230323611D877AC1003881E9 /* PTAccessoryViews.swift */; };
+		231009191E6B160300BC9EEA /* CRProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231009181E6B160300BC9EEA /* CRProgressView.swift */; };
 		232D44211D6BB69800BFA8A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232D44201D6BB69800BFA8A6 /* Constants.swift */; };
 		232E4DA01D6F9CEC00CCEE5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2399D8311D4CD7340001C99C /* AppDelegate.swift */; };
 		232E4DA51D6F9D5A00CCEE5C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */; };
@@ -99,6 +100,7 @@
 
 /* Begin PBXFileReference section */
 		230323611D877AC1003881E9 /* PTAccessoryViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PTAccessoryViews.swift; sourceTree = "<group>"; };
+		231009181E6B160300BC9EEA /* CRProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRProgressView.swift; sourceTree = "<group>"; };
 		232D44201D6BB69800BFA8A6 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		232E4DA41D6F9D5A00CCEE5C /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		233293361DA69B5800FB4B00 /* PDFViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFViewerController.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 		23FD09781D77409C00ABD65E /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				231009181E6B160300BC9EEA /* CRProgressView.swift */,
 				230323611D877AC1003881E9 /* PTAccessoryViews.swift */,
 				23834C381E36997900795B66 /* CRCells.swift */,
 				23CC5D0F1D57294900EDF589 /* CRTimePicker.swift */,
@@ -473,6 +476,7 @@
 				2399D84C1D4CDA990001C99C /* PTTypes.swift in Sources */,
 				233A4DAF1E4E60FC00CFDFF9 /* XMLDictionary.m in Sources */,
 				2399D8521D4CEDC40001C99C /* MapViewController.swift in Sources */,
+				231009191E6B160300BC9EEA /* CRProgressView.swift in Sources */,
 				2399D84B1D4CDA990001C99C /* PTRequest.swift in Sources */,
 				236690FE1D834643000BC822 /* DocumentsViewController.swift in Sources */,
 				2372F1DB1D7F8F1D00DBC708 /* PTKeychain.swift in Sources */,

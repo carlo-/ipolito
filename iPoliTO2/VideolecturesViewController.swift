@@ -114,7 +114,7 @@ class PTVideolectureCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var progressLabel: UILabel!
+    @IBOutlet weak var progressView: CRProgressView!
     
     func configure(for videolecture: PTVideolecture) {
         
@@ -130,12 +130,13 @@ class PTVideolectureCell: UITableViewCell {
             
             let position_s = videolecture.lastPositionPlayed.seconds
             
-            let progress = 100 * position_s / duration_s
+            let progress = position_s / duration_s
             
-            self.progressLabel.text = "\(Int(progress))%"
+            self.progressView.isHidden = false
+            self.progressView.progress = progress
             
         } else {
-            self.progressLabel.text = nil
+            self.progressView.isHidden = true
         }
     }
 }
