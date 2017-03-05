@@ -267,6 +267,8 @@ private func performRequest(withRawParams rawParams: [PTRequestParameter: String
     })
     
     task.resume()
+    
+    urlSession.finishTasksAndInvalidate()
 }
 
 class PTRequest {

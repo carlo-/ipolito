@@ -192,7 +192,7 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         transfer.status = .waitingForURL
         self.delegate?.fileTransferDidChangeStatus(transfer)
         
-        PTSession.shared.requestDownloadURL(forFile: transfer.file, completion: {
+        PTSession.shared.requestDownloadURL(forFile: transfer.file, completion: { [unowned self]
             result in
             
             OperationQueue.main.addOperation({
@@ -234,6 +234,8 @@ class PTDownloadManager: NSObject, URLSessionDownloadDelegate {
         transfer.task = downloadTask
         
         downloadTask.resume()
+        
+        session.finishTasksAndInvalidate()
     }
     
     private func checkQueue() {

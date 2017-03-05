@@ -68,6 +68,8 @@ class PTSession: NSObject {
         self.delegate = delegate
     }
     
+    /// Calling this method while some requests are
+    /// still pending will cause the app to crash!
     class func reset() {
         privateShared = nil
     }
@@ -89,7 +91,7 @@ extension PTSession {
         pendingRequests += 1
         delegate?.sessionDidBeginOpening()
         
-        OperationQueue().addOperation({
+        OperationQueue().addOperation({ [unowned self] _ in
             
             if let storedToken = self.storedToken() {
                 
@@ -105,7 +107,7 @@ extension PTSession {
     
     private func sessionStep1() {
         
-        PTRequest.registerDevice(regID: registeredID, loadTestData: shouldLoadTestData, completion: { _ in
+        PTRequest.registerDevice(regID: registeredID, loadTestData: shouldLoadTestData, completion: { [unowned self] _ in
             
             PTRequest.performLogin(account: self.account!, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
                 result in
@@ -129,7 +131,7 @@ extension PTSession {
     
     private func sessionStep2(token: PTToken) {
         
-        PTRequest.fetchBasicInfo(token: token, regID: registeredID, loadTestData: shouldLoadTestData, completion: {
+        PTRequest.fetchBasicInfo(token: token, regID: registeredID, loadTestData: shouldLoadTestData, completion: { [unowned self]
             result in
             
             switch result {
@@ -183,6 +185,14 @@ extension PTSession {
         pendingRequests += 1
         delegate?.sessionDidBeginClosing()
         
+        if pendingRequests > 1 {
+            // There are still pending requests (besides this one)
+            // We cannot proceed
+            
+            delegate?.sessionDidFailClosingWithError(error: .unknownError)
+            return;
+        }
+        
         // We don't really care about telling the server (given the way PoliTO's APIs work)
         // We simply delete everything and go on
         
@@ -228,7 +238,7 @@ extension PTSession {
             return
         }
         
-        OperationQueue().addOperation({
+        OperationQueue().addOperation({ [unowned self] _ in
             
             PTRequest.fetchTemporaryGrades(token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
                 result in
@@ -255,7 +265,7 @@ extension PTSession {
         
         pendingRequests += 1
         
-        PTRequest.fetchFreeRooms(date: date ?? Date(), regID: registeredID, loadTestData: shouldLoadTestData, completion: {
+        PTRequest.fetchFreeRooms(date: date ?? Date(), regID: registeredID, loadTestData: shouldLoadTestData, completion: { [unowned self]
             result in
             
             self.pendingRequests -= 1
@@ -270,7 +280,7 @@ extension PTSession {
             return
         }
         
-        OperationQueue().addOperation({
+        OperationQueue().addOperation({ [unowned self] _ in
             
             PTRequest.fetchLinkForFile(token: token, regID: self.registeredID, fileCode: file.identifier, completion: {
                 result in
@@ -293,7 +303,7 @@ extension PTSession {
             return
         }
         
-        OperationQueue().addOperation({
+        OperationQueue().addOperation({ [unowned self] _ in
             
             let sem = DispatchSemaphore(value: 0)
             var result: PTRequestResult<[PTLecture]> = .failure(.unknownError)
@@ -358,7 +368,7 @@ extension PTSession {
             return
         }
         
-        OperationQueue().addOperation({
+        OperationQueue().addOperation({ [unowned self] _ in
             
             PTRequest.fetchSubjectData(subject: subject, token: token, regID: self.registeredID, loadTestData: self.shouldLoadTestData, completion: {
                 result in

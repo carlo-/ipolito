@@ -14,7 +14,7 @@ class DocumentsViewController: UITableViewController {
     
     private var content: [PTMElement] = []
     private var subject: PTSubject!
-    private var rootController: DocumentsViewController!
+    private weak var rootController: DocumentsViewController!
     
     private var highlightedDownloadedFile: PTDownloadedFile?
     
@@ -67,9 +67,8 @@ class DocumentsViewController: UITableViewController {
         
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
         
-        unowned let unownedSelf = self
-        delay(1) {
-            unownedSelf.tableView.deselectRow(at: indexPath, animated: true)
+        delay(1) { [weak self] _ in
+            self?.tableView.deselectRow(at: indexPath, animated: true)
         }
     }
     
