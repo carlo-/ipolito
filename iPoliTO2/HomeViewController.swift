@@ -203,9 +203,7 @@ class HomeViewController: UITableViewController {
     
     fileprivate var expandedIndexPath: IndexPath? = nil
     
-    fileprivate var cachedMapSnapshotsLandscape: [PTRoom: UIImage] = [:]
-    
-    fileprivate var cachedMapSnapshotsPortrait: [PTRoom: UIImage] = [:]
+    fileprivate let mapSnapshotCache = PTMapSnapshotCache()
     
     
     func statusDidChange() {
@@ -268,6 +266,9 @@ class HomeViewController: UITableViewController {
         super.viewDidLoad()
         
         setupRefreshControl()
+        
+        // TODO: Consider running this on a separate thread
+        mapSnapshotCache.importFromDisk()
     }
     
     func setupRefreshControl() {
@@ -642,11 +643,9 @@ extension HomeViewController {
     
     func cachedMapSnapshot(forRoom room: PTRoom) -> UIImage? {
         
-        if UIApplication.shared.statusBarOrientation.isLandscape {
-            return cachedMapSnapshotsLandscape[room]
-        } else {
-            return cachedMapSnapshotsPortrait[room]
-        }
+        let orientation = UIApplication.shared.statusBarOrientation
+        
+        return mapSnapshotCache.snapshot(for: room, orientation: orientation)
     }
     
     func estimateSnapshotSize() -> CGSize {
@@ -664,7 +663,7 @@ extension HomeViewController {
         
         let coordinates = CLLocationCoordinate2D(latitude: room.latitude, longitude: room.longitude)
         
-        let isLandscape = UIApplication.shared.statusBarOrientation.isLandscape
+        let orientation = UIApplication.shared.statusBarOrientation
         
         let span = MKCoordinateSpan(latitudeDelta: 0.00125, longitudeDelta: 0.00125)
         let region = MKCoordinateRegion(center: coordinates, span: span)
@@ -678,7 +677,7 @@ extension HomeViewController {
         
         let snapshotter = MKMapSnapshotter(options: options)
         
-        snapshotter.start(completionHandler: {
+        snapshotter.start(completionHandler: { [unowned self]
             (snapshot: MKMapSnapshot?, error: Error?) in
             
             if let snapshot = snapshot {
@@ -706,13 +705,11 @@ extension HomeViewController {
                 UIGraphicsEndImageContext()
                 
                 
-                if isLandscape {
-                    self.cachedMapSnapshotsLandscape[room] = finalImage
-                } else {
-                    self.cachedMapSnapshotsPortrait[room] = finalImage
+                if finalImage != nil {
+                    
+                    self.mapSnapshotCache.storeSnapshot(finalImage!, for: room, orientation: orientation)
+                    self.tableView.reloadRows(at: [indexPath], with: .fade)
                 }
-                
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
             }
         })
     }
@@ -753,5 +750,140 @@ extension HomeViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
+    }
+}
+
+
+
+// MARK: PTMapSnapshotCache
+
+fileprivate class PTMapSnapshotCache {
+    
+    private var snapshotsLandscape: [String: UIImage] = [:]
+    private var snapshotsPortrait:  [String: UIImage] = [:]
+    
+    private class var documentsFolderURL: URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
+    
+    private class var snapshotsFolderURL: URL {
+        return documentsFolderURL.appendingPathComponent("MapSnapshots")
+    }
+    
+    init() {
+        createCacheFolderIfNeeded()
+    }
+    
+    func snapshot(for room: PTRoom, orientation: UIInterfaceOrientation) -> UIImage? {
+        
+        let roomID: String = room.hashValue.description
+        
+        if orientation.isPortrait {
+            return snapshotsPortrait[roomID]
+        } else {
+            return snapshotsLandscape[roomID]
+        }
+    }
+    
+    func storeSnapshot(_ snapshot: UIImage, for room: PTRoom, orientation: UIInterfaceOrientation) {
+        
+        let roomID: String = room.hashValue.description
+        
+        if orientation.isPortrait {
+            
+            guard snapshotsPortrait[roomID] == nil else { return; }
+            snapshotsPortrait[roomID] = snapshot
+            
+        } else {
+            
+            guard snapshotsLandscape[roomID] == nil else { return; }
+            snapshotsLandscape[roomID] = snapshot
+        }
+        
+        let url = snapshotURL(for: room, orientation: orientation)
+        
+        let data = UIImagePNGRepresentation(snapshot)
+        try? data?.write(to: url)
+    }
+    
+    func importFromDisk() {
+        
+        snapshotsLandscape.removeAll()
+        snapshotsPortrait.removeAll()
+        
+        let folderURL = PTMapSnapshotCache.snapshotsFolderURL
+        
+        let urls = try? FileManager.default.contentsOfDirectory(at: folderURL,
+                                                                includingPropertiesForKeys: nil,
+                                                                options: .skipsSubdirectoryDescendants)
+        
+        guard urls != nil else { return; }
+        
+        for snapshotURL in urls! {
+            
+            let fileName = snapshotURL.lastPathComponent.components(separatedBy: ".").first
+            guard fileName != nil, !(fileName!.isEmpty) else { continue; }
+            
+            let comps = fileName!.components(separatedBy: "_")
+            guard comps.count == 2 else { continue; }
+            
+            let roomID = comps[0]
+            let orientationID = comps[1]
+            
+            guard let data = try? Data(contentsOf: snapshotURL),
+                let snapshot = UIImage(data: data)
+                else { continue; }
+            
+            if orientationID == "p" {
+                snapshotsPortrait[roomID] = snapshot
+            } else if orientationID == "l" {
+                snapshotsLandscape[roomID] = snapshot
+            }
+        }
+    }
+    
+    class func fromDisk() -> PTMapSnapshotCache {
+        let cache = PTMapSnapshotCache()
+        cache.importFromDisk()
+        return cache
+    }
+    
+    func clear() {
+        
+        snapshotsLandscape.removeAll()
+        snapshotsPortrait.removeAll()
+        
+        PTMapSnapshotCache.clearCacheFolder()
+    }
+    
+    class func clearCacheFolder() {
+        try? FileManager.default.removeItem(at: snapshotsFolderURL)
+    }
+    
+    private func snapshotName(for room: PTRoom, orientation: UIInterfaceOrientation) -> String {
+        
+        let roomID: String = room.hashValue.description
+        let orientationID: String = orientation.isPortrait ? "p" : "l"
+        
+        return "\(roomID)_\(orientationID).png"
+    }
+    
+    private func snapshotURL(for room: PTRoom, orientation: UIInterfaceOrientation) -> URL {
+        
+        let name = snapshotName(for: room, orientation: orientation)
+        return PTMapSnapshotCache.snapshotsFolderURL.appendingPathComponent(name)
+    }
+    
+    private func createCacheFolderIfNeeded() {
+        
+        let fileManager = FileManager.default
+        let path = PTMapSnapshotCache.snapshotsFolderURL.path
+        
+        var isDir: ObjCBool = false
+        if fileManager.fileExists(atPath: path, isDirectory: &isDir) {
+            if isDir.boolValue { return; }
+        }
+        
+        try? fileManager.createDirectory(atPath: path, withIntermediateDirectories: false, attributes: nil)
     }
 }
