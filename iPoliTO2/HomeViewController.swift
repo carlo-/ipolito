@@ -14,17 +14,17 @@ class PTLectureCell: CRTableViewCell {
     
     static let identifier = "PTLectureCell_id"
     
-    @IBOutlet var myChildView: UIView? {
+    @IBOutlet private var myChildView: UIView? {
         didSet { childView = myChildView }
     }
     
-    @IBOutlet var subjectLabel: UILabel!
-    @IBOutlet var lecturerLabel: UILabel!
-    @IBOutlet var timeLabel: UILabel!
-    @IBOutlet var roomLabel: UILabel!
-    @IBOutlet var detailsLabel: UILabel!
-    @IBOutlet var mapSnapshotView: UIImageView!
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var subjectLabel: UILabel!
+    @IBOutlet private weak var lecturerLabel: UILabel!
+    @IBOutlet private weak var timeLabel: UILabel!
+    @IBOutlet private weak var roomLabel: UILabel!
+    @IBOutlet private weak var detailsLabel: UILabel!
+    @IBOutlet private weak var mapSnapshotView: UIImageView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     static let height: CGFloat = 80
     static let expandedHeight: CGFloat = 222
@@ -83,6 +83,19 @@ class PTLectureCell: CRTableViewCell {
         }
         
         detailsLabel.text = details.joined(separator: " | ")
+    }
+    
+    
+    func startLoadingIndicator() {
+        activityIndicator.startAnimating()
+    }
+    
+    func stopLoadingIndicator() {
+        activityIndicator.stopAnimating()
+    }
+    
+    func setMapSnapshot(_ snapshot: UIImage?) {
+        mapSnapshotView.image = snapshot
     }
     
     
@@ -393,18 +406,19 @@ extension HomeViewController {
         cell.indexPath = indexPath
         cell.mapSelectionHandler = handleLectureMapSelection
         cell.isExpanded = (expandedIndexPath == indexPath)
-        cell.activityIndicator.stopAnimating()
+        cell.stopLoadingIndicator()
         
         if cell.isExpanded, let roomName = lecture.roomName, let room = room(answearingName: roomName) {
             
             if let snapshot = cachedMapSnapshot(forRoom: room) {
                 
-                cell.activityIndicator.stopAnimating()
-                cell.mapSnapshotView.image = snapshot
+                cell.stopLoadingIndicator()
+                cell.setMapSnapshot(snapshot)
+                
             } else {
                 
-                cell.activityIndicator.startAnimating()
-                cell.mapSnapshotView.image = nil
+                cell.startLoadingIndicator()
+                cell.setMapSnapshot(nil)
                 let snapshotSize = estimateSnapshotSize()
                 reloadMapSnapshot(forRoom: room, size: snapshotSize, indexPath: indexPath)
             }
