@@ -351,6 +351,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         print("managerDidFailRetrievingSubjectDataWithError: \(error), subject: \(subject.name)")
         
         subjectsVC?.dataOfSubjects[subject] = PTSubjectData.invalid
+        
+        if session?.dataOfSubjects.count == session?.subjects?.count {
+            subjectsVC?.status = .ready
+        }
     }
     
     

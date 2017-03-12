@@ -160,7 +160,7 @@ extension MapViewController {
         
         navigationItem.titleView = PTLoadingTitleView(withTitle: ~"ls.mapVC.status.loading")
         
-        PTSession.shared.requestFreeRooms(forDate: date, completion: {
+        PTSession.shared.requestFreeRooms(forDate: date, completion: { [unowned self]
             result in
             
             OperationQueue.main.addOperation({

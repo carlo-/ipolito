@@ -151,23 +151,15 @@ class CareerViewController: UITableViewController {
     
     private func reloadSpecialCells() {
         
-        if canShowCareerDetails && detailsCell == nil {
+        if detailsCell == nil {
             
             detailsCell = tableView.dequeueReusableCell(withIdentifier: PTCareerDetailsCell.identifier) as? PTCareerDetailsCell
-            
-        } else if !canShowCareerDetails && detailsCell != nil {
-            
-            detailsCell = nil
         }
         
-        if canShowGraph && graphCell == nil {
+        if graphCell == nil {
             
             graphCell = tableView.dequeueReusableCell(withIdentifier: PTGraphCell.identifier) as? PTGraphCell
             graphCell?.setupChart()
-            
-        } else if !canShowGraph && graphCell != nil {
-            
-            graphCell = nil
         }
         
         detailsCell?.configure(withStudentInfo: PTSession.shared.studentInfo)
