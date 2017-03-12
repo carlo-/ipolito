@@ -61,6 +61,16 @@ class CareerViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         
         setupRefreshControl()
+        
+        //_ reloadSpecialCells()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.backgroundView?.setNeedsDisplay()
+        }, completion: nil)
     }
     
     func statusDidChange() {

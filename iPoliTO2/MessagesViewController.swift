@@ -29,6 +29,14 @@ class MessagesViewController: UITableViewController {
         tableView.tableFooterView = UIView()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.backgroundView?.setNeedsDisplay()
+        }, completion: nil)
+    }
+    
     func precomputeMessages(_ messages: [PTMessage]) {
         
         OperationQueue().addOperation({

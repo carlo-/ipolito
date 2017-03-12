@@ -22,6 +22,7 @@ class MapViewController: UIViewController {
     fileprivate var searchBarText: String { return searchBar.text ?? "" }
     
     fileprivate var timePicker: CRTimePicker?
+    fileprivate var timePickerVisible: Bool = false
     
     fileprivate lazy var allRooms: [PTRoom] = [PTRoom].fromBundle()
     
@@ -77,6 +78,18 @@ class MapViewController: UIViewController {
         reloadFreeRoomsIfNeeded()
         
         focusOnRoom(roomToFocus, animated: true)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        guard isViewLoaded else { return; }
+        
+        UIView.animate(withDuration: 0.35, animations: {
+            
+            self.layoutSearchBar(withControllerViewSize: size)
+            self.layoutTimePicker(withControllerViewSize: size)
+        })
     }
     
     func statusDidChange() {
@@ -244,6 +257,34 @@ extension MapViewController {
         return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(confirmTimePicker))
     }
     
+    fileprivate func layoutTimePicker(withControllerViewSize newSize: CGSize) {
+        layoutTimePicker(withControllerViewSize: newSize, visible: timePickerVisible)
+    }
+    
+    private func layoutTimePicker(withControllerViewSize newSize: CGSize, visible: Bool) {
+        
+        let orientation = UIDevice.current.orientation
+        
+        let height: CGFloat = 50.0 + 44.0
+        let width = newSize.width
+        
+        let topBarMaxY: CGFloat
+        
+        if orientation.isLandscape {
+            topBarMaxY = 32.0
+        } else {
+            topBarMaxY = 64.0
+        }
+        
+        var newTimePickerFrame = CGRect(x: 0, y: topBarMaxY, width: width, height: height)
+        
+        if !visible {
+            newTimePickerFrame = newTimePickerFrame.offsetBy(dx: width, dy: 0)
+        }
+        
+        timePicker?.frame = newTimePickerFrame
+    }
+    
     @objc fileprivate func presentTimePicker() {
         
         searchBar.isUserInteractionEnabled = false
@@ -251,25 +292,28 @@ extension MapViewController {
         navigationItem.rightBarButtonItem = confirmTimePickerButton()
         navigationItem.leftBarButtonItem = dismissTimePickerButton()
         
-        let finalFrame = CGRect(x: 0, y: searchResultsTable.frame.origin.y+64, width: view.frame.width, height: 50+44)
-        let initialFrame = finalFrame.offsetBy(dx: view.frame.width, dy: 0)
-        
         if timePicker == nil {
-            timePicker = CRTimePicker(frame: initialFrame, date: freeRoomsLoadedDate)
+            
+            timePicker = CRTimePicker(frame: .zero, date: freeRoomsLoadedDate)
+            timePicker?.backgroundColor = UIColor.clear
+            timePicker?.tintColor = UIColor.iPoliTO.darkGray
+            
             view.addSubview(timePicker!)
-        } else {
-            timePicker?.frame = initialFrame
+            
+            timePickerVisible = false
+            
+            layoutTimePicker(withControllerViewSize: view.frame.size, visible: false)
         }
         
-        guard let timePicker = timePicker else { return }
-        
-        timePicker.backgroundColor = UIColor.clear
-        timePicker.tintColor = UIColor.black
-        
         UIView.animate(withDuration: 0.25, animations: {
-            timePicker.frame = finalFrame
-            }, completion: { complete in
+            
+            self.layoutTimePicker(withControllerViewSize: self.view.frame.size, visible: true)
+            
+        }, completion: { _ in
+            
             self.searchController.isActive = false
+            self.timePickerVisible = true
+            self.layoutTimePicker(withControllerViewSize: self.view.frame.size, visible: true)
         })
     }
     
@@ -284,11 +328,13 @@ extension MapViewController {
         
         UIView.animate(withDuration: 0.25, animations: {
             
-            timePicker.frame = timePicker.frame.offsetBy(dx: self.view.frame.width, dy: 0)
+            self.layoutTimePicker(withControllerViewSize: self.view.frame.size, visible: false)
             
-            }, completion: { complete in
+        }, completion: { _ in
                 
-                self.searchBar.isUserInteractionEnabled = true
+            self.searchBar.isUserInteractionEnabled = true
+            self.timePickerVisible = false
+            self.layoutTimePicker(withControllerViewSize: self.view.frame.size, visible: false)
         })
     }
     
@@ -358,28 +404,56 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MapViewController: UISearchControllerDelegate, UISearchResultsUpdating {
     
+    func layoutSearchBar(withControllerViewSize newSize: CGSize) {
+        
+        let orientation = UIDevice.current.orientation
+        
+        let height: CGFloat = 44.0
+        let width = newSize.width
+        
+        let bottomBarHeight: CGFloat = 49.0
+        
+        let searchBarMaxY: CGFloat
+        let topBarMaxY: CGFloat
+        
+        if orientation.isLandscape {
+            topBarMaxY = 32.0
+            searchBarMaxY = 44.0
+        } else {
+            topBarMaxY = 64.0
+            searchBarMaxY = 64.0
+        }
+        
+        if !(searchController.isActive) {
+            
+            searchBar.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        }
+        
+        searchBarContainer.frame = CGRect(x: 0, y: topBarMaxY, width: width, height: height)
+        
+        searchResultsTable.contentInset = UIEdgeInsets(top: searchBarMaxY, left: 0, bottom: bottomBarHeight, right: 0)
+        searchResultsTable.scrollIndicatorInsets = UIEdgeInsets(top: searchBarMaxY, left: 0, bottom: bottomBarHeight, right: 0)
+    }
+    
     func setupSearchController() {
         
         searchController.searchResultsUpdater = self
         searchController.delegate = self
         searchController.dimsBackgroundDuringPresentation = false
         
-        let searchBar = searchController.searchBar
-        searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         searchBar.placeholder = ~"ls.mapVC.searchBarPlaceholder"
         
-        searchBarContainer = UIView(frame: CGRect(x: 0.0, y: 64.0, width: view.frame.width, height: 44.0))
+        searchBarContainer = UIView()
         searchBarContainer.addSubview(searchBar)
         searchBarContainer.isOpaque = false
         view.insertSubview(searchBarContainer, belowSubview: searchResultsTable)
         
-        searchResultsTable.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
-        searchResultsTable.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
-        
-        self.definesPresentationContext = true
+        definesPresentationContext = true
         
         let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]
         UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: .normal)
+        
+        layoutSearchBar(withControllerViewSize: view.frame.size)
     }
     
     func dismissSearchBar(force: Bool = false) {
@@ -391,10 +465,11 @@ extension MapViewController: UISearchControllerDelegate, UISearchResultsUpdating
     /*
     func didPresentSearchController(_ searchController: UISearchController) {
     }
+    */
  
     func didDismissSearchController(_ searchController: UISearchController) {
+        searchController.searchBar.frame = searchBarContainer.bounds
     }
-    */
     
     func willPresentSearchController(_ searchController: UISearchController) {
         setSearchResultsTableVisible(true, animated: true)

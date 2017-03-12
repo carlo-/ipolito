@@ -69,6 +69,14 @@ class SubjectsViewController: UITableViewController {
         updateTabBarBadge()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.backgroundView?.setNeedsDisplay()
+        }, completion: nil)
+    }
+    
     func statusDidChange() {
         
         searchBar.isUserInteractionEnabled = false
@@ -337,7 +345,10 @@ extension SubjectsViewController {
     
     func scrollToTopOfTableView(animated: Bool = true) {
         
-        let yOffset: CGFloat = searchController.isActive ? -64+44 : -64
+        let topBarMaxY = navigationController!.navigationBar.frame.maxY
+        let searchBarMaxY = searchBar.frame.maxY
+        
+        let yOffset: CGFloat = searchController.isActive ? -searchBarMaxY : -topBarMaxY
         tableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: animated)
     }
     

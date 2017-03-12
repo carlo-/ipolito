@@ -192,8 +192,26 @@ class PDFViewerController: UIViewController, PDFViewerDelegate, PDFScrollBarView
     private var scrollBarView: PDFScrollBarView!
     private var documentInteractionController: UIDocumentInteractionController?
     
-    private let topBarHeight: CGFloat = 64.0
-    private let bottomBarHeight: CGFloat = 44.0
+    private var scrollBarHidden: Bool = false
+    
+    private var topBarHeight: CGFloat {
+        
+        if UIDevice.current.orientation.isPortrait {
+            return 64.0
+        } else {
+            return 52.0
+        }
+    }
+    
+    private var bottomBarHeight: CGFloat {
+        
+        if UIDevice.current.orientation.isPortrait {
+            return 44.0
+        } else {
+            return 32.0
+        }
+    }
+    
     private let scrollBarWidth: CGFloat = 20.0
     
     
@@ -231,6 +249,19 @@ class PDFViewerController: UIViewController, PDFViewerDelegate, PDFScrollBarView
         let fileURL = URL(fileURLWithPath: path)
         guard let data = try? Data(contentsOf: fileURL) else { return; }
         viewer.load(data, mimeType: "application/pdf", textEncodingName: "", baseURL: fileURL)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        let viewerOffset = viewer.scrollView.contentOffset
+        
+        coordinator.animate(alongsideTransition: { _ in
+            
+            self.layoutScrollBar(withControllerViewSize: size)
+            self.viewerDidScroll(toContentOffset: viewerOffset)
+            
+        }, completion: nil)
     }
     
     
@@ -294,17 +325,33 @@ class PDFViewerController: UIViewController, PDFViewerDelegate, PDFScrollBarView
         }
     }
     
+    func layoutScrollBar(withControllerViewSize newSize: CGSize, visible: Bool) {
+        
+        let newFrame: CGRect
+        
+        if visible {
+            
+            newFrame = CGRect(x: newSize.width - scrollBarWidth,
+                              y: topBarHeight,
+                              width: scrollBarWidth,
+                              height: newSize.height - topBarHeight - bottomBarHeight)
+            
+        } else {
+            
+            newFrame = CGRect(x: newSize.width,
+                              y: topBarHeight,
+                              width: scrollBarWidth,
+                              height: newSize.height - topBarHeight - bottomBarHeight)
+        }
+        
+        scrollBarView.frame = newFrame
+    }
+    
+    func layoutScrollBar(withControllerViewSize newSize: CGSize) {
+        layoutScrollBar(withControllerViewSize: newSize, visible: !scrollBarHidden)
+    }
+    
     func setScrollBarHidden(_ hidden: Bool, animated: Bool = false) {
-        
-        let frameWhenVisible = CGRect(x: view.frame.width - scrollBarWidth,
-                                      y: topBarHeight,
-                                      width: scrollBarWidth,
-                                      height: view.frame.height - topBarHeight - bottomBarHeight)
-        
-        let frameWhenHidden =  CGRect(x: view.frame.width,
-                                      y: topBarHeight,
-                                      width: scrollBarWidth,
-                                      height: view.frame.height - topBarHeight - bottomBarHeight)
         
         if animated {
             
@@ -312,11 +359,16 @@ class PDFViewerController: UIViewController, PDFViewerDelegate, PDFScrollBarView
             
             UIView.animate(withDuration: duration, animations: {
                 
-                self.scrollBarView.frame = hidden ? frameWhenHidden : frameWhenVisible
+                self.layoutScrollBar(withControllerViewSize: self.view.frame.size, visible: !hidden)
+                
+            }, completion: { _ in
+                
+                self.scrollBarHidden = hidden
             })
             
         } else {
-            scrollBarView.frame = hidden ? frameWhenHidden : frameWhenVisible
+            
+            layoutScrollBar(withControllerViewSize: view.frame.size, visible: !hidden)
         }
     }
     

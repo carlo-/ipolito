@@ -49,6 +49,13 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
         highlightedDownloadedFile = nil
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.backgroundView?.setNeedsDisplay()
+        }, completion: nil)
+    }
     
     func highlightRow(atIndexPath indexPath: IndexPath) {
         
@@ -59,7 +66,6 @@ class DownloadsViewController: UITableViewController, PTDownloadManagerDelegate 
             unownedSelf.tableView.deselectRow(at: indexPath, animated: true)
         }
     }
-    
     
     func indexPath(forDownloadedFile downloadedFile: PTDownloadedFile) -> IndexPath? {
         

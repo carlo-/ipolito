@@ -763,7 +763,12 @@ extension HomeViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        
         tableView.reloadData()
+        
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.backgroundView?.setNeedsDisplay()
+        }, completion: nil)
     }
 }
 

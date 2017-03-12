@@ -84,11 +84,13 @@ class CRTimePicker: UIView, UIScrollViewDelegate {
     
     override func draw(_ rect: CGRect) {
         
+        subviews.forEach { $0.removeFromSuperview() }
+        
+        
         // Background
         
         let background = UIToolbar(frame: rect)
         addSubview(background)
-        
         
         
         // Scroll View
@@ -99,7 +101,6 @@ class CRTimePicker: UIView, UIScrollViewDelegate {
         scrollView?.delegate = self
         scrollView?.tintColor = tintColor
         addSubview(scrollView!)
-        
         
         
         // Subtitle
@@ -118,14 +119,18 @@ class CRTimePicker: UIView, UIScrollViewDelegate {
         addSubview(subtitleLabel)
         
         
-        
         // Accessory View
         
         addSubview(AccessoryView(frame: rect, tintColor: tintColor))
         
         
-        
         updateSubtitleLabel()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        draw(bounds)
     }
     
     func stopScrollView() {
