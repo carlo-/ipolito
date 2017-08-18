@@ -49,6 +49,11 @@
 
 "ls.appDelegate.couldNotLogoutAlert.body" = "Non è stato possibile effettuare il logout in questo momento.";
 
+"ls.appDelegate.lastReleaseAlert.title" = "Novità della versione 2.4";
+"ls.appDelegate.lastReleaseAlert.message" = "Purtroppo questa è l'ultima versione di iPoliTO, dato che il mio percorso al Politecnico si è concluso. Per scoprire come puoi continuare a contribuire al progetto, premi su 'Altre info'. Grazie per il supporto!";
+"ls.appDelegate.lastReleaseAlert.dismiss" = "Ignora";
+"ls.appDelegate.lastReleaseAlert.learnMore" = "Altre info";
+
 
 
 // MARK: HomeViewController

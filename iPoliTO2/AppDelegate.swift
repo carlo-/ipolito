@@ -58,7 +58,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if isFirstTimeWithThisApp {
             firstTimeWithThisApp()
         } else if isFirstTimeWithThisRelease {
-            firstTimeWithThisRelease()
+            presentLastReleaseAlert()
+            // firstTimeWithThisRelease()
         } else {
             login()
         }
@@ -72,6 +73,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func applicationDidEnterBackground(_ application: UIApplication) {
         
         UserDefaults().synchronize()
+    }
+
+    func presentLastReleaseAlert() {
+
+        let alert = UIAlertController(title: ~"ls.appDelegate.lastReleaseAlert.title",
+                                      message: ~"ls.appDelegate.lastReleaseAlert.message",
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.dismiss", style: .cancel, handler: {
+            self.updateVersionOfLastExecution()
+            self.login()
+        }))
+
+        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.learnMore", style: .default, handler: {
+            UIApplication.shared.openURL(PTConstants.gitHubReadmeLink)
+            self.updateVersionOfLastExecution()
+            self.login()
+        }))
+
+        window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
     func refreshSessionDataIfNeeded() {
