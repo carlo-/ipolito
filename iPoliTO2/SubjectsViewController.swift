@@ -41,9 +41,7 @@ class SubjectsViewController: UITableViewController {
         didSet { tableView.reloadData() }
     }
     
-    var dataOfSubjects: [PTSubject: PTSubjectData] = [:] {
-        didSet { dataOfSubjectsDidChange() }
-    }
+    var dataOfSubjects: [PTSubject: PTSubjectData] = [:]
     
     var status: PTViewControllerStatus = .loggedOut {
         didSet { statusDidChange() }
@@ -136,15 +134,26 @@ class SubjectsViewController: UITableViewController {
                 navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.subjectsVC.title")
             }
         }
+        
+        if status == .ready {
+            
+            dataOfSubjectsReady()
+        }
     }
     
-    func dataOfSubjectsDidChange() {
+    func dataOfSubjectsReady() {
         
-        updateAllFilesResults()
-        updateLatestUploadsResults()
-        updateTabBarBadge()
-        
-        tableView.reloadData()
+        OperationQueue().addOperation({ [unowned self] _ in
+            
+            self.updateAllFilesResults()
+            self.updateLatestUploadsResults()
+            
+            OperationQueue.main.addOperation {
+                
+                self.updateTabBarBadge()
+                self.tableView.reloadData()
+            }
+        })
     }
     
     func handleTabBarItemSelection(wasAlreadySelected: Bool, poppingFromNavigationStack: Bool) {

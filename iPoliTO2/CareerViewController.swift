@@ -25,12 +25,7 @@ class CareerViewController: UITableViewController {
     }
     
     var passedExams: [PTExam] = [] {
-        didSet {
-            resortExams()
-            updateSortButton()
-            reloadSpecialCells()
-            tableView.reloadData()
-        }
+        didSet { examsDidChange() }
     }
     
     fileprivate var sortedExams: [PTExam] = []
@@ -62,7 +57,7 @@ class CareerViewController: UITableViewController {
         
         setupRefreshControl()
         
-        //_ reloadSpecialCells()
+        reloadSpecialCells()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -127,6 +122,21 @@ class CareerViewController: UITableViewController {
                 navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.careerVC.title")
             }
             
+        }
+    }
+    
+    func examsDidChange() {
+        
+        OperationQueue().addOperation { [unowned self] _ in
+            
+            self.resortExams()
+            
+            OperationQueue.main.addOperation {
+                
+                self.updateSortButton()
+                self.reloadSpecialCells()
+                self.tableView.reloadData()
+            }
         }
     }
     

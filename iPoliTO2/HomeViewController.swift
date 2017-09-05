@@ -201,11 +201,7 @@ class HomeViewController: UITableViewController {
     }
     
     var allLectures: [PTLecture] = [] {
-        didSet {
-            reloadSchedule()
-            tableView.reloadData()
-            scrollToMostRelevantRow()
-        }
+        didSet { lecturesDidChange() }
     }
     
     var status: PTViewControllerStatus = .loggedOut {
@@ -271,6 +267,20 @@ class HomeViewController: UITableViewController {
                 navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.generic.status.offline")
             default:
                 navigationItem.titleView = PTSession.shared.lastUpdateTitleView(title: ~"ls.homeVC.title")
+            }
+        }
+    }
+    
+    func lecturesDidChange() {
+        
+        OperationQueue().addOperation { [unowned self] _ in
+            
+            self.reloadSchedule()
+            
+            OperationQueue.main.addOperation {
+                
+                self.tableView.reloadData()
+                self.scrollToMostRelevantRow()
             }
         }
     }
