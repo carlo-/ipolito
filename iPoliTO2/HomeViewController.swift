@@ -382,7 +382,7 @@ extension HomeViewController {
         let todaysLectures = schedule.lectures(on: section)!
         
         // Empty day => No section => No footer for that section (i.e. footer of 0 height)
-        return todaysLectures.isEmpty ? 0 : 5
+        return todaysLectures.isEmpty ? 0 : 10
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
