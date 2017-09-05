@@ -33,7 +33,7 @@ static let debugAccount = PTAccount(rawStudentID: "YOUR_USERNAME_HERE", password
 
 ## Contributing
 
-~~Contributions of any kind are more than welcome! Make a pull request or open an issue.~~ Since I decided to stop working on this project, contributions are the only thing that will keep it alive, now more than ever. If you wish to take over the development, fork the repository and drop me a line via email. Also, if you appreciate my work, you can (still) buy me a coffee through [this link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rapisarda%2ecarlo%40gmail%2ecom&lc=IT&item_name=iPoliTO&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted).
+~~Contributions of any kind are more than welcome! Make a pull request or open an issue.~~ Since I decided to stop working on this project, contributions are the only thing that will keep it alive, now more than ever. If you wish to take over the development, fork the repository and drop me a line via email (which you can find on my GitHub profile page). Also, if you appreciate my work, you can (still) buy me a coffee through [this link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rapisarda%2ecarlo%40gmail%2ecom&lc=IT&item_name=iPoliTO&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted).
 
 ## License
 
