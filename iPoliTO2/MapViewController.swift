@@ -54,6 +54,11 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if #available(iOS 11.0, *) {
+            // Disable use of 'large title' display mode
+            navigationItem.largeTitleDisplayMode = .never
+        }
         
         mapView.showsCompass = false
 
@@ -306,7 +311,11 @@ extension MapViewController {
         }
         
         UIView.animate(withDuration: 0.25, animations: {
-            
+
+            if #available(iOS 11.0, *) {
+                self.navigationItem.searchController = nil
+            }
+
             self.layoutTimePicker(withControllerViewSize: self.view.frame.size, visible: true)
             
         }, completion: { _ in
@@ -325,13 +334,17 @@ extension MapViewController {
         guard let timePicker = timePicker else { return }
         
         timePicker.stopScrollView()
+
+        if #available(iOS 11.0, *) {
+            self.navigationItem.searchController = self.searchController
+        }
         
         UIView.animate(withDuration: 0.25, animations: {
-            
+
             self.layoutTimePicker(withControllerViewSize: self.view.frame.size, visible: false)
             
         }, completion: { _ in
-                
+
             self.searchBar.isUserInteractionEnabled = true
             self.timePickerVisible = false
             self.layoutTimePicker(withControllerViewSize: self.view.frame.size, visible: false)
@@ -425,14 +438,21 @@ extension MapViewController: UISearchControllerDelegate, UISearchResultsUpdating
         }
         
         if !(searchController.isActive) {
-            
-            searchBar.frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+            if #available(iOS 11.0, *) {
+                // No need to set the frame of the search bar
+            } else {
+                searchBar.frame = CGRect(x: 0, y: 0, width: width, height: height)
+            }
         }
-        
-        searchBarContainer.frame = CGRect(x: 0, y: topBarMaxY, width: width, height: height)
-        
-        searchResultsTable.contentInset = UIEdgeInsets(top: searchBarMaxY, left: 0, bottom: bottomBarHeight, right: 0)
-        searchResultsTable.scrollIndicatorInsets = UIEdgeInsets(top: searchBarMaxY, left: 0, bottom: bottomBarHeight, right: 0)
+
+        if #available(iOS 11.0, *) {
+            searchResultsTable.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        } else {
+            searchBarContainer.frame = CGRect(x: 0, y: topBarMaxY, width: width, height: height)
+            searchResultsTable.contentInset = UIEdgeInsets(top: searchBarMaxY, left: 0, bottom: bottomBarHeight, right: 0)
+            searchResultsTable.scrollIndicatorInsets = UIEdgeInsets(top: searchBarMaxY, left: 0, bottom: bottomBarHeight, right: 0)
+        }
     }
     
     func setupSearchController() {
@@ -444,10 +464,17 @@ extension MapViewController: UISearchControllerDelegate, UISearchResultsUpdating
         searchBar.placeholder = ~"ls.mapVC.searchBarPlaceholder"
         
         searchBarContainer = UIView()
-        searchBarContainer.addSubview(searchBar)
-        searchBarContainer.isOpaque = false
-        view.insertSubview(searchBarContainer, belowSubview: searchResultsTable)
-        
+
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            // Fallback on earlier versions
+            searchBarContainer.addSubview(searchBar)
+            searchBarContainer.isOpaque = false
+            view.insertSubview(searchBarContainer, belowSubview: searchResultsTable)
+        }
+
         definesPresentationContext = true
         
         let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]

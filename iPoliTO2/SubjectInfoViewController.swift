@@ -29,6 +29,11 @@ class SubjectInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if #available(iOS 11.0, *) {
+            // Disable use of 'large title' display mode
+            navigationItem.largeTitleDisplayMode = .never
+        }
         
         guideView.attributedText = attributedString(forGuide: subjectGuide)
         lecturerLabel.text = subjectInfo?.lecturer.fullName.capitalized ?? "??"

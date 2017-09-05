@@ -22,6 +22,11 @@ class SettingsViewController: UITableViewController, MFMailComposeViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if #available(iOS 11.0, *) {
+            // Disable use of 'large title' display mode
+            navigationItem.largeTitleDisplayMode = .never
+        }
         
         let session = PTSession.shared
         

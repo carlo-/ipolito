@@ -9,7 +9,7 @@
 import UIKit
 
 class SubjectsViewController: UITableViewController {
-    
+
     fileprivate let latestUploadsLimit: Int = 5
     
     fileprivate var searchController = UISearchController(searchResultsController: nil)
@@ -50,6 +50,11 @@ class SubjectsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if #available(iOS 11.0, *) {
+            // Disable use of 'large title' display mode
+            navigationItem.largeTitleDisplayMode = .never
+        }
         
         // Removes annoying row separators after the last cell
         tableView.tableFooterView = UIView()
@@ -588,11 +593,24 @@ extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDel
     }
     
     fileprivate func setSearchBarVisible(_ enabled: Bool) {
-        
-        if enabled && tableView.tableHeaderView == nil {
-            tableView.tableHeaderView = searchBar
-        } else if !enabled {
-            tableView.tableHeaderView = nil
+
+        if #available(iOS 11.0, *) {
+
+            if enabled && self.navigationItem.searchController == nil {
+                self.navigationItem.searchController = searchController
+            } else if !enabled {
+                self.navigationItem.searchController = nil
+            }
+            tableView.safeAreaInsetsDidChange()
+
+        } else {
+            // Fallback on earlier versions
+
+            if enabled && tableView.tableHeaderView == nil {
+                tableView.tableHeaderView = searchBar
+            } else if !enabled {
+                tableView.tableHeaderView = nil
+            }
         }
     }
     
@@ -605,11 +623,18 @@ extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDel
         searchController.dimsBackgroundDuringPresentation = false
         
         let searchBar = searchController.searchBar
-        searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         searchBar.placeholder = ~"ls.subjectsVC.searchBarPlaceholder"
-        
-        tableView.tableHeaderView = searchBar
-        
+
+        if #available(iOS 11.0, *) {
+            self.navigationItem.searchController = searchController
+            tableView.contentInsetAdjustmentBehavior = .always
+
+        } else {
+            // Fallback on earlier versions
+            searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
+            tableView.tableHeaderView = searchBar
+        }
+
         self.definesPresentationContext = true
         
         let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.iPoliTO.darkGray]
@@ -617,13 +642,25 @@ extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDel
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        tableView.setContentOffset(CGPoint(x: 0, y: -64+44), animated: false)
+
+        if #available(iOS 11.0, *) {
+            // tableView.setContentOffset(CGPoint(x: 0, y: -64), animated: false)
+        } else {
+            // Fallback on earlier versions
+            tableView.setContentOffset(CGPoint(x: 0, y: -64+44), animated: false)
+        }
     }
     
     func didDismissSearchController(_ searchController: UISearchController) {
         setRefreshControlEnabled(true)
         tableView.tableFooterView = UIView()
-        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+
+        if #available(iOS 11.0, *) {
+            tableView.safeAreaInsetsDidChange()
+        } else {
+            // Fallback on earlier versions
+            tableView.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+        }
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
@@ -632,7 +669,16 @@ extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDel
     }
     
     func didPresentSearchController(_ searchController: UISearchController) {
-        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+
+        if #available(iOS 11.0, *) {
+            tableView.safeAreaInsetsDidChange()
+            // tableView.setContentOffset(CGPoint(x: 0, y: -64), animated: false)
+            // tableView.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+
+        } else {
+            // Fallback on earlier versions
+            tableView.scrollIndicatorInsets = UIEdgeInsets(top: 64, left: 0, bottom: 49, right: 0)
+        }
     }
     
     func dismissSearchBar(force: Bool = false) {

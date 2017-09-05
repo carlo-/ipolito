@@ -51,6 +51,11 @@ class CareerViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if #available(iOS 11.0, *) {
+            // Disable use of 'large title' display mode
+            navigationItem.largeTitleDisplayMode = .never
+        }
         
         // Removes annoying row separators after the last cell
         tableView.tableFooterView = UIView()
