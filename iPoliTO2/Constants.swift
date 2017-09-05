@@ -16,6 +16,9 @@ struct PTConstants {
     // MUST be set to false for production
     static let shouldForceDebugAccount = false
     
+    // MUST be set to false for production
+    static let jumpstart = false
+    
     static let debugAccount: PTAccount = demoAccount
     
     static let appStoreReviewLink = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1069740093&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8"

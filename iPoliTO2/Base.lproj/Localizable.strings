@@ -50,7 +50,7 @@
 "ls.appDelegate.couldNotLogoutAlert.body" = "Could not logout at this time!";
 
 "ls.appDelegate.lastReleaseAlert.title" = "What's new in v2.4";
-"ls.appDelegate.lastReleaseAlert.message" = "Sadly, this is the last release of iPoliTO, as my journey at Politecnico has come to an end. If you wish to learn how you can still contribute to the project, tap on 'Learn More'. Thank you for the support!";
+"ls.appDelegate.lastReleaseAlert.message" = "Sadly, this is the last release of iPoliTO, as my journey at Politecnico has come to an end. If you wish to learn how you can still contribute to the project, tap on 'Learn More'. Thank you for your support!";
 "ls.appDelegate.lastReleaseAlert.dismiss" = "Dismiss";
 "ls.appDelegate.lastReleaseAlert.learnMore" = "Learn More";
 

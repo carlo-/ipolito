@@ -55,8 +55,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         window?.makeKeyAndVisible()
         tabBarController?.delegate = self
         
+        if PTConstants.jumpstart {
+            login()
+            return
+        }
+        
         if isFirstTimeWithThisApp {
-            firstTimeWithThisApp()
+            presentLastReleaseAlert()
+            // firstTimeWithThisApp()
         } else if isFirstTimeWithThisRelease {
             presentLastReleaseAlert()
             // firstTimeWithThisRelease()
@@ -81,13 +87,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                       message: ~"ls.appDelegate.lastReleaseAlert.message",
                                       preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.dismiss", style: .cancel, handler: {
+        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.dismiss", style: .cancel, handler: { _ in
             self.updateVersionOfLastExecution()
             self.login()
         }))
 
-        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.learnMore", style: .default, handler: {
-            UIApplication.shared.openURL(PTConstants.gitHubReadmeLink)
+        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.learnMore", style: .default, handler: { _ in
+            UIApplication.shared.openURL(URL(string: PTConstants.gitHubReadmeLink)!)
             self.updateVersionOfLastExecution()
             self.login()
         }))
