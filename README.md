@@ -10,7 +10,7 @@ iPoliTO is an [unofficial](#disclaimer) iOS app for the students of Politecnico 
 
 Since my journey at Politecnico di Torino has come to an end, I decided to dedicate my efforts to new projects and — unfortunately — this means terminating the development of iPoliTO.
 
-As of September 5th 2017, the app has been downloaded by a total of about 4070 students of Politecnico since its first release, exceeding by far all of my initial expectations. This success has pushed me to continue the development through these two years, but as I leave PoliTO it's time for me to move on.
+As of September 5th 2017, the app has been downloaded by a total of about 5110 students of Politecnico since its first release, exceeding by far all of my initial expectations. This success has pushed me to continue the development through these two years, but as I leave PoliTO it's time for me to move on.
 
 That said, the app *will remain available* in the App Store for as long as it will work, although it won't receive any further updates, not for new features nor for bug fixes and maintenance, at least not until someone takes over the project. If that *someone* could be you, please get in touch with me! See also [Contributing](#contributing) below.
 
