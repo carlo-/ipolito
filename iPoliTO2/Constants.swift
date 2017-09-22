@@ -12,6 +12,12 @@ struct PTConstants {
     
     // MUST be set to false for production
     static let alwaysAskToLogin = false
+
+    // MUST be set to false for production
+    static let alwaysShowWhatsNewMessage = false
+
+    // MUST be set to false for production
+    static let alwaysActAsFirstExecution = false
     
     // MUST be set to false for production
     static let shouldForceDebugAccount = false

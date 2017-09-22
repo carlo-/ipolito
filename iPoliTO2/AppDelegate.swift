@@ -60,12 +60,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             return
         }
         
-        if isFirstTimeWithThisApp {
-            presentLastReleaseAlert()
-            // firstTimeWithThisApp()
-        } else if isFirstTimeWithThisRelease {
-            presentLastReleaseAlert()
-            // firstTimeWithThisRelease()
+        if isFirstTimeWithThisApp || PTConstants.alwaysActAsFirstExecution {
+            firstTimeWithThisApp()
+        } else if isFirstTimeWithThisRelease || PTConstants.alwaysShowWhatsNewMessage {
+            firstTimeWithThisRelease()
         } else {
             login()
         }
@@ -79,26 +77,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func applicationDidEnterBackground(_ application: UIApplication) {
         
         UserDefaults().synchronize()
-    }
-
-    func presentLastReleaseAlert() {
-
-        let alert = UIAlertController(title: ~"ls.appDelegate.lastReleaseAlert.title",
-                                      message: ~"ls.appDelegate.lastReleaseAlert.message",
-                                      preferredStyle: .alert)
-
-        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.dismiss", style: .cancel, handler: { _ in
-            self.updateVersionOfLastExecution()
-            self.login()
-        }))
-
-        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.learnMore", style: .default, handler: { _ in
-            UIApplication.shared.openURL(URL(string: PTConstants.gitHubReadmeLink)!)
-            self.updateVersionOfLastExecution()
-            self.login()
-        }))
-
-        window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
     func refreshSessionDataIfNeeded() {
@@ -201,13 +179,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
     
     func firstTimeWithThisRelease() {
-        
-        let alert = UIAlertController(title: ~"ls.appDelegate.justUpdatedAlert.title", message: ~"ls.appDelegate.justUpdatedAlert.body", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: ~"ls.generic.alert.continue", style: .default, handler: {
-            action in
+
+        let alert = UIAlertController(title: ~"ls.appDelegate.lastReleaseAlert.title",
+                                      message: ~"ls.appDelegate.lastReleaseAlert.message",
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.dismiss", style: .cancel, handler: { _ in
             self.updateVersionOfLastExecution()
             self.login()
         }))
+
+        alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.learnMore", style: .default, handler: { _ in
+            UIApplication.shared.openURL(URL(string: PTConstants.gitHubReadmeLink)!)
+            self.updateVersionOfLastExecution()
+            self.login()
+        }))
+
         window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
@@ -218,12 +205,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         presentSignInViewController(completion: {
             signInController in
-            
-            let alert = UIAlertController(title: ~"ls.appDelegate.justDownloadedAlert.title", message: ~"ls.appDelegate.justDownloadedAlert.body", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: ~"ls.generic.alert.continue", style: .default, handler: {
-                action in
+
+            let alert = UIAlertController(title: ~"ls.appDelegate.lastReleaseAlert.title",
+                                          message: ~"ls.appDelegate.lastReleaseAlert.message",
+                                          preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.dismiss", style: .cancel, handler: { _ in
                 self.updateVersionOfLastExecution()
             }))
+
+            alert.addAction(UIAlertAction(title: ~"ls.appDelegate.lastReleaseAlert.learnMore", style: .default, handler: { _ in
+                UIApplication.shared.openURL(URL(string: PTConstants.gitHubReadmeLink)!)
+                self.updateVersionOfLastExecution()
+            }))
+
             signInController.present(alert, animated: true, completion: nil)
         })
     }

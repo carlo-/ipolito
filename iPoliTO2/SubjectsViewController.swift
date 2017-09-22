@@ -358,12 +358,21 @@ extension SubjectsViewController {
 extension SubjectsViewController {
     
     func scrollToTopOfTableView(animated: Bool = true) {
-        
-        let topBarMaxY = navigationController!.navigationBar.frame.maxY
-        let searchBarMaxY = searchBar.frame.maxY
-        
-        let yOffset: CGFloat = searchController.isActive ? -searchBarMaxY : -topBarMaxY
-        tableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: animated)
+
+        if #available(iOS 11.0, *) {
+            let indexPath = IndexPath(row: 0, section: 0)
+            if tableView.cellForRow(at: indexPath) != nil {
+                tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
+            }
+
+        } else {
+
+            let topBarMaxY = navigationController!.navigationBar.frame.maxY
+            let searchBarMaxY = searchBar.frame.maxY
+
+            let yOffset: CGFloat = searchController.isActive ? -searchBarMaxY : -topBarMaxY
+            tableView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: animated)
+        }
     }
     
     func reloadTable(animated: Bool = false) {
@@ -644,7 +653,7 @@ extension SubjectsViewController: UISearchResultsUpdating, UISearchControllerDel
     func willDismissSearchController(_ searchController: UISearchController) {
 
         if #available(iOS 11.0, *) {
-            // tableView.setContentOffset(CGPoint(x: 0, y: -64), animated: false)
+            tableView.setContentOffset(CGPoint(x: 0, y: -(64+44)), animated: false)
         } else {
             // Fallback on earlier versions
             tableView.setContentOffset(CGPoint(x: 0, y: -64+44), animated: false)

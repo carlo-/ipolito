@@ -183,7 +183,12 @@ class CareerViewController: UITableViewController {
     
     func handleTabBarItemSelection(wasAlreadySelected: Bool) {
         if wasAlreadySelected {
-            tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: true)
+
+            if #available(iOS 11.0, *) {
+                tableView.setContentOffset(CGPoint(x: 0, y: -64), animated: true)
+            } else {
+                tableView.setContentOffset(CGPoint(x: 0, y: -tableView.contentInset.top), animated: true)
+            }
         }
     }
     

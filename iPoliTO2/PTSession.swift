@@ -184,15 +184,7 @@ extension PTSession {
         isClosing = true
         pendingRequests += 1
         delegate?.sessionDidBeginClosing()
-        
-        if pendingRequests > 1 {
-            // There are still pending requests (besides this one)
-            // We cannot proceed
-            
-            delegate?.sessionDidFailClosingWithError(error: .unknownError)
-            return;
-        }
-        
+
         // We don't really care about telling the server (given the way PoliTO's APIs work)
         // We simply delete everything and go on
         
