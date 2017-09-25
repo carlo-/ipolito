@@ -41,6 +41,12 @@
       "idiom" : "iphone",
       "filename" : "Icon_d3_180.png",
       "scale" : "3x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "Icon_d3_1024.png",
+      "scale" : "1x"
     }
   ],
   "info" : {
